@@ -3,16 +3,18 @@
 # exist dependency
 wget -q https://github.com/mikefarah/yq/releases/download/v4.20.2/yq_linux_386 -O $GITHUB_ACTION_PATH/yq && chmod +x $GITHUB_ACTION_PATH/yq
 
-VULCAN_YML_NAME=$($GITHUB_ACTION_PATH/yq eval '.name')
-VULCAN_YML_URL=$($GITHUB_ACTION_PATH/yq eval '.url')
-VULCAN_YML_DOCKER_IMAGE=$($GITHUB_ACTION_PATH/yq eval '.docker-image')
-VULCAN_YML_EXTRA_BUILD_ENV_SETTING_COMMAND=$($GITHUB_ACTION_PATH/yq eval '.extra-build-env-setting-commands')
-VULCAN_YML_TEST_BUILD_COMMAND=$($GITHUB_ACTION_PATH/yq eval '.test-build-command')
+PARSE_PROP="$GITHUB_ACTION_PATH/yq eval '$1' $GITHUB_WORKSPACE/vulcan_target/.vulcan.yml"
+VULCAN_YML_NAME=$($(printf $PARSE_PROP .name))
+VULCAN_YML_URL=$($(printf $PARSE_PROP .url))
+VULCAN_YML_DOCKER_IMAGE=$($(printf $PARSE_PROP .docker-image))
+VULCAN_YML_EXTRA_BUILD_ENV_SETTING_COMMAND=$($(printf $PARSE_PROP .extra-build-env-setting-commands))
+VULCAN_YML_TEST_BUILD_COMMAND=$($(printf $PARSE_PROP .test-build-command))
+VULCAN_YML_COVERAGE_BUILD_COMMAND=$($(printf $PARSE_PROP .test-build-command))
 VULCAN_YML_COVERAGE_BUILD_COMMAND=$($GITHUB_ACTION_PATH/yq eval '.coverage-build-command')
-VULCAN_YML_TEST_TYPE=$($GITHUB_ACTION_PATH/yq eval '.test-type')
-VULCAN_YML_TEST_CASE=$($GITHUB_ACTION_PATH/yq eval '.test-case')
-VULCAN_YML_TEST_COMMAND=$($GITHUB_ACTION_PATH/yq eval '.test-command')
-VULCAN_YML_TEST_COVERAGE_COMMAND=$($GITHUB_ACTION_PATH/yq eval '.test-coverage-command')
+VULCAN_YML_TEST_TYPE=$($(printf $PARSE_PROP .test-type))
+VULCAN_YML_TEST_CASE=$($(printf $PARSE_PROP .test-case))
+VULCAN_YML_TEST_COMMAND=$($(printf $PARSE_PROP .test-command))
+VULCAN_YML_TEST_COVERAGE_COMMAND=$($(printf $PARSE_PROP .test-coverage-command))
 
 echo .vulcan.yml.name: ${VULCAN_YML_NAME:-Not set}
 echo .vulcan.yml.url: ${VULCAN_YML_URL:-Not set}
