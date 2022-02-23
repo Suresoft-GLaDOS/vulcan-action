@@ -9,11 +9,8 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Set permissions
+    - name: Set permissions as excutable
       run: chmod +x -R $GITHUB_ACTION_PATH/vulcan
-      shell: bash
-    - name: Create token file for gh auth
-      run: echo ${{ inputs.token }} > $GITHUB_ACTION_PATH/token
       shell: bash
     - name: Checkout vulcan target
       uses: actions/checkout@v2
@@ -22,3 +19,5 @@ runs:
         path: vulcan_target
     - run: $GITHUB_ACTION_PATH/vulcan/entry.sh
       shell: bash
+      env:
+        TOKEN: ${{ inputs.token }}
