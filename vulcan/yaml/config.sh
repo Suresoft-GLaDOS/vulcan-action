@@ -3,7 +3,7 @@
 # exist dependency
 wget -q https://github.com/mikefarah/yq/releases/download/v4.20.2/yq_linux_386 -O $GITHUB_ACTION_PATH/yq && chmod +x $GITHUB_ACTION_PATH/yq
 
-PARSE_PROP="$GITHUB_ACTION_PATH/yq eval '$1' $GITHUB_WORKSPACE/vulcan_target/.vulcan.yml"
+PARSE_PROP="$GITHUB_ACTION_PATH/yq eval %s $GITHUB_WORKSPACE/vulcan_target/.vulcan.yml"
 VULCAN_YML_NAME=$($(printf $PARSE_PROP .name))
 VULCAN_YML_URL=$($(printf $PARSE_PROP .url))
 VULCAN_YML_DOCKER_IMAGE=$($(printf $PARSE_PROP .docker-image))
