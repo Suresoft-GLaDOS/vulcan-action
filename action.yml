@@ -17,5 +17,5 @@ runs:
       with:
         token: ${{ inputs.token }}
         path: vulcan_target
-    - run: vulcan/entry.sh
+    - run: $GITHUB_ACTION_PATH/vulcan/entry.sh
       shell: bash

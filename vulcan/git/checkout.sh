@@ -14,4 +14,4 @@ git checkout $DESTINATION_BRANCH
 git checkout -b $PATCH_BRANCH
 echo ==================================
 
-cd $GITHUB_WORKSPACE
+cd $GITHUB_ACTION_PATH

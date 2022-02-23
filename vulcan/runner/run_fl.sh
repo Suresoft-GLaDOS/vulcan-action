@@ -1,4 +1,4 @@
 # vulcan/runner/run_fl.sh
 #!/bin/bash
 
-$GITHUB_WORKSPACE/vulcan/bin/sbfl
+$GITHUB_ACTION_PATH/vulcan/bin/sbfl
