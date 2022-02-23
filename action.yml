@@ -9,6 +9,9 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Set permissions
+      run: chmod +x -R $GITHUB_ACTION_PATH/vulcan
+      shell: bash
     - name: Set github token
       run: export TOKEN=${{ inputs.token }}
       shell: bash
