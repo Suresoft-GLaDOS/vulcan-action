@@ -1,7 +1,7 @@
 # /vulcan/yaml/config.sh
 
 # exist dependency
-wget https://github.com/mikefarah/yq/releases/download/v4.20.2/yq_linux_386 -O $GITHUB_ACTION_PATH/yq && chmod +x $GITHUB_ACTION_PATH/yq
+wget -q https://github.com/mikefarah/yq/releases/download/v4.20.2/yq_linux_386 -O $GITHUB_ACTION_PATH/yq && chmod +x $GITHUB_ACTION_PATH/yq
 
 VULCAN_YML_NAME=$($GITHUB_ACTION_PATH/yq eval '.name')
 VULCAN_YML_URL=$($GITHUB_ACTION_PATH/yq eval '.url')
