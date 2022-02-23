@@ -6,11 +6,11 @@ if [ ! -f $GITHUB_WORKSPACE/vulcan_target/.vulcan.yml ]; then
   exit 1
 fi
 
-source $GITHUB_ACTION_PATH/vulcan/github_cli/config.sh
-source $GITHUB_ACTION_PATH/vulcan/github_cli/checkout.sh
+source $GITHUB_ACTION_PATH/vulcan/git/config.sh
+source $GITHUB_ACTION_PATH/vulcan/git/checkout.sh
 
 source $GITHUB_ACTION_PATH/vulcan/runner/run_fl.sh
 source $GITHUB_ACTION_PATH/vulcan/runner/run_apr.sh
 
-source $GITHUB_ACTION_PATH/vulcan/github_cli/auth.sh
-source $GITHUB_ACTION_PATH/vulcan/github_cli/create-issue.sh
+source $GITHUB_ACTION_PATH/vulcan/git/auth.sh
+source $GITHUB_ACTION_PATH/vulcan/git/create-issue.sh
