@@ -1,0 +1,19 @@
+# action.yml
+name: 'Vulcan Auto Patch Generator'
+description: 'Auto fix on the branch which triggers a workflow'
+inputs:
+  token:
+    description: 'GITHUB_TOKEN'
+    default: ${{ github.token }}
+  
+runs:
+  using: 'composite'
+  steps:
+    - name: Set github token
+      run: export TOKEN=${{ inputs.token }}
+    - name: Checkout vulcan target
+      uses: actions/checkout@v2
+      with:
+        token: ${{ inputs.token }}
+        path: vulcan_target
+    - run: vulcan/entry.sh
