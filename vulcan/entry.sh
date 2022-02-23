@@ -6,6 +6,14 @@ if [ ! -f $GITHUB_WORKSPACE/vulcan_target/.vulcan.yml ]; then
   exit 1
 fi
 
+if [ -z "$TOKEN" ]; then
+  echo "Requires vulcan action input: token"
+  echo "Vulcan action with: token: ${{ secrets.GITHUB_TOKEN }}"
+  exit 1
+fi
+
+source $GITHUB_ACTION_PATH/vulcan/yaml/config.sh
+
 source $GITHUB_ACTION_PATH/vulcan/git/config.sh
 source $GITHUB_ACTION_PATH/vulcan/git/checkout.sh
 
