@@ -11,9 +11,11 @@ runs:
   steps:
     - name: Set github token
       run: export TOKEN=${{ inputs.token }}
+      shell: bash
     - name: Checkout vulcan target
       uses: actions/checkout@v2
       with:
         token: ${{ inputs.token }}
         path: vulcan_target
     - run: vulcan/entry.sh
+      shell: bash
