@@ -1,27 +1,45 @@
 # /vulcan/yaml/config.sh
 
+parse_yml_property() {
+    PARSE_PROP="$GITHUB_ACTION_PATH/yq eval %s $GITHUB_WORKSPACE/vulcan_target/.vulcan.yml"
+    printf "$($(printf "$PARSE_PROP" $1))"
+}
+
+parse_yml_properties() {
+	VULCAN_YML_NAME=$(parse_yml_property .name)
+	VULCAN_YML_URL=$(parse_yml_property .url)
+	VULCAN_YML_DOCKER_IMAGE=$(parse_yml_property .docker-image)
+	VULCAN_YML_EXTRA_BUILD_ENV_SETTING_COMMAND=$(parse_yml_property .extra-build-env-setting-commands)
+	VULCAN_YML_TEST_BUILD_COMMAND=$(parse_yml_property .test-build-command)
+	VULCAN_YML_COVERAGE_BUILD_COMMAND=$(parse_yml_property .coverage-build-command)
+	VULCAN_YML_TEST_TYPE=$(parse_yml_property .test-type)
+	VULCAN_YML_TEST_CASE=$(parse_yml_property .test-case)
+	VULCAN_YML_TEST_COMMAND=$(parse_yml_property .test-command)
+	VULCAN_YML_TEST_COVERAGE_COMMAND=$(parse_yml_property .test-coverage-command)
+}
+
+set_run_configure() {
+    if [ -z "$VULCAN_YML_COVERAGE_BUILD_COMMAND" ] || [ -z "$VULCAN_YML_TEST_COVERAGE_COMMAND" ]; 
+    then
+        echo "WARNING: Not work FL."
+        echo "  Set coverage-build-command and test-coverage-command in .vulcan.yml."
+    else
+        echo "FL will be worked."
+        RUN_FL="true"
+    fi
+    
+    if [ -z "$VULCAN_YML_TEST_BUILD_COMMAND" ] || [ -z "$VULCAN_YML_TEST_COMMAND" ]; 
+    then
+        echo "WARNING: Not work APR."
+        echo "  Set test-build-command and test-command in .vulcan.yml."
+    else
+        echo "APR will be worked."	
+        RUN_APR="true"
+    fi
+}
+
 # exist dependency
 wget -q https://github.com/mikefarah/yq/releases/download/v4.20.2/yq_linux_386 -O $GITHUB_ACTION_PATH/yq && chmod +x $GITHUB_ACTION_PATH/yq
 
-PARSE_PROP="$GITHUB_ACTION_PATH/yq eval %s $GITHUB_WORKSPACE/vulcan_target/.vulcan.yml"
-VULCAN_YML_NAME=$($(printf "$PARSE_PROP" .name))
-VULCAN_YML_URL=$($(printf "$PARSE_PROP" .url))
-VULCAN_YML_DOCKER_IMAGE=$($(printf "$PARSE_PROP" .docker-image))
-VULCAN_YML_EXTRA_BUILD_ENV_SETTING_COMMAND=$($(printf "$PARSE_PROP" .extra-build-env-setting-commands))
-VULCAN_YML_TEST_BUILD_COMMAND=$($(printf "$PARSE_PROP" .test-build-command))
-VULCAN_YML_COVERAGE_BUILD_COMMAND=$($(printf "$PARSE_PROP" .test-build-command))
-VULCAN_YML_TEST_TYPE=$($(printf "$PARSE_PROP" .test-type))
-VULCAN_YML_TEST_CASE=$($(printf "$PARSE_PROP" .test-case))
-VULCAN_YML_TEST_COMMAND=$($(printf "$PARSE_PROP" .test-command))
-VULCAN_YML_TEST_COVERAGE_COMMAND=$($(printf "$PARSE_PROP" .test-coverage-command))
-
-echo .vulcan.yml.name: ${VULCAN_YML_NAME:-Not set}
-echo .vulcan.yml.url: ${VULCAN_YML_URL:-Not set}
-echo .vulcan.yml.docker-image: ${VULCAN_YML_DOCKER_IMAGE:-Not set}
-echo .vulcan.yml.extra-build-env-setting-command: ${VULCAN_YML_EXTRA_BUILD_ENV_SETTING_COMMAND:-Not set}
-echo .vulcan.yml.test-build-command: ${VULCAN_YML_TEST_BUILD_COMMAND:-Not set}
-echo .vulcan.yml.coverage-build-command: ${VULCAN_YML_COVERAGE_BUILD_COMMAND:-Not set}
-echo .vulcan.yml.test-type: ${VULCAN_YML_TEST_TYPE:-Not set}
-echo .vulcan.yml.test-case: ${VULCAN_YML_TEST_CASE:-Not set}
-echo .vulcan.yml.test-command: ${VULCAN_YML_TEST_COMMAND:-Not set}
-echo .vulcan.yml.test-coverage-command: ${VULCAN_YML_TEST_COVERAGE_COMMAND:-Not set}
+parse_yml_properties
+set_run_configure
