@@ -12,4 +12,5 @@ echo ==========Switching to $PATCH_BRANCH==========
 # git --no-pager branch -a -vv
 git checkout $DESTINATION_BRANCH
 git checkout -b $PATCH_BRANCH
+git clean
 echo ==================================
