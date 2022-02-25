@@ -19,8 +19,10 @@ source $GITHUB_ACTION_PATH/vulcan/git/checkout.sh
 
 if [ $RUN_FL ]; then
 	source $GITHUB_ACTION_PATH/vulcan/runner/run_fl.sh
+fi
 if [ $RUN_APR ]; then
 	source $GITHUB_ACTION_PATH/vulcan/runner/run_apr.sh
+fi
 
 source $GITHUB_ACTION_PATH/vulcan/git/auth.sh
 source $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.sh
