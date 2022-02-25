@@ -38,8 +38,38 @@ set_run_configure() {
     fi
 }
 
+print_yml_configure() {
+    echo ==============.vulcan.yml config==============
+    echo yml.name:
+	printf "$VULCAN_YML_NAME\n"
+	echo yml.url:
+	printf "$VULCAN_YML_URL\n"
+	echo yml.docker-image:
+	printf "$VULCAN_YML_DOCKER_IMAGE\n"
+	echo yml.extra-build-env-setting-command:
+	printf "$VULCAN_YML_EXTRA_BUILD_ENV_SETTING_COMMAND\n"
+	echo yml.test-build-command:
+	printf "$VULCAN_YML_TEST_BUILD_COMMAND\n"
+	echo yml.coverage-build-command:
+	printf "$VULCAN_YML_COVERAGE_BUILD_COMMAND\n"
+	echo yml.test-type:
+	printf "$VULCAN_YML_TEST_TYPE\n"
+	echo yml.test-case:
+	printf "$VULCAN_YML_TEST_CASE\n"
+	echo yml.test-command:
+	printf "$VULCAN_YML_TEST_COMMAND\n"
+	echo yml.test-coverage-command:
+	printf "$VULCAN_YML_TEST_COVERAGE_COMMAND\n"
+	echo RUN_FL:
+	printf "$RUN_FL\n"
+	echo RUN_APR:
+	printf "$RUN_APR\n"
+	echo ==============================================
+}
+
 # exist dependency
 wget -q https://github.com/mikefarah/yq/releases/download/v4.20.2/yq_linux_386 -O $GITHUB_ACTION_PATH/yq && chmod +x $GITHUB_ACTION_PATH/yq
 
 parse_yml_properties
 set_run_configure
+print_yml_configure
