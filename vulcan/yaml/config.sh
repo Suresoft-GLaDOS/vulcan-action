@@ -13,6 +13,7 @@ parse_yml_properties() {
 	VULCAN_YML_TEST_BUILD_COMMAND=$(parse_yml_property .test-build-command)
 	VULCAN_YML_COVERAGE_BUILD_COMMAND=$(parse_yml_property .coverage-build-command)
 	VULCAN_YML_TEST_TYPE=$(parse_yml_property .test-type)
+	VULCAN_YML_TEST_LIST=$(parse_yml_property .test-list)
 	VULCAN_YML_TEST_CASE=$(parse_yml_property .test-case)
 	VULCAN_YML_TEST_COMMAND=$(parse_yml_property .test-command)
 	VULCAN_YML_TEST_COVERAGE_COMMAND=$(parse_yml_property .test-coverage-command)

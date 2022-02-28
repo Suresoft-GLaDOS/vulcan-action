@@ -11,7 +11,7 @@ if [ ! $? -eq 0 ]; then
   exit 1
 fi
 
-echo "Run VULCAN_YML_TEST_COVERAGE_COMMAND"
-sh -c "$VULCAN_YML_TEST_COVERAGE_COMMAND"
+echo "Run split test by VULCAN_YML_TEST_COVERAGE_COMMAND"
+source $GITHUB_ACTION_PATH/vulcan/util/test.sh
 
 $GITHUB_ACTION_PATH/vulcan/bin/sbfl
