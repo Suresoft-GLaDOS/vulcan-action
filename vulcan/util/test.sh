@@ -1,29 +1,41 @@
 # /vulcan/util/test.sh
 
 TEST_INDEX=1
-sh -c "$VULCAN_YML_TEST_LIST | grep test_ > AUTOMAKE_TEST_CASE.output"
 GCOV_PATH=$GITHUB_WORKSPACE/gcov
 
-rm -rf $GCOV_PATH
-mkdir $GCOV_PATH
+_create_gcov_directory() {
+	rm -rf $GCOV_PATH
+	mkdir $GCOV_PATH
+}
 
-for UNIT_TEST in $(cat AUTOMAKE_TEST_CASE.output)
-do
-    echo "$UNIT_TEST\n"
-    head -$TEST_INDEX AUTOMAKE_TEST_CASE.output | tail -1 > TEST_CASE.output
-	sh -c "$VULCAN_YML_TEST_COVERAGE_COMMAND"
-	
-	mkdir $GCOV_PATH/$TEST_INDEX
+_write_test_result() {
 	if [ ! -z $? ]; 
 	then
-		$GCOV_PATH/$TEST_INDEX/output > fail
+		echo fail > $GCOV_PATH/$TEST_INDEX/result.output
 	else
-		$GCOV_PATH/$TEST_INDEX/output > pass
+		echo pass > $GCOV_PATH/$TEST_INDEX/result.output
 	fi
-	
-	bash -c 'find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.gcov" -execdir mv {} $GCOV_PATH/$TEST_INDEX \;'
-	bash -c 'find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.gcda" -delete'
-	
-	TEST_INDEX=$(( $TEST_INDEX + 1 ))
-done
+}
 
+_clean_after_collect_gcov() {
+	bash -c 'find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.o" -exec gcov --preserve-paths {} \;'
+	bash -c 'find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.gcov" -exec mv -t $GCOV_PATH/$TEST_INDEX {} +;'
+	bash -c 'find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.gcda" -delete'
+}
+
+_split_test() {
+	for UNIT_TEST in $(sh -c "$VULCAN_YML_TEST_LIST | grep test_")
+	do
+		echo "Measuring coverage for $UNIT_TEST\n"
+		mkdir $GCOV_PATH/$TEST_INDEX
+		sh -c "{$VULCAN_YML_TEST_COVERAGE_COMMAND//\?/$UNIT_TEST}"
+		
+		_write_test_result
+		_clean_after_collect_gcov
+		
+		TEST_INDEX=$(( $TEST_INDEX + 1 ))
+	done
+}
+
+_create_gcov_directory
+_split_test
