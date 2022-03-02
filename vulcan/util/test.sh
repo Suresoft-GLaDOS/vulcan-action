@@ -28,6 +28,7 @@ _split_test() {
 	do
 		echo "Measuring coverage for $UNIT_TEST\n"
 		mkdir $GCOV_PATH/$TEST_INDEX
+		echo "{$VULCAN_YML_TEST_COVERAGE_COMMAND//\?/$UNIT_TEST}"
 		sh -c "{$VULCAN_YML_TEST_COVERAGE_COMMAND//\?/$UNIT_TEST}"
 		
 		_write_test_result
