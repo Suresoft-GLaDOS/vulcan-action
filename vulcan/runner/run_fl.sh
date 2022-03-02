@@ -4,7 +4,7 @@
 cd $GITHUB_WORKSPACE/vulcan_target
 
 echo "Run VULCAN_YML_COVERAGE_BUILD_COMMAND"
-sh -c "$VULCAN_YML_COVERAGE_BUILD_COMMAND"
+sh -c "$VULCAN_YML_COVERAGE_BUILD_COMMAND" > /dev/null
 
 if [ ! $? -eq 0 ]; then
   echo "Build failed"

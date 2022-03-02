@@ -9,7 +9,7 @@ _create_gcov_directory() {
 }
 
 _write_test_result() {
-	if [ ! -z $? ]; 
+	if [ ! $? -eq 0 ]; then
 	then
 		echo fail > $GCOV_PATH/$TEST_INDEX/result.output
 	else
@@ -18,9 +18,9 @@ _write_test_result() {
 }
 
 _clean_after_collect_gcov() {
-	find $GITHUB_WORKSPACE/vulcan_target ! \( -path '$GITHUB_WORKSPACE/vulcan_target/*test*' -prune \) -type f -name "*.o" -exec gcov --preserve-paths {} \;
+	find $GITHUB_WORKSPACE/vulcan_target ! \( -path '*test*' -prune \) -type f -name "*.o" -exec gcov --preserve-paths {} \; > /dev/null
 	mv $GITHUB_WORKSPACE/vulcan_target/*.gcov $GCOV_PATH/$TEST_INDEX
-	bash -c 'find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.gcda" -delete'
+	find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.gcda" -delete
 }
 
 _split_test() {
