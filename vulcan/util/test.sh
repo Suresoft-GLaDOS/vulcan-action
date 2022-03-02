@@ -9,7 +9,7 @@ _create_gcov_directory() {
 }
 
 _write_test_result() {
-	if [ ! $? -eq 0 ]; then
+	if [ ! $? -eq 0 ];
 	then
 		echo fail > $GCOV_PATH/$TEST_INDEX/result.output
 	else
