@@ -11,14 +11,14 @@ _create_gcov_directory() {
 _write_test_result() {
 	if [ ! $? -eq 0 ];
 	then
-		echo fail > $GCOV_PATH/$TEST_INDEX/result.output
+		echo failed > $GCOV_PATH/$TEST_INDEX/result.test
 	else
-		echo pass > $GCOV_PATH/$TEST_INDEX/result.output
+		echo passed > $GCOV_PATH/$TEST_INDEX/result.test
 	fi
 }
 
 _clean_after_collect_gcov() {
-	find $GITHUB_WORKSPACE/vulcan_target ! \( -path '*test*' -prune \) -type f -name "*.o" -exec gcov --preserve-paths {} \; > /dev/null
+	find $GITHUB_WORKSPACE/vulcan_target ! \( -path '*test*' -prune \) -type f -name "*.o" -exec gcov --preserve-paths {} \; > /dev/null 2>/dev/null
 	mv $GITHUB_WORKSPACE/vulcan_target/*.gcov $GCOV_PATH/$TEST_INDEX
 	find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.gcda" -delete
 }
