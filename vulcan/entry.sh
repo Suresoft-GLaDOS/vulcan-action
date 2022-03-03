@@ -25,4 +25,5 @@ if [ $RUN_APR ]; then
 fi
 
 source $GITHUB_ACTION_PATH/vulcan/git/auth.sh
-source $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.sh
+# source $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.sh
+source $GITHUB_ACTION_PATH/vulcan/git/create-issue.sh
