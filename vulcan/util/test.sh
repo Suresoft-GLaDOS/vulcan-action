@@ -20,8 +20,8 @@ _write_test_result() {
 _clean_after_collect_gcov() {
 	# find $GITHUB_WORKSPACE/vulcan_target ! \( -path '*test*' -prune \) -type f -name "*.o" -exec gcov --preserve-paths {} \; > /dev/null 2>/dev/null
 	# mv $GITHUB_WORKSPACE/vulcan_target/*.gcov $GCOV_PATH/$TEST_INDEX
-	lcov --directory=$GITHUB_WORKSPACE/vulcan_target --output-file $GCOV_PATH/$TEST_INDEX/generated.info --capture -f
-	genhtml $GCOV_PATH/$TEST_INDEX/generated.info --output-directory=$GCOV_PATH/$TEST_INDEX/html
+	lcov --directory=$GITHUB_WORKSPACE/vulcan_target --output-file $GCOV_PATH/$TEST_INDEX/generated.info --capture -f > /dev/null
+	genhtml $GCOV_PATH/$TEST_INDEX/generated.info --output-directory=$GCOV_PATH/$TEST_INDEX/html > /dev/null
 	find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.gcda" -delete
 }
 
