@@ -15,9 +15,9 @@ do
     buggy_score=$(echo $ithFL | /jq '.[2]')
     
     if [ ! -z "$VULCAN_ISSUE_FL_CONTENTS" ]; then
-        VULCAN_ISSUE_FL_CONTENTS="$VULCAN_ISSUE_FL_CONTENTS----"
+        VULCAN_ISSUE_FL_CONTENTS=$(printf "$VULCAN_ISSUE_FL_CONTENTS\n----")
     fi
-    VULCAN_ISSUE_FL_CONTENTS="$VULCAN_ISSUE_FL_CONTENTS\n$VULCAN_TRIGGER_URL/$buggy_source#L$buggy_line\n"
+    VULCAN_ISSUE_FL_CONTENTS=$(printf "$VULCAN_ISSUE_FL_CONTENTS\n$VULCAN_TRIGGER_URL/$buggy_source#L$buggy_line\n")
 done
 
 echo ==========Creating Issue==========
