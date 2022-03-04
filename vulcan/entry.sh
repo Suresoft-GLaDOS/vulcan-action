@@ -1,8 +1,13 @@
 # /entry.sh
 #!/bin/bash
 
-if [ ! -f $GITHUB_WORKSPACE/vulcan_target/vulcan.yml ]; then
-  echo "Requires .vulcan.yml in your repository"
+VULCAN_TARGET=$GITHUB_WORKSPACE/$VULCAN_TARGET
+VULCAN_YML_PATH=$VULCAN_TARGET/vulcan.yml
+VULCAN_SUFFIX="$(date +%s%N)"
+VULCAN_OUTPUT_DIR=$GITHUB_WORKSPACE/../../output/$GITHUB_REPOSITORY/$VULCAN_SUFFIX
+
+if [ ! -f $VULCAN_YML_PATH ]; then
+  echo "Requires vulcan.yml in your repository"
   exit 1
 fi
 
@@ -11,9 +16,6 @@ if [ -z "$TOKEN" ]; then
   echo "Vulcan action with: token: ${{ secrets.GITHUB_TOKEN }}"
   exit 1
 fi
-
-VULCAN_SUFFIX="$(date +%s%N)"
-VULCAN_OUTPUT_DIR=$GITHUB_WORKSPACE/../../output/$GITHUB_REPOSITORY/$VULCAN_SUFFIX
 
 source $GITHUB_ACTION_PATH/vulcan/yaml/config.sh
 

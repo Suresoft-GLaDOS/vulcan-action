@@ -24,4 +24,4 @@ runs:
       shell: bash
       env:
         TOKEN: ${{ inputs.token }}
-        VULCAN_TARGET: $GITHUB_WORKSPACE/${{ inputs.path }}
+        VULCAN_TARGET: ${{ inputs.path }}

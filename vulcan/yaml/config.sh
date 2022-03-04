@@ -1,7 +1,7 @@
 # /vulcan/yaml/config.sh
 
 parse_yml_property() {
-    PARSE_PROP="$GITHUB_ACTION_PATH/yq eval %s $GITHUB_WORKSPACE/vulcan_target/.vulcan.yml"
+    PARSE_PROP="$GITHUB_ACTION_PATH/yq eval %s $VULCAN_YML_PATH"
     printf "$($(printf "$PARSE_PROP" $1))"
 }
 
