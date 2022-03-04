@@ -1,7 +1,7 @@
 # vulcan/runner/run_apr.sh
 #!/bin/bash
 
-cd $GITHUB_WORKSPACE/vulcan_target
+cd $VULCAN_TARGET
 
 echo "Run VULCAN_YML_TEST_BUILD_COMMAND"
 # sh -c "$VULCAN_YML_TEST_BUILD_COMMAND"

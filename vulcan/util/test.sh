@@ -1,11 +1,10 @@
 # /vulcan/util/test.sh
 
 TEST_INDEX=1
-GCOV_PATH=$GITHUB_WORKSPACE/gcov
+GCOV_PATH=$VULCAN_OUTPUT_DIR/gcov
 
 _create_gcov_directory() {
-	rm -rf $GCOV_PATH
-	mkdir $GCOV_PATH
+	mkdir -p $GCOV_PATH
 }
 
 _write_test_result() {
@@ -18,26 +17,27 @@ _write_test_result() {
 }
 
 _clean_after_collect_gcov() {
-	# find $GITHUB_WORKSPACE/vulcan_target ! \( -path '*test*' -prune \) -type f -name "*.o" -exec gcov --preserve-paths {} \; > /dev/null 2>/dev/null
-	# mv $GITHUB_WORKSPACE/vulcan_target/*.gcov $GCOV_PATH/$TEST_INDEX
-	lcov --directory=$GITHUB_WORKSPACE/vulcan_target --output-file $GCOV_PATH/$TEST_INDEX/generated.info --capture -f > /dev/null
-	genhtml $GCOV_PATH/$TEST_INDEX/generated.info --output-directory=$GCOV_PATH/$TEST_INDEX/html > /dev/null
-	find $GITHUB_WORKSPACE/vulcan_target -type f -name "*.gcda" -delete
+	find $VULCAN_TARGET ! \( -path '*test*' -prune \) -type f -name "*.o" -exec gcov --preserve-paths {} \; > /dev/null 2>/dev/null
+	mv $VULCAN_TARGET/*.gcov $GCOV_PATH/$TEST_INDEX
+	# genhtml $GCOV_PATH/$TEST_INDEX/generated.info --output-directory=$GCOV_PATH/$TEST_INDEX/html > /dev/null
+	find $VULCAN_TARGET -type f -name "*.gcda" -delete
 }
 
 _split_test() {
-	for UNIT_TEST in $(sh -c "$VULCAN_YML_TEST_LIST | grep test_")
+	while read UNIT_TEST
 	do
-		echo "Measuring coverage for $UNIT_TEST\n"
+		echo "Measuring coverage for $UNIT_TEST"
 		mkdir $GCOV_PATH/$TEST_INDEX
-		sh -c "${VULCAN_YML_TEST_COVERAGE_COMMAND//\?/$UNIT_TEST}"
+		sh -c "$UNIT_TEST"
 		
 		_write_test_result
 		_clean_after_collect_gcov
 		
 		TEST_INDEX=$(( $TEST_INDEX + 1 ))
-	done
+	done <<< $VULCAN_YML_TEST_LIST
 }
 
+cd $VULCAN_TARGET
 _create_gcov_directory
 _split_test
+git clean

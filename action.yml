@@ -5,6 +5,9 @@ inputs:
   token:
     description: 'GITHUB_TOKEN'
     default: ${{ github.token }}
+  path:
+    description: 'Checkout directory name'
+    default: 'target'
   
 runs:
   using: 'composite'
@@ -16,8 +19,9 @@ runs:
       uses: actions/checkout@v2
       with:
         token: ${{ inputs.token }}
-        path: vulcan_target
+        path: ${{ inputs.path }}
     - run: $GITHUB_ACTION_PATH/vulcan/entry.sh
       shell: bash
       env:
         TOKEN: ${{ inputs.token }}
+        VULCAN_TARGET: $GITHUB_WORKSPACE/${{ inputs.path }}

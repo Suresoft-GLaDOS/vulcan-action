@@ -1,15 +1,12 @@
 # vulcan/github_cli/checkout.sh
 #!/bin/bash
 
-cd $GITHUB_WORKSPACE/vulcan_target
+cd $VULCAN_TARGET
 
 DESTINATION_BRANCH="$GITHUB_REF_NAME"
-PATCH_BRANCH="$GITHUB_REF_NAME-auto-patch-$(date +%s%N)"
+PATCH_BRANCH="$GITHUB_REF_NAME-auto-patch-$VULCAN_SUFFIX"
 
 echo ==========Switching to $PATCH_BRANCH==========
-# git remote set-url origin $REPO
-# git fetch origin '+refs/heads/*:refs/heads/*' --update-head-ok
-# git --no-pager branch -a -vv
 git checkout $DESTINATION_BRANCH
 git checkout -b $PATCH_BRANCH
 git clean
