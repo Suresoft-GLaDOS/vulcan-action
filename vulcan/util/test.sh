@@ -37,6 +37,16 @@ _split_test() {
 	done <<< $VULCAN_YML_TEST_LIST
 }
 
+echo "Run VULCAN_YML_COVERAGE_BUILD_COMMAND"
+cd $VULCAN_TARGET
+sh -c "$VULCAN_YML_COVERAGE_BUILD_COMMAND" > /dev/null
+
+if [ ! $? -eq 0 ]; then
+  echo "Build failed"
+  exit 1
+fi
+
+echo "Run split test by VULCAN_YML_TEST_COVERAGE_COMMAND"
 cd $VULCAN_TARGET
 _create_gcov_directory
 _split_test

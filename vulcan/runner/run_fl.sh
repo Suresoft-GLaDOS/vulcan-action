@@ -1,17 +1,8 @@
 # vulcan/runner/run_fl.sh
 #!/bin/bash
 
-cd $VULCAN_TARGET
+# $GITHUB_ACTION_PATH/vulcan/bin/sbfl
 
-echo "Run VULCAN_YML_COVERAGE_BUILD_COMMAND"
-sh -c "$VULCAN_YML_COVERAGE_BUILD_COMMAND" > /dev/null
-
-if [ ! $? -eq 0 ]; then
-  echo "Build failed"
-  exit 1
-fi
-
-echo "Run split test by VULCAN_YML_TEST_COVERAGE_COMMAND"
-source $GITHUB_ACTION_PATH/vulcan/util/test.sh
-
-$GITHUB_ACTION_PATH/vulcan/bin/sbfl
+# temp code
+cd /home/workspace/sfbl
+python3.9 -m sbfl -f Ochiai2 ../../runner/vulcan-demo/_work/output/$GITHUB_REPOSITORY/$VULCAN_SUFFIX/gcov > $VULCAN_OUTPUT_DIR/fl.output
