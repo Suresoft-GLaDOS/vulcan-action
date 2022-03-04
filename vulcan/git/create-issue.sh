@@ -5,7 +5,7 @@
 wget -q https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux32 -O /jq && chmod +x /jq
 
 VULCAN_ISSUE_FL_CONTENTS=""
-VULCAN_TRIGGER_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GIT_SHA"
+VULCAN_TRIGGER_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA"
 for i in {0..4}
 do
 	ithFL=$(sh -c "cat $VULCAN_OUTPUT_DIR/fl.json | /jq '.[$i]'")
