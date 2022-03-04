@@ -23,6 +23,7 @@ source $GITHUB_ACTION_PATH/vulcan/git/config.sh
 source $GITHUB_ACTION_PATH/vulcan/git/checkout.sh
 
 if [ $RUN_FL ]; then
+	source $GITHUB_ACTION_PATH/vulcan/util/test.sh
 	source $GITHUB_ACTION_PATH/vulcan/runner/run_fl.sh
 fi
 if [ $RUN_APR ]; then
