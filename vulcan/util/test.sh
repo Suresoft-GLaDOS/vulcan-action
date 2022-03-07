@@ -50,4 +50,4 @@ echo "Run split test by VULCAN_YML_TEST_COVERAGE_COMMAND"
 cd $VULCAN_TARGET
 _create_gcov_directory
 _split_test
-git clean
+git clean -f

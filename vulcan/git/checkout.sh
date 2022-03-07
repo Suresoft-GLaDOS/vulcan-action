@@ -9,5 +9,5 @@ PATCH_BRANCH="$GITHUB_REF_NAME-auto-patch-$VULCAN_SUFFIX"
 echo ==========Switching to $PATCH_BRANCH==========
 git checkout $DESTINATION_BRANCH
 git checkout -b $PATCH_BRANCH
-git clean
+git clean -f
 echo ==================================
