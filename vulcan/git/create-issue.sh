@@ -1,9 +1,6 @@
 # /vulcan/github_cli/create-issue.sh
 #!/bin/bash
 
-# exist dependency
-wget -q https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux32 -O /jq && chmod +x /jq
-
 _write_fl_info_in_issue() {
 	VULCAN_ISSUE_FL_CONTENTS=""
 	VULCAN_TRIGGER_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA"
@@ -38,6 +35,9 @@ _create_issue() {
 	echo $EXECUTE_ISSUE_COMMAND
 	echo ==================================
 }
+
+# exist dependency
+wget -q https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux32 -O $GITHUB_ACTION_PATH/jq && chmod +x $GITHUB_ACTION_PATH/jq
 
 _write_fl_info_in_issue
 _create_issue
