@@ -15,11 +15,8 @@ _write_fl_info_in_issue() {
 		buggy_line=$(echo $ithFL | /jq '.[1]')
 		buggy_score=$(echo $ithFL | /jq '.[2]')
 		
-		if [ ! -z "$VULCAN_ISSUE_FL_CONTENTS" ]; then
-			VULCAN_ISSUE_FL_CONTENTS=$(printf "$VULCAN_ISSUE_FL_CONTENTS\n\n----")
-		fi
 		VULCAN_ISSUE_FL_CONTENTS=$( \
-			printf "$VULCAN_ISSUE_FL_CONTENTS\n%s/%s#L%d\nSuspicious score: %.2f" \
+			printf "\n\n----$VULCAN_ISSUE_FL_CONTENTS\n%s/%s#L%d\nSuspicious score: %.2f" \
 			$VULCAN_TRIGGER_URL \
 			$buggy_source \
 			$buggy_line \
