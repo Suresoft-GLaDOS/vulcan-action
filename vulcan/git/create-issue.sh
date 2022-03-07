@@ -4,13 +4,13 @@
 _write_fl_info_in_issue() {
 	VULCAN_ISSUE_FL_CONTENTS=""
 	VULCAN_TRIGGER_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA"
-	/jq 'sort_by(.[2]) | reverse' $VULCAN_OUTPUT_DIR/fl.json > $VULCAN_OUTPUT_DIR/fl_sortby_score.json
+	$GITHUB_ACTION_PATH/jq 'sort_by(.[2]) | reverse' $VULCAN_OUTPUT_DIR/fl.json > $VULCAN_OUTPUT_DIR/fl_sortby_score.json
 	for i in {0..4}
 	do
-		ithFL=$(sh -c "/jq '.[$i]' $VULCAN_OUTPUT_DIR/fl_sortby_score.json")
-		buggy_source=$(echo $ithFL | /jq -r '.[0]')
-		buggy_line=$(echo $ithFL | /jq '.[1]')
-		buggy_score=$(echo $ithFL | /jq '.[2]')
+		ithFL=$(sh -c "$GITHUB_ACTION_PATH/jq '.[$i]' $VULCAN_OUTPUT_DIR/fl_sortby_score.json")
+		buggy_source=$(echo $ithFL | $GITHUB_ACTION_PATH/jq -r '.[0]')
+		buggy_line=$(echo $ithFL | $GITHUB_ACTION_PATH/jq '.[1]')
+		buggy_score=$(echo $ithFL | $GITHUB_ACTION_PATH/jq '.[2]')
 		
 		VULCAN_ISSUE_FL_CONTENTS=$( \
 			printf "\n\n----$VULCAN_ISSUE_FL_CONTENTS\n%s/%s#L%d\nSuspicious score: %.2f" \
