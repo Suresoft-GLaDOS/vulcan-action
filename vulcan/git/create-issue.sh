@@ -18,7 +18,7 @@ _write_fl_info_in_issue() {
 		if [ ! -z "$VULCAN_ISSUE_FL_CONTENTS" ]; then
 			VULCAN_ISSUE_FL_CONTENTS=$(printf "$VULCAN_ISSUE_FL_CONTENTS\n\n----")
 		fi
-		VULCAN_ISSUE_FL_CONTENTS=$(printf "$VULCAN_ISSUE_FL_CONTENTS\n$VULCAN_TRIGGER_URL/$buggy_source#L$buggy_line\nSuspicious score: $buggy_source")
+		VULCAN_ISSUE_FL_CONTENTS=$(printf "$VULCAN_ISSUE_FL_CONTENTS\n$VULCAN_TRIGGER_URL/$buggy_source#L$buggy_line\nSuspicious score: $buggy_score")
 	done
 }
 
