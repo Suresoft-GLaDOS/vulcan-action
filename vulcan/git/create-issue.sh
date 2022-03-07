@@ -13,7 +13,7 @@ _write_fl_info_in_issue() {
 		buggy_score=$(echo $ithFL | $GITHUB_ACTION_PATH/jq '.[2]')
 		
 		VULCAN_ISSUE_FL_CONTENTS=$( \
-			printf "\n\n----$VULCAN_ISSUE_FL_CONTENTS\n%s/%s#L%d\nSuspicious score: %.2f" \
+			printf "$VULCAN_ISSUE_FL_CONTENTS\n\n----\n%s/%s#L%d\nSuspicious score: %.2f" \
 			$VULCAN_TRIGGER_URL \
 			$buggy_source \
 			$buggy_line \
