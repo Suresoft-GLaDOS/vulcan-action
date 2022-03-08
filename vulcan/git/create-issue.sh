@@ -30,7 +30,7 @@ _write_patch_info_in_issue() {
 	for diff_file in $(sh -c "ls $PATCH_OUTPUT_PATH/*.diff")
 	do
 		VULCAN_ISSUE_CONTENTS=$( \
-			printf "$VULCAN_ISSUE_CONTENTS\n\n----\n$BLOCKc\n$(cat $diff_file)$BLOCK"
+			printf "$VULCAN_ISSUE_CONTENTS\n\n----\n$BLOCK c\n$(cat $diff_file)$BLOCK"
 		)
 	done
 }
@@ -44,7 +44,7 @@ _create_issue() {
 	$VULCAN_ISSUE_HEADER 
 	$VULCAN_ISSUE_CONTENTS\" \
 	|| true"
-	echo $COMMAND
+	printf "$COMMAND"
 	EXECUTE_ISSUE_COMMAND=$(sh -c "$COMMAND")
 	echo $EXECUTE_ISSUE_COMMAND
 	echo ==================================
