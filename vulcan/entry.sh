@@ -31,5 +31,10 @@ if [ $RUN_APR ]; then
 fi
 
 source $GITHUB_ACTION_PATH/vulcan/git/auth.sh
-# source $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.sh
-source $GITHUB_ACTION_PATH/vulcan/git/create-issue.sh
+
+if [ -f $PATCH_OUTPUT_PATH/*-0001-*.diff ];
+then
+	source $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.sh
+else
+	source $GITHUB_ACTION_PATH/vulcan/git/create-issue.sh
+fi

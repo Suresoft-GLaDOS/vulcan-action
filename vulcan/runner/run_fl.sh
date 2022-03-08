@@ -2,6 +2,7 @@
 #!/bin/bash
 
 # $GITHUB_ACTION_PATH/vulcan/bin/sbfl
+echo "Find fault localization"
 
 # temp code
 cd /home/workspace/sbfl
