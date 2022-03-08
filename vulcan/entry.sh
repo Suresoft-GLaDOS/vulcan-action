@@ -32,7 +32,7 @@ fi
 
 source $GITHUB_ACTION_PATH/vulcan/git/auth.sh
 
-if [ -f $PATCH_OUTPUT_PATH/*-0001-*.diff ];
+if [ -f $PATCH_OUTPUT_PATH/*-0001-*.diff ] && [ $PATCH_OUTPUT_PATH/*-0002-*.diff ];
 then
 	source $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.sh
 else
