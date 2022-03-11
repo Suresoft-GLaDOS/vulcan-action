@@ -41,7 +41,7 @@ _write_basic_fl_info() {
 		fi
 		
 		VULCAN_ISSUE_BODY=$( \
-			printf "$VULCAN_ISSUE_BODY\n\n----\n- [ ] Suspicious score: %.2f %s/%s#L%d" \
+			printf "$VULCAN_ISSUE_BODY\n\n----\nSuspicious score: %.2f %s/%s#L%d" \
 			$buggy_score \
 			$VULCAN_TRIGGER_URL \
 			$buggy_source \
@@ -84,8 +84,9 @@ _write_fl_info() {
 	VULCAN_ISSUE_BODY=$(printf "$VULCAN_ISSUE_INTRO\n$VULCAN_ISSUE_HEADER\n")
 	VULCAN_TRIGGER_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA"
 	$GITHUB_ACTION_PATH/jq 'sort_by(.[2]) | reverse' $VULCAN_OUTPUT_DIR/fl.json > $VULCAN_OUTPUT_DIR/fl_sortby_score.json
+	$GITHUB_ACTION_PATH/jq '.[:5]' $VULCAN_OUTPUT_DIR/fl_sortby_score.json > $VULCAN_OUTPUT_DIR/fl_top5.json
 	
-	is_more_than_top5=$($GITHUB_ACTION_PATH/jq 'group_by(.[2])' $VULCAN_OUTPUT_DIR/fl_sortby_score.json | $GITHUB_ACTION_PATH/jq '.[1]')
+	is_more_than_top5=$($GITHUB_ACTION_PATH/jq 'group_by(.[2])' $VULCAN_OUTPUT_DIR/fl_top5.json | $GITHUB_ACTION_PATH/jq '.[1]')
 	
 	if [ "$is_more_than_top5" = "null" ];
 	then
