@@ -9,7 +9,6 @@ mkdir -p $PATCH_OUTPUT_PATH
 $GITHUB_ACTION_PATH/vulcan/bin/msv
 
 # temp
-DO_COPY=$(($(date +%s)%2))
-if [ $DO_COPY -eq 0 ]; then
-    cp -r /home/0cherry/patch $VULCAN_OUTPUT_DIR
+if [ -f $VULCAN_TARGET/patch/*-0001-*.diff ]; then
+    cp -r $VULCAN_TARGET/patch $VULCAN_OUTPUT_DIR
 fi
