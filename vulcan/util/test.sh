@@ -7,6 +7,10 @@ _create_gcov_directory() {
 	mkdir -p $GCOV_PATH
 }
 
+_write_test_command() {
+	printf "$UNIT_TEST" > $GCOV_PATH/$TEST_INDEX/test.command
+}
+
 _write_test_result() {
 	if [ ! $? -eq 0 ];
 	then
@@ -30,6 +34,7 @@ _split_test() {
 		mkdir $GCOV_PATH/$TEST_INDEX
 		sh -c "$UNIT_TEST"
 		
+		_write_test_command
 		_write_test_result
 		_clean_after_collect_gcov
 		
