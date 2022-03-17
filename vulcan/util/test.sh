@@ -32,9 +32,9 @@ _split_test() {
 	do
 		echo "Measuring coverage for $UNIT_TEST"
 		mkdir $GCOV_PATH/$TEST_INDEX
-		sh -c "$UNIT_TEST"
-		
 		_write_test_command
+		
+		sh -c "$UNIT_TEST"
 		_write_test_result
 		_clean_after_collect_gcov
 		
