@@ -19,7 +19,7 @@ _write_1st_fl_info() {
 }
 
 _open_collapsed_section() {
-	VULCAN_ISSUE_BODY=$(printf "$VULCAN_ISSUE_BODY\n\n<details><summary>$1</summary>")
+	VULCAN_ISSUE_BODY=$(printf "$VULCAN_ISSUE_BODY\n\n<details><summary>%s</summary>" "$1")
 }
 
 _close_collapsed_section() {
@@ -82,19 +82,18 @@ _write_5_more_equal_fl_info() {
 _write_failed_test_info() {
 	FAILED_TEST_COUNT=$($GITHUB_ACTION_PATH/jq '.test.failing | length' $VULCAN_OUTPUT_DIR/info.json)
 	VULCAN_ISSUE_BODY=$( \
-		printf "$VULCAN_ISSUE_BODY\n%s\n%s" \
+		printf "$VULCAN_ISSUE_BODY\n\n%s\n%s" \
 		"There is(are) $FAILED_TEST_COUNT failed test" \
 		"Below is the failed test command" \
 	)
-	for i in {0..$FAILED_TEST_COUNT}
+	while read ith_TEST_COMMAND_FILE
 	do
-		ith_TEST_COMMAND_FILE=$($GITHUB_ACTION_PATH/jq '.test.failing[$i]' $VULCAN_OUTPUT_DIR/info.json)
-		ith_TEST_COMMAND=$(echo $ith_TEST_COMMAND_FILE)
+		ith_TEST_COMMAND=$(cat $ith_TEST_COMMAND_FILE/test.command)
 		VULCAN_ISSUE_BODY=$( \
 			printf "$VULCAN_ISSUE_BODY\n%s" \
 			"[FAILED] {$ith_TEST_COMMAND}" \
 		)
-	done
+	done <<< $($GITHUB_ACTION_PATH/jq -r '.test.failing[]' $VULCAN_OUTPUT_DIR/info.json)
 }
 
 _write_source_info() {
@@ -112,7 +111,7 @@ _write_source_info() {
 _write_coverage_info() {
 	COVERAGE_INFO=$($GITHUB_ACTION_PATH/jq -r '.coverage' $VULCAN_OUTPUT_DIR/info.json)
 	VULCAN_ISSUE_BODY=$( \
-		printf "$VULCAN_ISSUE_BODY\n%s%.2f%%" \
+		printf "$VULCAN_ISSUE_BODY\n%s %.2f percent" \
 		"Coverage:" \
 		"$COVERAGE_INFO" \
 	)
