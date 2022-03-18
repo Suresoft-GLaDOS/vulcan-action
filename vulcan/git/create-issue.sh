@@ -82,27 +82,33 @@ _write_5_more_equal_fl_info() {
 _write_failed_test_info() {
 	FAILED_TEST_COUNT=$($GITHUB_ACTION_PATH/jq '.test.failing | length' $VULCAN_OUTPUT_DIR/info.json)
 	VULCAN_ISSUE_BODY=$( \
-		printf "$VULCAN_ISSUE_BODY\n\n%s\n%s" \
-		"There is(are) $FAILED_TEST_COUNT failed test" \
-		"Below is the failed test command" \
+		printf "$VULCAN_ISSUE_BODY\n\n%s" \
+		"There is(are) $FAILED_TEST_COUNT failed test(s)" \
 	)
+	
+	_open_collapsed_section "Click here for the failed test commands"
+	FAILED_TEST_COUNT=1
 	while read ith_TEST_COMMAND_FILE
 	do
 		ith_TEST_COMMAND=$(cat $ith_TEST_COMMAND_FILE/test.command)
 		VULCAN_ISSUE_BODY=$( \
-			printf "$VULCAN_ISSUE_BODY\n%s" \
-			"[FAILED] {$ith_TEST_COMMAND}" \
+			printf "$VULCAN_ISSUE_BODY\n\n%s" \
+			"$FAILED_TEST_COUNT. [FAILED] {$ith_TEST_COMMAND}" \
 		)
+		FAILED_TEST_COUNT=$(( $FAILED_TEST_COUNT + 1 ))
 	done <<< $($GITHUB_ACTION_PATH/jq -r '.test.failing[]' $VULCAN_OUTPUT_DIR/info.json)
+	_close_collapsed_section
 }
 
 _write_source_info() {
 	_open_collapsed_section "Click here for a list of target sources"
-	while read TARGET_SOURCE
+	VULCAN_TRIGGER_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA"
+	while read TARGET_GCOV
 	do
+		TARGET_SOURCE=${TARGET_GCOV/.gcov/}
 		VULCAN_ISSUE_BODY=$( \
-			printf "$VULCAN_ISSUE_BODY\n%s" \
-			"${TARGET_SOURCE/.gcov/}" \
+			printf "$VULCAN_ISSUE_BODY\n\n%s" \
+			"[$TARGET_SOURCE]($VULCAN_TRIGGER_URL/$TARGET_SOURCE)" \
 		)
 	done <<< $($GITHUB_ACTION_PATH/jq -r '.sources[]' $VULCAN_OUTPUT_DIR/info.json)
 	_close_collapsed_section
