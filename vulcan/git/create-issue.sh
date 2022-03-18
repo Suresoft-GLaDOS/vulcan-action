@@ -83,7 +83,7 @@ _write_failed_test_info() {
 	FAILED_TEST_COUNT=$($GITHUB_ACTION_PATH/jq '.test.failing | length' $VULCAN_OUTPUT_DIR/info.json)
 	VULCAN_ISSUE_BODY=$( \
 		printf "$VULCAN_ISSUE_BODY\n\n%s" \
-		"There is(are) $FAILED_TEST_COUNT failed test(s)" \
+		"There is(are) $FAILED_TEST_COUNT/$((TEST_INDEX-1)) failed test(s)" \
 	)
 	
 	_open_collapsed_section "Click here for the failed test commands"
