@@ -97,14 +97,14 @@ _write_failed_test_info() {
 }
 
 _write_source_info() {
-	_open_collapsed_section "Click for a list of target sources"
+	_open_collapsed_section "Click here for a list of target sources"
 	while read TARGET_SOURCE
 	do
 		VULCAN_ISSUE_BODY=$( \
 			printf "$VULCAN_ISSUE_BODY\n%s" \
-			"$TARGET_SOURCE" \
+			"${TARGET_SOURCE/.gcov/}" \
 		)
-	done <<< $($GITHUB_ACTION_PATH/jq '.sources[]' $VULCAN_OUTPUT_DIR/info.json)
+	done <<< $($GITHUB_ACTION_PATH/jq -r '.sources[]' $VULCAN_OUTPUT_DIR/info.json)
 	_close_collapsed_section
 }
 
