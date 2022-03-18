@@ -112,8 +112,9 @@ _write_source_info() {
 _write_coverage_info() {
 	COVERAGE_INFO=$($GITHUB_ACTION_PATH/jq -r '.coverage' $VULCAN_OUTPUT_DIR/info.json)
 	VULCAN_ISSUE_BODY=$( \
-		printf "$VULCAN_ISSUE_BODY\n%.2f\x25" \
-		COVERAGE_INFO \
+		printf "$VULCAN_ISSUE_BODY\n%s%.2f%%" \
+		"Coverage:" \
+		"$COVERAGE_INFO" \
 	)
 }
 
