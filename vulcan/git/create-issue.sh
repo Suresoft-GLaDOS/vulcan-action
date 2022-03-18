@@ -19,7 +19,7 @@ _write_1st_fl_info() {
 }
 
 _open_collapsed_section() {
-	VULCAN_ISSUE_BODY=$(printf "$VULCAN_ISSUE_BODY\n\n<details><summary>Click here for more FL</summary>")
+	VULCAN_ISSUE_BODY=$(printf "$VULCAN_ISSUE_BODY\n\n<details><summary>$1</summary>")
 }
 
 _close_collapsed_section() {
@@ -28,7 +28,7 @@ _close_collapsed_section() {
 
 _write_basic_fl_info() {
 	_write_1st_fl_info
-	_open_collapsed_section
+	_open_collapsed_section "Click here for more FL"
 	for i in {1..4}
 	do
 		ithFL=$(sh -c "$GITHUB_ACTION_PATH/jq '.[$i]' $VULCAN_OUTPUT_DIR/fl_sortby_score.json")
@@ -79,9 +79,54 @@ _write_5_more_equal_fl_info() {
 	done
 }
 
+_write_failed_test_info() {
+	FAILED_TEST_COUNT=$($GITHUB_ACTION_PATH/jq '.test.failing | length' $VULCAN_OUTPUT_DIR/info.json)
+	VULCAN_ISSUE_BODY=$( \
+		printf "$VULCAN_ISSUE_BODY\n%s\n%s" \
+		"There is(are) $FAILED_TEST_COUNT failed test" \
+		"Below is the failed test command" \
+	)
+	for i in {0..$FAILED_TEST_COUNT}
+	do
+		ith_TEST_COMMAND_FILE=$($GITHUB_ACTION_PATH/jq '.test.failing[$i]' $VULCAN_OUTPUT_DIR/info.json)
+		ith_TEST_COMMAND=$(echo $ith_TEST_COMMAND_FILE)
+		VULCAN_ISSUE_BODY=$( \
+			printf "$VULCAN_ISSUE_BODY\n%s" \
+			"[FAILED] {$ith_TEST_COMMAND}" \
+		)
+	done
+}
+
+_write_source_info() {
+	_open_collapsed_section "Click for a list of target sources"
+	while read TARGET_SOURCE
+	do
+		VULCAN_ISSUE_BODY=$( \
+			printf "$VULCAN_ISSUE_BODY\n%s" \
+			"$TARGET_SOURCE" \
+		)
+	done <<< $($GITHUB_ACTION_PATH/jq '.sources[]' $VULCAN_OUTPUT_DIR/info.json)
+	_close_collapsed_section
+}
+
+_write_coverage_info() {
+	COVERAGE_INFO=$($GITHUB_ACTION_PATH/jq -r '.coverage' $VULCAN_OUTPUT_DIR/info.json)
+	VULCAN_ISSUE_BODY=$( \
+		printf "$VULCAN_ISSUE_BODY\n%.2f%" \
+		COVERAGE_INFO \
+	)
+}
+
+_write_info() {
+	_write_coverage_info
+	_write_source_info
+	_write_failed_test_info
+}
+
 _write_fl_info() {
-	VULCAN_ISSUE_HEADER="Top 5 fault localization results"
-	VULCAN_ISSUE_BODY=$(printf "$VULCAN_ISSUE_INTRO\n$VULCAN_ISSUE_HEADER\n")
+	VULCAN_ISSUE_BODY=$(printf "$VULCAN_ISSUE_INTRO")
+	_write_info
+	
 	VULCAN_TRIGGER_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA"
 	$GITHUB_ACTION_PATH/jq 'sort_by(.[2]) | reverse' $VULCAN_OUTPUT_DIR/fl.json > $VULCAN_OUTPUT_DIR/fl_sortby_score.json
 	$GITHUB_ACTION_PATH/jq '.[:5]' $VULCAN_OUTPUT_DIR/fl_sortby_score.json > $VULCAN_OUTPUT_DIR/fl_top5.json
@@ -97,8 +142,10 @@ _write_fl_info() {
 }
 
 _write_patch_info() {
-	VULCAN_ISSUE_HEADER="Patch informations"
-	VULCAN_ISSUE_BODY=$(printf "$VULCAN_ISSUE_INTRO\n$VULCAN_ISSUE_HEADER\n")
+	VULCAN_ISSUE_BODY=$( \
+		printf "$VULCAN_ISSUE_INTRO\n%s\n" \
+		"Patch informations" \
+	)
 	BLOCK="\x60\x60\x60"
 	for diff_file in $(sh -c "ls $PATCH_OUTPUT_PATH/*.diff")
 	do
