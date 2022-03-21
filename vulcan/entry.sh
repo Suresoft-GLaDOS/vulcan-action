@@ -1,6 +1,8 @@
 # /entry.sh
 #!/bin/bash
 
+which gh
+
 VULCAN_TARGET=$GITHUB_WORKSPACE/$VULCAN_TARGET
 VULCAN_YML_PATH=$VULCAN_TARGET/vulcan.yml
 VULCAN_SUFFIX="$(date +%s%N)"
