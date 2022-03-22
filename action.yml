@@ -12,11 +12,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Setup python3.9
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.9'
-        architecture: 'x64'
     - name: Set permissions as excutable
       run: chmod +x -R $GITHUB_ACTION_PATH/vulcan
       shell: bash
