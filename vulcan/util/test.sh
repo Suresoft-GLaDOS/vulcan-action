@@ -34,7 +34,7 @@ _split_test() {
 		mkdir $GCOV_PATH/$TEST_INDEX
 		_write_test_command
 		
-		sh -c "$UNIT_TEST"
+		${VULCAN_YML_TEST_COVERAGE_COMMAND/@testcase@/$UNIT_TEST}
 		_write_test_result
 		_clean_after_collect_gcov
 		
