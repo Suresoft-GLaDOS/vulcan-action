@@ -14,8 +14,8 @@ mkdir -p $MSV_WORKSPACE
 echo python3 $MSV_REPO/msv-runner.py -r $VULCAN_TARGET $MSV_WORKSPACE $MSV_REPO
 python3 $MSV_REPO/msv-runner.py -r $VULCAN_TARGET $MSV_WORKSPACE $MSV_REPO
 python3 $MSV_SEARCH_REPO/msv-search.py -o $VULCAN_OUTPUT_DIR/msv-output -w $VULCAN_TARGET_WORKDIR -m prophet -p $MSV_REPO --use-pass-test -- $MSV_REPO/tools/msv-test.py $VULCAN_TARGET_WORKDIR/src $VULCAN_TARGET_WORKDIR/tests $VULCAN_TARGET_WORKDIR
-MSV_JSON=$VULCAN_OUTPUT_DIR/msv-output/msv-search.json
-MSV_PLAUSIBLE_JSON=$VULCAN_OUTPUT_DIR/msv-output/msv-search-pass.json
+MSV_JSON=$VULCAN_OUTPUT_DIR/msv-output/msv-result.json
+MSV_PLAUSIBLE_JSON=$VULCAN_OUTPUT_DIR/msv-output/msv-result-pass.json
 $GITHUB_ACTION_PATH/jq '.[] | select(.pass_result == true)' $MSV_JSON | $GITHUB_ACTION_PATH/jq -s '.' > $MSV_PLAUSIBLE_JSON
 PLAUSIBLE_COUNT=$($GITHUB_ACTION_PATH/jq 'length' $MSV_PLAUSIBLE_JSON)
 
