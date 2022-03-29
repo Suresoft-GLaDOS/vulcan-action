@@ -68,9 +68,6 @@ print_yml_configure() {
 	echo ==============================================
 }
 
-# exist dependency
-wget -q https://github.com/mikefarah/yq/releases/download/v4.20.2/yq_linux_386 -O $GITHUB_ACTION_PATH/yq && chmod +x $GITHUB_ACTION_PATH/yq
-
 parse_yml_properties
 set_run_configure
 print_yml_configure

@@ -1,6 +1,14 @@
 # /entry.sh
 #!/bin/bash
 
+# exist dependency
+if [ ! -f $GITHUB_ACTION_PATH/yq ]; then
+	wget -q https://github.com/mikefarah/yq/releases/download/v4.20.2/yq_linux_386 -O $GITHUB_ACTION_PATH/yq && chmod +x $GITHUB_ACTION_PATH/yq
+fi
+if [ ! -f $GITHUB_ACTION_PATH/jq ]; then
+	wget -q https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux32 -O $GITHUB_ACTION_PATH/jq && chmod +x $GITHUB_ACTION_PATH/jq
+fi
+
 VULCAN_TARGET_NAME=$VULCAN_TARGET
 VULCAN_TARGET=$GITHUB_WORKSPACE/$VULCAN_TARGET
 VULCAN_YML_PATH=$VULCAN_TARGET/vulcan.yml
@@ -34,7 +42,7 @@ fi
 source $GITHUB_ACTION_PATH/vulcan/git/auth.sh
 
 cd $VULCAN_TARGET
-if [ -f $PATCH_OUTPUT_PATH/*-0001-*.diff ] && [ ! -f $PATCH_OUTPUT_PATH/*-0002-*.diff ];
+if [ 1 -eq $PLAUSIBLE_COUNT ];
 then
 	source $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.sh
 else
