@@ -8,7 +8,7 @@ _create_gcov_directory() {
 }
 
 _write_test_command() {
-	printf "$UNIT_TEST" > $GCOV_PATH/$TEST_INDEX/test.command
+	printf "${VULCAN_YML_TEST_COVERAGE_COMMAND/@testcase@/$UNIT_TEST}" > $GCOV_PATH/$TEST_INDEX/test.command
 }
 
 _write_test_result() {
