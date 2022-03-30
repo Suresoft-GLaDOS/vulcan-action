@@ -156,13 +156,6 @@ _write_patch_info() {
 		"$PLAUSIBLE_PATCH_INFO" \
 	)
 	_close_collapsed_section
-	BLOCK="\x60\x60\x60"
-	for diff_file in $(sh -c "ls $PATCH_OUTPUT_PATH/*.diff")
-	do
-		VULCAN_ISSUE_BODY=$( \
-			printf "$VULCAN_ISSUE_BODY\n\n----\n$BLOCK c\n$(cat $diff_file)\n$BLOCK"
-		)
-	done
 }
 
 _create_issue() {
