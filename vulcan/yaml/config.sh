@@ -17,6 +17,7 @@ parse_yml_properties() {
 	VULCAN_YML_TEST_CASE=$(parse_yml_property .test-case)
 	VULCAN_YML_TEST_COMMAND=$(parse_yml_property .test-command)
 	VULCAN_YML_TEST_COVERAGE_COMMAND=$(parse_yml_property .test-coverage-command)
+	VULCAN_YML_TIME_OUT=$(parse_yml_property .time-out)
 }
 
 set_run_configure() {
@@ -65,6 +66,8 @@ print_yml_configure() {
 	printf "$RUN_FL\n"
 	echo RUN_APR:
 	printf "$RUN_APR\n"
+	echo yml.time-out:
+	printf "$VULCAN_YML_TIME_OUT\n"
 	echo ==============================================
 }
 
