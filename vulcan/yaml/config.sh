@@ -56,6 +56,8 @@ print_yml_configure() {
 	printf "$VULCAN_YML_COVERAGE_BUILD_COMMAND\n"
 	echo yml.test-type:
 	printf "$VULCAN_YML_TEST_TYPE\n"
+	echo yml.test-list:
+	printf "$VULCAN_YML_TEST_LIST\n"
 	echo yml.test-case:
 	printf "$VULCAN_YML_TEST_CASE\n"
 	echo yml.test-command:
