@@ -14,6 +14,7 @@ VULCAN_TARGET=$GITHUB_WORKSPACE/$VULCAN_TARGET
 VULCAN_YML_PATH=$VULCAN_TARGET/vulcan.yml
 VULCAN_SUFFIX="$(date +%s%N)"
 VULCAN_OUTPUT_DIR=$(realpath $GITHUB_WORKSPACE/../../output/$GITHUB_REPOSITORY/$VULCAN_SUFFIX)
+VULCAN_PLAUSIBLE_COUNT=0
 
 if [ ! -f $VULCAN_YML_PATH ]; then
   echo "Requires vulcan.yml in your repository"
@@ -42,7 +43,7 @@ fi
 source $GITHUB_ACTION_PATH/vulcan/git/auth.sh
 
 cd $VULCAN_TARGET
-if [ 1 -eq $PLAUSIBLE_COUNT ];
+if [ 1 -eq $VULCAN_PLAUSIBLE_COUNT ];
 then
 	source $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.sh
 else
