@@ -150,10 +150,10 @@ _write_patch_info() {
 		$PLAUSIBLE_COUNT \
 	)
 	_open_collapsed_section "plausible patches info"
-	PLAUSIBLE_PATCH_INFO=$($GITHUB_ACTION_PATH/jq $MSV_PLAUSIBLE_JSON)
+	PLAUSIBLE_PATCH_INFO=$($GITHUB_ACTION_PATH/jq '.' $MSV_PLAUSIBLE_JSON)
 	VULCAN_ISSUE_BODY=$(
-		printf "VULCAN_ISSUE_BODY\n\n%s" \
-		$PLAUSIBLE_PATCH_INFO \
+		printf "$VULCAN_ISSUE_BODY\n\n%s" \
+		"$PLAUSIBLE_PATCH_INFO" \
 	)
 	_close_collapsed_section
 	BLOCK="\x60\x60\x60"
