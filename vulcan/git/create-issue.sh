@@ -8,7 +8,7 @@ _write_1st_fl_info() {
 	buggy_score=$(echo $ithFL | $GITHUB_ACTION_PATH/jq '.[2]')
 
     VULCAN_ISSUE_BODY=$( \
-        printf "$VULCAN_ISSUE_BODY\n\n----\n%s\n- [ ] %s\n%s/%s#L%d\n%s" \
+        printf "$VULCAN_ISSUE_BODY\n\n%s\n- [ ] %s\n%s/%s#L%d\n%s" \
         "Clicking on the link, you take the page with code highlighted." \
         "Here is most suspicious code piece." \
         $VULCAN_TRIGGER_URL \
