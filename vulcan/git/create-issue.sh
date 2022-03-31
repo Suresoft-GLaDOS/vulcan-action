@@ -58,6 +58,8 @@ _write_5_more_equal_fl_info() {
 		"There are a lot of the suspicious code snippets and show 5 among them." \
 		"Recommend that split your tests or adde new tests." \
 	)
+	
+	_open_collapsed_section "Click here for FL information"
 	for i in {0..4}
 	do
 		ithFL=$(sh -c "$GITHUB_ACTION_PATH/jq '.[$i]' $VULCAN_OUTPUT_DIR/fl_sortby_score.json")
@@ -77,6 +79,7 @@ _write_5_more_equal_fl_info() {
 			$buggy_line \
 		)
 	done
+	_close_collapsed_section
 }
 
 _write_failed_test_info() {
