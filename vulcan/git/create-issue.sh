@@ -160,6 +160,16 @@ _write_patch_info() {
 			"$PLAUSIBLE_PATCH_INFO" \
 		)
 		_close_collapsed_section
+		
+		_open_collapsed_section "plausible patch diff info"
+		CODE_BLOCK="\x60\x60\x60"
+		for diff_file in $(sh -c "ls $PATCH_OUTPUT_PATH/*.diff")
+		do
+			VULCAN_ISSUE_BODY=$( \
+				printf "$VULCAN_ISSUE_BODY\n\n----\n$CODE_BLOCK c\n$(cat $diff_file)\n$CODE_BLOCK"
+			)
+		done
+		_close_collapsed_section
 	fi
 }
 
