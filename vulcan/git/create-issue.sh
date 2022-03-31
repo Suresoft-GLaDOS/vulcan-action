@@ -143,7 +143,9 @@ _write_fl_info() {
 	then
 		_write_5_more_equal_fl_info
 	else
+		_open_collapsed_section "Click here for FL information"
 		_write_basic_fl_info
+		_close_collapsed_section
 	fi
 }
 
@@ -180,9 +182,7 @@ _generate_issue_contents() {
 	VULCAN_ISSUE_BODY=$( \
 		printf "$VULCAN_ISSUE_BODY\n\n----" \
 	)
-	_open_collapsed_section "Click here for FL informations"
 	_write_fl_info
-	_close_collapsed_section
 	if [ ! 0 -eq $VULCAN_PLAUSIBLE_COUNT ];
 	then
 		_write_patch_info
