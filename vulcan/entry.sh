@@ -9,6 +9,10 @@ if [ ! -f $GITHUB_ACTION_PATH/jq ]; then
 	wget -q https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux32 -O $GITHUB_ACTION_PATH/jq && chmod +x $GITHUB_ACTION_PATH/jq
 fi
 
+if [ ! -d $GITHUB_WORKSPACE/../../output/$GITHUB_REPOSITORY/$VULCAN_SUFFIX ]; then
+	mkdir -p $GITHUB_WORKSPACE/../../output/$GITHUB_REPOSITORY/$VULCAN_SUFFIX
+fi
+
 VULCAN_TARGET_NAME=$VULCAN_TARGET
 VULCAN_TARGET=$GITHUB_WORKSPACE/$VULCAN_TARGET
 VULCAN_YML_PATH=$VULCAN_TARGET/vulcan.yml
