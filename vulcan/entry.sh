@@ -43,6 +43,9 @@ fi
 if [ $RUN_APR ]; then
 	source $GITHUB_ACTION_PATH/vulcan/runner/run_apr.sh
 fi
+if [ 0 -lt $VULCAN_PLAUSIBLE_COUNT ]; then
+	source $GITHUB_ACTION_PATH/vulcan/runner/run_cxbuild.sh
+fi
 
 source $GITHUB_ACTION_PATH/vulcan/git/auth.sh
 
