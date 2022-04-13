@@ -8,3 +8,5 @@ set -a
 CXBUILD_OUTPUT_DIR=$VULCAN_OUTPUT_DIR
 set +a
 python3 /home/workspace/cxbuild/cxbuild.py capture make LDFLAGS="-Wl,-rpath=$MSV_REPO/src/.libs -L$MSV_REPO/src/.libs -ltest_runtime"
+
+python3 /home/workspace/client.py
