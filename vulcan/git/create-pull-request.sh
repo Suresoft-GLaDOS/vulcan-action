@@ -21,11 +21,12 @@ _create_pull_request_for_patches() {
 	MAX_PR=3
 	CURRENT_PR_COUNT=0
 	cd $VULCAN_TARGET
-	for diff_file in $(sh -c "ls $MSV_PATCH_DIFF_PATH/*.diff")
+	for diff_file in $(sh -c "ls $MSV_PATCH_DIFF_PATH/*.patch")
 	do
 		PATCH_BRANCH="$GITHUB_REF_NAME-auto-patch-$(date +%s%N)"
 		git checkout -b $PATCH_BRANCH
-		git am $diff_file
+		patch -p0 -i $diff_file
+		git commit -m "Committed the automatically generated patch"
 		git push origin $PATCH_BRANCH
 		_create_pull_request
 		
