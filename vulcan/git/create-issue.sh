@@ -158,18 +158,13 @@ _write_patch_info() {
 		$VULCAN_PLAUSIBLE_COUNT \
 	)
 	if [ ! 0 -eq $VULCAN_PLAUSIBLE_COUNT ]; then
-		_open_collapsed_section "plausible patches info"
-		PLAUSIBLE_PATCH_INFO=$($GITHUB_ACTION_PATH/jq '.' $MSV_PLAUSIBLE_JSON)
-		VULCAN_ISSUE_BODY=$(
-			printf "$VULCAN_ISSUE_BODY\n\n%s" \
-			"$PLAUSIBLE_PATCH_INFO" \
-		)
-		_close_collapsed_section
-		
 		_open_collapsed_section "plausible patch diff info"
 		CODE_BLOCK="\x60\x60\x60"
-		for diff_file in $(sh -c "ls $MSV_PATCH_DIFF_PATH/*.patch")
+		
+		for i in $(seq 0 $(( VULCAN_PLAUSIBLE_COUNT-1 )));
 		do
+			name=$(sh -c "$GITHUB_ACTION_PATH/jq -r '.[$i][0]' $VULCAN_OUTPUT_DIR/validation.json")
+			diff_file=$MSV_PATCH_DIFF_PATH/$name
 			VULCAN_ISSUE_BODY=$( \
 				printf "$VULCAN_ISSUE_BODY\n\n----\n$CODE_BLOCK c\n$(cat $diff_file)\n$CODE_BLOCK"
 			)
