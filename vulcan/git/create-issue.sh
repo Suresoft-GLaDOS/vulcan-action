@@ -163,7 +163,12 @@ _write_patch_info() {
 		
 		for i in $(seq 0 $(( VULCAN_PLAUSIBLE_COUNT-1 )));
 		do
-			name=$(sh -c "$GITHUB_ACTION_PATH/jq -r '.[$i][0]' $VULCAN_OUTPUT_DIR/validation.json")
+			if [ -f $VULCAN_OUTPUT_DIR/validation.json ]; 
+			then
+				name=$(sh -c "$GITHUB_ACTION_PATH/jq -r '.[$i][0]' $VULCAN_OUTPUT_DIR/validation.json")
+			else
+				name=$(sh -c "ls $VULCAN_OUTPUT_DIR/patch | head -n $(( i+1 )) | tail -n 1")
+			fi
 			diff_file=$MSV_PATCH_DIFF_PATH/$name
 			VULCAN_ISSUE_BODY=$( \
 				printf "$VULCAN_ISSUE_BODY\n\n----\n$CODE_BLOCK c\n$(cat $diff_file)\n$CODE_BLOCK"
