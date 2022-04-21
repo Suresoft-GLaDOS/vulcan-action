@@ -44,7 +44,7 @@ _split_test() {
 
 echo "Run VULCAN_YML_COVERAGE_BUILD_COMMAND"
 cd $VULCAN_TARGET
-sh -c "$VULCAN_YML_COVERAGE_BUILD_COMMAND" > /dev/null
+sh -c "$VULCAN_YML_COVERAGE_BUILD_COMMAND"
 
 if [ ! $? -eq 0 ]; then
   echo "Build failed"
