@@ -21,8 +21,9 @@ _write_test_result() {
 }
 
 _clean_after_collect_gcov() {
-	find $VULCAN_TARGET ! \( -path '*test*' -prune \) -type f -name "*.o" -exec gcov --preserve-paths {} \; > /dev/null 2>/dev/null
-	mv $VULCAN_TARGET/*.gcov $GCOV_PATH/$TEST_INDEX
+	find $VULCAN_TARGET ! \( -path '*test*' -prune \) -type f -name "*.o" -execdir gcov --preserve-paths {} \;
+	find $VULCAN_TARGET -type f -name "*.gcov" -exec mv {} $GCOV_PATH/$TEST_INDEX \;
+	# mv $VULCAN_TARGET/*.gcov $GCOV_PATH/$TEST_INDEX
 	# genhtml $GCOV_PATH/$TEST_INDEX/generated.info --output-directory=$GCOV_PATH/$TEST_INDEX/html > /dev/null
 	find $VULCAN_TARGET -type f -name "*.gcda" -delete
 }
@@ -44,7 +45,7 @@ _split_test() {
 
 echo "Run VULCAN_YML_COVERAGE_BUILD_COMMAND"
 cd $VULCAN_TARGET
-sh -c "$VULCAN_YML_COVERAGE_BUILD_COMMAND" > /dev/null
+sh -c "$VULCAN_YML_COVERAGE_BUILD_COMMAND"
 
 if [ ! $? -eq 0 ]; then
   echo "Build failed"
