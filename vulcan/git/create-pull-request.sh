@@ -26,6 +26,7 @@ _create_pull_request_for_patches() {
 		PATCH_BRANCH="$GITHUB_REF_NAME-auto-patch-$(date +%s%N)"
 		git checkout -b $PATCH_BRANCH
 		patch -p0 -i $diff_file
+		git add .
 		git commit -m "Committed the automatically generated patch"
 		git push origin $PATCH_BRANCH
 		_create_pull_request
