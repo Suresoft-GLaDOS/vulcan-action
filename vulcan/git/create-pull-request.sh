@@ -9,7 +9,7 @@ _create_pull_request() {
 	-B $DESTINATION_BRANCH \
 	-H $PATCH_BRANCH \
 	-t \"Vulcan\" \
-	-b \"This PR is auto-patch by Vulcan for commit: $GITHUB_ACTOR@$GITHUB_SHA\" \
+	-b \"This PR is auto-patch by Vulcan for commit: $GITHUB_SHA\" \
 	|| true"
 	echo "$COMMAND"
 	EXECUTE_PR_COMMAND=$(sh -c "$COMMAND")
