@@ -5,7 +5,7 @@ _create_issue() {
 	echo ==========Creating Issue==========
 	VULCAN_ISSUE_CREATE_RESULT=$(\
 		gh issue create \
-		-t "$VULCAN_TITLE" \
+		-t "Vulcan" \
 		-a "$GITHUB_ACTOR" \
 		-b "$(cat $VULCAN_OUTPUT_DIR/issue_body)" \
 	)

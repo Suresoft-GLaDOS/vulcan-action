@@ -27,10 +27,8 @@ def run():
         with open(validation_json_path) as json_file:
             json_data = json.load(json_file)
         p = json_data[0][0]
-        body = "This change "
     else:
         p = os.listdir(MSV_PATCH_DIFF_PATH)[0]
-        body = ""
     
     os.system("git clean -xdf")
     os.system(f"git checkout {GITHUB_REF_NAME}")
