@@ -171,7 +171,7 @@ _write_patch_info() {
 			fi
 			diff_file=$MSV_PATCH_DIFF_PATH/$name
 			VULCAN_ISSUE_BODY=$( \
-				printf "$VULCAN_ISSUE_BODY\n\n----\n$CODE_BLOCK c\n$(cat $diff_file)\n$CODE_BLOCK"
+				printf "$VULCAN_ISSUE_BODY\n\n----\n$CODE_BLOCK diff\n$(cat $diff_file)\n$CODE_BLOCK"
 			)
 		done
 		_close_collapsed_section
