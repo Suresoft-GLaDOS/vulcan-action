@@ -52,9 +52,5 @@ fi
 source $GITHUB_ACTION_PATH/vulcan/git/auth.sh
 
 cd $VULCAN_TARGET
-if [ 1 -eq $VULCAN_PLAUSIBLE_COUNT ];
-then
-	source $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.sh
-else
-	source $GITHUB_ACTION_PATH/vulcan/git/create-issue.sh
-fi
+source $GITHUB_ACTION_PATH/vulcan/git/create-issue.sh
+python3 $GITHUB_ACTION_PATH/vulcan/git/create-pull-request.py
