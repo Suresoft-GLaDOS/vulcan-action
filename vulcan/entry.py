@@ -2,6 +2,7 @@ import os
 import datetime
 import yaml
 
+GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 GITHUB_WORKSPACE = os.getenv("GITHUB_WORKSPACE")
 VULCAN_TARGET_NAME = os.getenv("VULCAN_TARGET")
@@ -68,7 +69,8 @@ def main():
         exit(1)
 
     _parse_yaml()
-    os.system("entry.sh")
+    entry_sh_path = os.path.join(GITHUB_ACTION_PATH, "vulcan", "entry.sh")
+    os.system(entry_sh_path)
 
 
 main()
