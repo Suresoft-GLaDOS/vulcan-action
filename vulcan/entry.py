@@ -2,6 +2,7 @@ import os
 import datetime
 import yaml
 
+GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 GITHUB_WORKSPACE = os.getenv("GITHUB_WORKSPACE")
 VULCAN_TARGET_NAME = os.getenv("VULCAN_TARGET")
 VULCAN_TARGET = os.path.join(GITHUB_WORKSPACE, VULCAN_TARGET_NAME)
