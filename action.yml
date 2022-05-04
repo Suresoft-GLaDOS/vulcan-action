@@ -20,7 +20,7 @@ runs:
       with:
         token: ${{ inputs.token }}
         path: ${{ inputs.path }}
-    - run: $GITHUB_ACTION_PATH/vulcan/entry.sh
+    - run: python3 $GITHUB_ACTION_PATH/vulcan/entry.py
       shell: bash
       env:
         TOKEN: ${{ inputs.token }}
