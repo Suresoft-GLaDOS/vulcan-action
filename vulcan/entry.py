@@ -21,6 +21,8 @@ def _parse_yaml():
     for k, v in yml.items():
         if v is None:
             yml[k] = ""
+        if type(v) is not str:
+            yml[k] = str(v)
     
     os.environ["VULCAN_YML_NAME"] = yml["name"]
     os.environ["VULCAN_YML_URL"] = yml["url"]
