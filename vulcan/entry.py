@@ -18,6 +18,10 @@ os.environ["VULCAN_OUTPUT_DIR"] = VULCAN_OUTPUT_DIR
 def _parse_yaml():
     with open(VULCAN_YML_PATH) as f:
         yml = yaml.safe_load(f)
+    for k, v in yml.items():
+        if v is None:
+            yml[k] = ""
+    
     os.environ["VULCAN_YML_NAME"] = yml["name"]
     os.environ["VULCAN_YML_URL"] = yml["url"]
     os.environ["VULCAN_YML_DOCKER_IMAGE"] = yml["docker-image"]
