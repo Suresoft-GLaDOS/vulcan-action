@@ -44,7 +44,7 @@ def _parse_yaml():
         print("  Set coverage-build-command and test-coverage-command in .vulcan.yml.")
     else:
         print("FL will be worked.")
-        os.envrion["RUN_FL"] = "true"
+        os.environ["RUN_FL"] = "true"
 
     if not os.getenv("VULCAN_YML_TEST_BUILD_COMMAND") or not os.getenv("VULCAN_YML_TEST_COMMAND"):
         print("WARNING: Not work APR.")
