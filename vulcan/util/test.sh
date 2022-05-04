@@ -21,7 +21,8 @@ _write_test_result() {
 }
 
 _clean_after_collect_gcov() {
-	find $VULCAN_TARGET ! \( -path '*test*' -prune \) -type f -name "*.o" -execdir gcov --preserve-paths {} \;
+	# find $VULCAN_TARGET ! \( -path '*test*' -prune \) -type f -name "*.o" -execdir gcov --preserve-paths {} \;
+	python3 ${GITHUB_ACTION_PATH}/vulcan/util/gcovg.py -r $VULCAN_TARGET -f "*.o" -o ${VULCAN_OUTPUT_DIR}/gcov_map.json
 	find $VULCAN_TARGET -type f -name "*.gcov" -exec mv {} $GCOV_PATH/$TEST_INDEX \;
 	# mv $VULCAN_TARGET/*.gcov $GCOV_PATH/$TEST_INDEX
 	# genhtml $GCOV_PATH/$TEST_INDEX/generated.info --output-directory=$GCOV_PATH/$TEST_INDEX/html > /dev/null
