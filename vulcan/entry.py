@@ -57,7 +57,7 @@ def main():
     token = os.getenv("TOKEN", None)
     if token is None:
         print("Requires vulcan action input: token")
-        print("Vulcan action with: token: ${{ secrets.GITHUB_TOKEN }}"
+        print("Vulcan action with: token: ${{ secrets.GITHUB_TOKEN }}")
         exit(1)
 
     _parse_yaml()
