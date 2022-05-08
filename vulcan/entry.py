@@ -70,7 +70,7 @@ def main():
 
     _parse_yaml()
     entry_sh_path = os.path.join(GITHUB_ACTION_PATH, "vulcan", "entry.sh")
-    os.system(entry_sh_path)
+    os.system(f"bash {entry_sh_path}")
 
 
 main()
