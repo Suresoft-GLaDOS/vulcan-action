@@ -22,7 +22,7 @@ def _clean_after_collect_gcov():
 
 def _split_test():
     global TEST_INDEX
-    for UNIT_TEST in VULCAN_YML_TEST_CASE:
+    for UNIT_TEST in VULCAN_YML_TEST_CASE.split():
         index = str(TEST_INDEX)
         _create_directory(os.path.join(GCOV_PATH, index))
         test_command = VULCAN_YML_TEST_COVERAGE_COMMAND.replace("@testcase@", UNIT_TEST)
