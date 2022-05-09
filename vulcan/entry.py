@@ -1,5 +1,6 @@
 import os
 import datetime
+import pprint
 import yaml
 
 GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
@@ -24,6 +25,8 @@ def _parse_yaml():
             yml[k] = ""
         if type(v) is not str:
             yml[k] = str(v)
+    
+    pprint.pprint(yml)
     
     os.environ["VULCAN_YML_NAME"] = yml["name"]
     os.environ["VULCAN_YML_URL"] = yml["url"]
