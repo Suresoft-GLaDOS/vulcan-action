@@ -13,7 +13,7 @@ fi
 if [ $RUN_APR ]; then
 	source $GITHUB_ACTION_PATH/vulcan/runner/run_apr.sh
 fi
-if [ 0 -lt $VULCAN_PLAUSIBLE_COUNT ]; then
+if [ 1 -lt $(ls $MSV_PATCH_DIFF_PATH | wc -l) ]; then
 	source $GITHUB_ACTION_PATH/vulcan/runner/run_cxbuild.sh
 fi
 

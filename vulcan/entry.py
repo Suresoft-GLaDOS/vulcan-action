@@ -12,9 +12,21 @@ VULCAN_YML_PATH = os.path.join(VULCAN_TARGET, "vulcan.yml")
 VULCAN_SUFFIX = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')
 VULCAN_OUTPUT_DIR = os.path.realpath( os.path.join(GITHUB_WORKSPACE, "..", "..", "output", GITHUB_REPOSITORY, VULCAN_SUFFIX) )
 
+# reset some environment variables
 os.environ["VULCAN_TARGET_NAME"] = VULCAN_TARGET_NAME
 os.environ["VULCAN_TARGET"] = VULCAN_TARGET
 os.environ["VULCAN_OUTPUT_DIR"] = VULCAN_OUTPUT_DIR
+
+# for SBFL
+os.environ["SBFL_REPO"] = /home/workspace/sbfl
+
+# for MSV
+os.environ["MSV_REPO"] = /home/workspace/msv
+os.environ["MSV_SEARCH_REPO"] = /home/workspace/msv-search
+os.environ["MSV_WORKSPACE"] = f"{VULCAN_OUTPUT_DIR}/msv-workspace"
+os.environ["VULCAN_TARGET_WORKDIR"] = f"{VULCAN_OUTPUT_DIR}/msv-workspace/{VULCAN_TARGET_NAME}-workdir"
+os.environ["MSV_JSON"] = f"{VULCAN_OUTPUT_DIR}/msv-output/msv-result.json"
+os.environ["MSV_PATCH_DIFF_PATH"] = f"{VULCAN_OUTPUT_DIR}/patch"
 
 
 def _parse_yaml():
