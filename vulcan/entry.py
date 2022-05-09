@@ -18,11 +18,11 @@ os.environ["VULCAN_TARGET"] = VULCAN_TARGET
 os.environ["VULCAN_OUTPUT_DIR"] = VULCAN_OUTPUT_DIR
 
 # for SBFL
-os.environ["SBFL_REPO"] = /home/workspace/sbfl
+os.environ["SBFL_REPO"] = r"/home/workspace/sbfl"
 
 # for MSV
-os.environ["MSV_REPO"] = /home/workspace/msv
-os.environ["MSV_SEARCH_REPO"] = /home/workspace/msv-search
+os.environ["MSV_REPO"] = r"/home/workspace/msv"
+os.environ["MSV_SEARCH_REPO"] = r"/home/workspace/msv-search"
 os.environ["MSV_WORKSPACE"] = f"{VULCAN_OUTPUT_DIR}/msv-workspace"
 os.environ["VULCAN_TARGET_WORKDIR"] = f"{VULCAN_OUTPUT_DIR}/msv-workspace/{VULCAN_TARGET_NAME}-workdir"
 os.environ["MSV_JSON"] = f"{VULCAN_OUTPUT_DIR}/msv-output/msv-result.json"
