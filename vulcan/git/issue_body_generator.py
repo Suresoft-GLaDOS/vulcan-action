@@ -2,6 +2,8 @@ import itertools
 import json
 import os
 
+CODE_BLOCK = "\x60\x60\x60"
+CODE_BLOCK_FORMAT = "diff"
 GITHUB_ACTOR = os.getenv("GITHUB_ACTOR", None)
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 GITHUB_SERVER_URL = os.getenv("GITHUB_SERVER_URL")
@@ -9,8 +11,8 @@ GITHUB_SHA = os.getenv("GITHUB_SHA")
 VULCAN_OUTPUT_DIR = os.getenv("VULCAN_OUTPUT_DIR")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET")
 VULCAN_TRIGGER_URL = f"{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{GITHUB_SHA}"
-CODE_BLOCK = "\x60\x60\x60"
-CODE_BLOCK_FORMAT = "diff"
+MSV_JSON = os.path.join(VULCAN_OUTPUT_DIR, "msv-output", "msv-result.json")
+MSV_PLAUSIBLE_JSON = os.path.join(VULCAN_OUTPUT_DIR, "msv-output", "msv-result-pass.json")
 
 
 def _open_collapsed_section(body, description):
@@ -114,7 +116,12 @@ def _gen_fl_info():
 
 def _gen_patch_info():
     body = ""
-    plausible_count = os.getenv("VULCAN_PLAUSIBLE_COUNT")
+    with open(MSV_JSON) as f:
+        json_data = json.load(f)
+    with open(MSV_PLAUSIBLE_JSON, "w") as f:
+        json.dump(json_data, f)
+    plausible_data = [x for x in json_data if x["pass_result"]]
+    plausible_count = len(plausible_data)
     body = f"{body}\n\n----\n{plausible_count} patch(es) generaetd by vulcan\n"
     body = _open_collapsed_section(body, "plausible patch diff info")
     validation_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation.json")

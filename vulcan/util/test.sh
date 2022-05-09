@@ -41,7 +41,7 @@ _split_test() {
 		_clean_after_collect_gcov
 		
 		TEST_INDEX=$(( $TEST_INDEX + 1 ))
-	done <<< $VULCAN_YML_TEST_LIST
+	done <<< $VULCAN_YML_TEST_CASE
 }
 
 echo "Run VULCAN_YML_COVERAGE_BUILD_COMMAND"
