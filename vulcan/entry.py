@@ -28,6 +28,9 @@ os.environ["VULCAN_TARGET_WORKDIR"] = f"{VULCAN_OUTPUT_DIR}/msv-workspace/{VULCA
 os.environ["MSV_JSON"] = f"{VULCAN_OUTPUT_DIR}/msv-output/msv-result.json"
 os.environ["MSV_PATCH_DIFF_PATH"] = f"{VULCAN_OUTPUT_DIR}/patch"
 
+# for CXBuild
+os.environ["CXBUILD_OUTPUT_DIR"] = VULCAN_OUTPUT_DIR
+
 
 def _parse_yaml():
     with open(VULCAN_YML_PATH) as f:
