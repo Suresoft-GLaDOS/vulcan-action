@@ -1,6 +1,7 @@
-import os
 import datetime
+import os
 import pprint
+import sys
 import yaml
 
 GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
@@ -59,17 +60,17 @@ def _parse_yaml():
     os.environ["VULCAN_YML_TEST_COVERAGE_COMMAND"] = yml["test-coverage-command"]
     
     if not os.getenv("VULCAN_YML_COVERAGE_BUILD_COMMAND") or not os.getenv("VULCAN_YML_TEST_COVERAGE_COMMAND"):
-        print("WARNING: Not work FL.")
-        print("  Set coverage-build-command and test-coverage-command in .vulcan.yml.")
+        print("WARNING: Not work FL.", flush=True)
+        print("  Set coverage-build-command and test-coverage-command in .vulcan.yml.", flush=True)
     else:
-        print("FL will be worked.")
+        print("FL will be worked.", flush=True)
         os.environ["RUN_FL"] = "true"
 
     if not os.getenv("VULCAN_YML_TEST_BUILD_COMMAND") or not os.getenv("VULCAN_YML_TEST_COMMAND"):
-        print("WARNING: Not work APR.")
-        print("  Set test-build-command and test-command in .vulcan.yml.")
+        print("WARNING: Not work APR.", flush=True)
+        print("  Set test-build-command and test-command in .vulcan.yml.", flush=True)
     else:
-        print("APR will be worked.")
+        print("APR will be worked.", flush=True)
         os.environ["RUN_APR"] = "true"
 
 
@@ -77,16 +78,17 @@ def main():
     os.makedirs(VULCAN_OUTPUT_DIR, exist_ok=True)
 
     if not os.path.exists(VULCAN_YML_PATH):
-      print("Requires vulcan.yml in your repository")
+      print("Requires vulcan.yml in your repository", flush=True)
       exit(1)
 
     token = os.getenv("TOKEN", None)
     if token is None:
-        print("Requires vulcan action input: token")
-        print("Vulcan action with: token: ${{ secrets.GITHUB_TOKEN }}")
+        print("Requires vulcan action input: token", flush=True)
+        print("Vulcan action with: token: ${{ secrets.GITHUB_TOKEN }}", flush=True)
         exit(1)
 
     _parse_yaml()
+    sys.stdout.flush()
     entry_sh_path = os.path.join(GITHUB_ACTION_PATH, "vulcan", "entry.sh")
     os.system(f"bash {entry_sh_path}")
 
