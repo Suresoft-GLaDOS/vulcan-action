@@ -12,7 +12,7 @@ VULCAN_OUTPUT_DIR = os.getenv("VULCAN_OUTPUT_DIR")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET")
 VULCAN_TRIGGER_URL = f"{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{GITHUB_SHA}"
 MSV_JSON = os.path.join(VULCAN_OUTPUT_DIR, "msv-output", "msv-result.json")
-MSV_PLAUSIBLE_JSON = os.path.join(VULCAN_OUTPUT_DIR. "msv-output", "msv-result-pass.json")
+MSV_PLAUSIBLE_JSON = os.path.join(VULCAN_OUTPUT_DIR, "msv-output", "msv-result-pass.json")
 
 
 def _open_collapsed_section(body, description):
