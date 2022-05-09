@@ -26,12 +26,12 @@ def _split_test():
         index = str(TEST_INDEX)
         _create_directory(os.path.join(GCOV_PATH, index))
         test_command = VULCAN_YML_COVERAGE_BUILD_COMMAND.replace("@testcase@", UNIT_TEST)
-        with open(os.path.join(GCOV_PATH, index, "test.command")) as f:
+        with open(os.path.join(GCOV_PATH, index, "test.command"), "w") as f:
             f.write(test_command)
 
         print(f"Measuring coverage for {test_command}")
         test_result = os.system(f"sh -c \"{test_command}\"")
-        with open(os.path.join(GCOV_PATH, index, "result.test")) as f:
+        with open(os.path.join(GCOV_PATH, index, "result.test"), "w") as f:
             if test_result != 0:
                 f.write("failed")
             else:
