@@ -8,6 +8,7 @@ VULCAN_YML_COVERAGE_BUILD_COMMAND = os.getenv("VULCAN_YML_COVERAGE_BUILD_COMMAND
 VULCAN_YML_TEST_COVERAGE_COMMAND = os.getenv("VULCAN_YML_TEST_COVERAGE_COMMAND")
 VULCAN_YML_TEST_LIST = os.getenv("VULCAN_YML_TEST_LIST")
 VULCAN_YML_TEST_CASE = os.getenv("VULCAN_YML_TEST_CASE")
+GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
 GCOV_PATH = os.path.join(VULCAN_OUTPUT_DIR, "gcov")
 
 
@@ -16,9 +17,10 @@ def _create_directory(path):
 
 
 def _clean_after_collect_gcov():
-    os.system(f"find {VULCAN_TARGET} ! \( -path '*test*' -prune \) -type f -name \"*.o\" -execdir gcov --preserve-paths {'{}'} \;")
+    # os.system(f"find {VULCAN_TARGET} ! \( -path '*test*' -prune \) -type f -name \"*.o\" -execdir gcov --preserve-paths {'{}'} \;")
+    os.system(f"python3 {GITHUB_ACTION_PATH}/vulcan/util/gcovg.py -r {VULCAN_TARGET} -f \"*.o\" -o {VULCAN_OUTPUT_DIR}/gcov_map.json")
     os.system(f"find {VULCAN_TARGET} -type f -name \"*.gcov\" -exec mv {'{}'} {GCOV_PATH}/{TEST_INDEX} \;")
-    os.system(f"find $VULCAN_TARGET -type f -name \"*.gcda\" -delete")
+    os.system(f"find {VULCAN_TARGET} -type f -name \"*.gcda\" -delete")
 
 
 def _split_test():
