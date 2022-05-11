@@ -132,7 +132,29 @@ def run_modules():
         with open(MUTABLE_ENV["FL_CLUSTER_JSON"]) as f:
             cluster_data = json.load(f)
         if len(cluster_data) > 1:
-            handle_cluster()
+            with open(VULCAN_YML_PATH) as f:
+                origin_yaml_data = yaml.safe_load(f)
+            for k in cluster_data:
+                set_environments(os.path.join(VULCAN_OUTPUT_DIR_BASE, k))
+                yaml_data = origin_yaml_data.copy()
+                exclusion_list = []
+                for c in filter(lambda v: v != cluster_data[k], cluster_data.values() ):
+                    exclusion_list.extend(list(map(lambda p: p.slit("/")[-1], c)))
+                shutil.copytree(f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov", f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/{k}/gcov", dirs_exist_ok=True, ignore=lambda *args: set(args[1])-set(exclusion_list))
+                test_list = yaml_data["test-list"].splitlines()
+                for i, e in enumerate(exclusion_list):
+                    del test_list[int(e)-i]
+                test_list = "\n".join(test_list)
+                yaml_data["test-list"] = test_list
+                with open(VULCAN_YML_PATH, "w") as f:
+                    yaml.dump(yaml_data, f)
+                run_fl()
+                if RUN_APR:
+                    run_apr()
+                if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
+                    run_cxbuild()
+                run_create_issue()
+                run_create_pull_request()
             return
     if RUN_APR:
         run_apr()
