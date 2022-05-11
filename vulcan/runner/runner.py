@@ -1,5 +1,6 @@
 import json
 import os
+import yaml
 
 GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
 VULCAN_OUTPUT_DIR_BASE = os.getenv("VULCAN_OUTPUT_DIR")
