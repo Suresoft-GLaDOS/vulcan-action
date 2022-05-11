@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import yaml
 
 GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
