@@ -48,7 +48,7 @@ def run_test():
 def run_fl():
     os.chdir(SBFL_REPO)
     fl_cmd = f"python3 -m sbfl -f Ochiai2 {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov/* -s {MUTABLE_ENV['FL_JSON']} -i {MUTABLE_ENV['INFO_JSON']} -c {MUTABLE_ENV['FL_CLUSTER_JSON']}"
-    print(f"[DEBUG] {fl_cmd}"
+    print(f"[DEBUG] {fl_cmd}")
     os.system(fl_cmd)
 
 
