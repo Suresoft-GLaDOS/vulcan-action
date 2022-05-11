@@ -139,7 +139,7 @@ def run_modules():
                 yaml_data = origin_yaml_data.copy()
                 exclusion_list = []
                 for c in filter(lambda v: v != cluster_data[k], cluster_data.values() ):
-                    exclusion_list.extend(list(map(lambda p: p.slit("/")[-1], c)))
+                    exclusion_list.extend(list(map(lambda p: p.split("/")[-1], c)))
                 shutil.copytree(f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov", f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/{k}/gcov", dirs_exist_ok=True, ignore=lambda *args: set(args[1])-set(exclusion_list))
                 test_list = yaml_data["test-list"].splitlines()
                 for i, e in enumerate(exclusion_list):
