@@ -116,7 +116,7 @@ def handle_cluster():
         run_fl()
         if RUN_APR:
             run_apr()
-        if len(os.listdir(MSV_PATCH_DIFF_PATH)) > 1:
+        if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
             run_cxbuild()
         run_create_issue()
         run_create_pull_request()
@@ -127,15 +127,15 @@ def run_modules():
     if RUN_FL:
         run_test()
         run_fl()
-    if os.path.exists(FL_CLUSTER_JSON):
-        with open(FL_CLUSTER_JSON) as f:
+    if os.path.exists(MUTABLE_ENV["FL_CLUSTER_JSON"]):
+        with open(MUTABLE_ENV["FL_CLUSTER_JSON"]) as f:
             cluster_data = json.load(f)
         if len(cluster_data) > 1:
             handle_cluster()
             return
     if RUN_APR:
         run_apr()
-    if len(os.listdir(MSV_PATCH_DIFF_PATH)) > 1:
+    if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
         run_cxbuild()
     run_create_issue()
     run_create_pull_request()
