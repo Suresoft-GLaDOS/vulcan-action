@@ -73,7 +73,7 @@ def run_apr():
 
 
 def run_cxbuild():
-    os.chdir(f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/src")
+    os.chdir(f"{MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/src")
     os.system("git clean -f -d")
     
     cxbuild_cmd = f"python3 {CXBUILD_REPO}/cxbuild.py capture make LDFLAGS=\"-Wl,-rpath={MSV_REPO}/src/.libs -L{MSV_REPO}/src/.libs -ltest_runtime\""
