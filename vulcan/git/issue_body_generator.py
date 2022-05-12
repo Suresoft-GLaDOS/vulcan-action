@@ -8,6 +8,7 @@ GITHUB_ACTOR = os.getenv("GITHUB_ACTOR", None)
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 GITHUB_SERVER_URL = os.getenv("GITHUB_SERVER_URL")
 GITHUB_SHA = os.getenv("GITHUB_SHA")
+VULCAN_OUTPUT_DIR_BASE = os.getenv("VULCAN_OUTPUT_DIR_BASE")
 VULCAN_OUTPUT_DIR = os.getenv("VULCAN_OUTPUT_DIR")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET")
 VULCAN_TRIGGER_URL = f"{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{GITHUB_SHA}"
@@ -69,7 +70,7 @@ def _gen_info():
     total_test = len(passing_tests_info) + len(failed_tests_info)
     
     # get target source dictionary
-    gcov_map_json_path = os.path.join(VULCAN_OUTPUT_DIR, "gcov_map.json")
+    gcov_map_json_path = os.path.join(VULCAN_OUTPUT_DIR_BASE, "gcov_map.json")
     with open(gcov_map_json_path) as gcov_map_json:
         gcov_map_data = json.load(gcov_map_json)
 
@@ -78,7 +79,7 @@ def _gen_info():
 
     for s in sources_info:
         # source_name = s.replace(".gcov", "")
-        source_name = gcov_map_data[s]
+        source_name = gcov_map_data[s].replace(VULCAN_TARGET, "").strip("/")
         body = f"{body}\n\n[{source_name}]({VULCAN_TRIGGER_URL}/{source_name})"
     body = _close_collapsed_section(body)
     
