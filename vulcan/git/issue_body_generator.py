@@ -1,4 +1,4 @@
-import itertools
+from itertools import groupby, islice, zip_longest
 import json
 import os
 
@@ -105,7 +105,7 @@ def _gen_fl_info():
         with open(os.path.join(VULCAN_OUTPUT_DIR, "fl_top5.json"), "w") as top_f:
             json.dump(f_json[:5], top_f)
     
-    if len(list(itertools.groupby(f_json[:5], lambda d: d[2]))) == 1:
+    if len(list(groupby(f_json[:5], lambda d: d[2]))) == 1:
         body = _write_5_more_equal_fl_info(body, f_json[:5])
     else:
         body = f"{body}\n\n----"
@@ -124,14 +124,16 @@ def _gen_patch_info():
     plausible_data = [x for x in json_data if x["pass_result"]]
     plausible_count = len(plausible_data)
     body = f"{body}\n\n----\n{plausible_count} patch(es) generaetd by vulcan\n"
+    
     body = _open_collapsed_section(body, "plausible patch diff info")
     validation_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation.json")
+    json_data = []
     if os.path.exists(validation_json_path):
         with open(validation_json_path) as json_file:
             json_data = json.load(json_file)
-    for i, p in enumerate(os.listdir(os.path.join(VULCAN_OUTPUT_DIR, "patch"))):
-        if os.path.exists(validation_json_path):
-            p = json_data[i][0]
+    for p, vp in islice(zip_longest(os.listdir(os.path.join(VULCAN_OUTPUT_DIR, "patch")), json_data), 10):
+        if vp:
+            p = json_data[0]
         p_full_path = os.path.join(VULCAN_OUTPUT_DIR, "patch", p)
         with open(p_full_path) as f:
             code = f.read()
