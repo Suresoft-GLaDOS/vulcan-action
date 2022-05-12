@@ -78,8 +78,7 @@ def _gen_info():
     body = _open_collapsed_section(body, "Click here for a list of target sources")
 
     for s in sources_info:
-        # source_name = s.replace(".gcov", "")
-        source_name = gcov_map_data[s]
+        source_name = gcov_map_data[s].strip(VULCAN_TARGET).strip("/")
         body = f"{body}\n\n[{source_name}]({VULCAN_TRIGGER_URL}/{source_name})"
     body = _close_collapsed_section(body)
     
