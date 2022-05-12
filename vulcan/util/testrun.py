@@ -17,7 +17,6 @@ def _create_directory(path):
 
 
 def _clean_after_collect_gcov():
-    # os.system(f"find {VULCAN_TARGET} ! \( -path '*test*' -prune \) -type f -name \"*.o\" -execdir gcov --preserve-paths {'{}'} \;")
     os.system(f"python3 {GITHUB_ACTION_PATH}/vulcan/util/gcovg.py -r {VULCAN_TARGET} -f \"*.o\" -o {VULCAN_OUTPUT_DIR}/gcov_map.json")
     os.system(f"find {VULCAN_TARGET} -type f -name \"*.gcov\" -exec mv {'{}'} {GCOV_PATH}/{TEST_INDEX} \;")
     os.system(f"find {VULCAN_TARGET} -type f -name \"*.gcda\" -delete")
@@ -32,7 +31,7 @@ def _split_test():
         with open(os.path.join(GCOV_PATH, index, "test.command"), "w") as f:
             f.write(test_command)
 
-        print(f"Measuring coverage for {test_command}")
+        print(f"Measuring coverage for {test_command}", flush=True)
         test_result = os.system(test_command)
         with open(os.path.join(GCOV_PATH, index, "result.test"), "w") as f:
             if test_result != 0:
@@ -44,15 +43,15 @@ def _split_test():
 
 
 def run():
-    print("Run VULCAN_YML_COVERAGE_BUILD_COMMAND")
+    print("Run VULCAN_YML_COVERAGE_BUILD_COMMAND", flush=True)
     os.chdir(VULCAN_TARGET)
     build_result = os.system("sh -c \"$VULCAN_YML_COVERAGE_BUILD_COMMAND\"")
 
     if build_result != 0:
-        print("Build failed")
+        print("Build failed", flush=True)
         exit(1)
 
-    print("Run split test by VULCAN_YML_TEST_COVERAGE_COMMAND")
+    print("Run split test by VULCAN_YML_TEST_COVERAGE_COMMAND", flush=True)
     os.chdir(VULCAN_TARGET)
     _create_directory(GCOV_PATH)
     _split_test()
