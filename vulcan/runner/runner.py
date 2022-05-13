@@ -39,7 +39,7 @@ def set_environments(vulcan_output_path):
     MUTABLE_ENV["MSV_WORKSPACE"] = os.environ["MSV_WORKSPACE"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-workspace"
     MUTABLE_ENV["VULCAN_TARGET_WORKDIR"] = os.environ["VULCAN_TARGET_WORKDIR"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-workspace/{VULCAN_TARGET_NAME}-workdir"
     MUTABLE_ENV["MSV_JSON"] = os.environ["MSV_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-result.json"
-    MUTABLE_ENV["MSV_PASS_JSON"] = os.environ["MSV_PASS_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-pass-result.json"
+    MUTABLE_ENV["MSV_PASS_JSON"] = os.environ["MSV_PASS_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-result-pass.json"
     MUTABLE_ENV["MSV_PATCH_DIFF_PATH"] = os.environ["MSV_PATCH_DIFF_PATH"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/patch"
     # --------------------------------
 
@@ -68,7 +68,7 @@ def run_apr():
     1. generate metaprogram
     2. search plausible patch configuration
     3. generate patch diff
-    4. write msv-pass-result.json
+    4. write msv-result-pass.json
     """
     os.chdir(MUTABLE_ENV['VULCAN_OUTPUT_DIR'])
     os.makedirs(MUTABLE_ENV['MSV_WORKSPACE'], exist_ok=True)
