@@ -38,6 +38,8 @@ def set_environments(vulcan_output_path):
 
     MUTABLE_ENV["MSV_WORKSPACE"] = os.environ["MSV_WORKSPACE"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-workspace"
     MUTABLE_ENV["VULCAN_TARGET_WORKDIR"] = os.environ["VULCAN_TARGET_WORKDIR"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-workspace/{VULCAN_TARGET_NAME}-workdir"
+    MUTABLE_ENV["MSV_JSON"] = os.environ["MSV_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-result.json"
+    MUTABLE_ENV["MSV_PASS_JSON"] = os.environ["MSV_PASS_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-pass-result.json"
     MUTABLE_ENV["MSV_PATCH_DIFF_PATH"] = os.environ["MSV_PATCH_DIFF_PATH"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/patch"
     # --------------------------------
 
@@ -70,6 +72,12 @@ def run_apr():
     diff_gen_cmd = f"python3 {MSV_SEARCH_REPO}/diff_gen.py -g -i {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output -o {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/patch {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}"
     print(f"[DEBUG] {diff_gen_cmd}", flush=True)
     os.system(diff_gen_cmd)
+    
+    with open(MUTABLE_ENV["MSV_JSON"]) as f:
+        json_data = json.load(f)
+    with open(MUTABLE_ENV["MSV_PASS_JSON"], "w") as f:
+        plausible_data = [x for x in json_data if x["pass_result"]]
+        json.dump(plausible_data, f)
 
 
 def run_cxbuild():

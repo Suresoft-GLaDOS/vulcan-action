@@ -2,6 +2,7 @@ from itertools import groupby, islice, zip_longest
 import json
 import os
 
+CONTOUR_LINE = "\n\n----\n"
 CODE_BLOCK = "\x60\x60\x60"
 CODE_BLOCK_FORMAT = "diff"
 GITHUB_ACTOR = os.getenv("GITHUB_ACTOR", None)
@@ -16,45 +17,45 @@ MSV_JSON = os.path.join(VULCAN_OUTPUT_DIR, "msv-output", "msv-result.json")
 MSV_PLAUSIBLE_JSON = os.path.join(VULCAN_OUTPUT_DIR, "msv-output", "msv-result-pass.json")
 
 
-def _open_collapsed_section(body, description):
-    return f"{body}\n\n<details><summary>{description}</summary>\n"
+def _open_collapsed_section(description):
+    return f"\n\n<details><summary>{description}</summary>\n"
 
 
-def _close_collapsed_section(body):
-    return f"{body}\n\n</details>\n"
+def _close_collapsed_section():
+    return f"\n\n</details>\n"
 
 
-def _write_5_more_equal_fl_info(body, fl_info):
+def _write_5_more_equal_fl_info(fl_info):
     content1 = "Clicking on the link, you take the page with code highlighted."
     content2 = "There are a lot of the suspicious code snippets and show 5 among them."
     content3 = "Recommend that split your tests or adde new tests."
-    body = f"{body}\n\n----\n{content1}\n{content2}\n{content3}\n"
-    body = _open_collapsed_section(body, "Click here for FL information")
+    body = f"{CONTOUR_LINE}{content1}\n{content2}\n{content3}\n"
+    body += _open_collapsed_section("Click here for FL information")
     for d in fl_info:
         buggy_source = d[0]
         buggy_line = d[1]
         buggy_score = d[2]
-        body = f"{body}\n\n----\nSuspicious score: {buggy_score:.2f} {VULCAN_TRIGGER_URL}/{buggy_source}#L{buggy_line}\n"
+        body += f"{CONTOUR_LINE}Suspicious score: {buggy_score:.2f} {VULCAN_TRIGGER_URL}/{buggy_source}#L{buggy_line}\n"
     
-    body = _close_collapsed_section(body)
+    body += _close_collapsed_section()
     return body
 
 
-def _write_basic_fl_info(body, fl_info):
+def _write_basic_fl_info(fl_info):
     buggy_source = fl_info[0][0]
     buggy_line = fl_info[0][1]
     buggy_score = fl_info[0][2]
     content1 = "Clicking on the link, you take the page with code highlighted."
     content2 = "Here is most suspicious code piece."
     content3 = "Recommend debugging here.\nClick below the collapsed section for more FL information."
-    body = f"{body}\n\n{content1}\n- [ ] {content2}\n{VULCAN_TRIGGER_URL}/{buggy_source}#L{buggy_line}\n{content3}\n"
-    body = _open_collapsed_section(body, "Click here for more FL")
+    body = f"\n\n{content1}\n- [ ] {content2}\n{VULCAN_TRIGGER_URL}/{buggy_source}#L{buggy_line}\n{content3}\n"
+    body += _open_collapsed_section("Click here for more FL")
     for d in fl_info[1:]:
         buggy_source = d[0]
         buggy_line = d[1]
         buggy_score = d[2]
-        body = f"{body}\n\n----\nSuspicious score: {buggy_score:.2f} {VULCAN_TRIGGER_URL}/{buggy_source}#L{buggy_line}\n"
-    body = _close_collapsed_section(body)
+        body += f"{CONTOUR_LINE}Suspicious score: {buggy_score:.2f} {VULCAN_TRIGGER_URL}/{buggy_source}#L{buggy_line}\n"
+    body += _close_collapsed_section()
     return body
 
 
@@ -74,30 +75,29 @@ def _gen_info():
     with open(gcov_map_json_path) as gcov_map_json:
         gcov_map_data = json.load(gcov_map_json)
 
-    body = f"{body}\nCoverage: {coverage_info} percent\n"
-    body = _open_collapsed_section(body, "Click here for a list of target sources")
+    body += f"\nCoverage: {coverage_info} percent\n"
+    body += _open_collapsed_section("Click here for a list of target sources")
 
     for s in sources_info:
         # source_name = s.replace(".gcov", "")
         source_name = gcov_map_data[s].replace(VULCAN_TARGET, "").strip("/")
-        body = f"{body}\n\n[{source_name}]({VULCAN_TRIGGER_URL}/{source_name})"
-    body = _close_collapsed_section(body)
+        body += f"\n\n[{source_name}]({VULCAN_TRIGGER_URL}/{source_name})"
+    body += _close_collapsed_section()
     
     failed_tests_info_content = f"There is(are) {len(failed_tests_info)}/{total_test} failed test(s)"
-    body = f"{body}\n\n{failed_tests_info_content}"
-    body = _open_collapsed_section(body, "Click here for the failed test commands")
+    body += f"\n\n{failed_tests_info_content}"
+    body += _open_collapsed_section("Click here for the failed test commands")
     for i, f in enumerate(failed_tests_info):
         command_file = os.path.join(f, "test.command")
         with open(command_file) as cmd_file:
             test_command = cmd_file.read()
         failed_test_content = f"{i+1}. [FAILED] {test_command}"
-        body = f"{body}\n\n{failed_test_content}"
-    body = _close_collapsed_section(body)
+        body += f"\n\n{failed_test_content}"
+    body += _close_collapsed_section()
     return body
 
 
 def _gen_fl_info():
-    body = ""
     with open(os.path.join(VULCAN_OUTPUT_DIR, "fl.json")) as f:
         f_json = sorted(json.load(f), key=lambda k: k[2], reverse=True)
         with open(os.path.join(VULCAN_OUTPUT_DIR, "fl_sortby_score.json"), "w") as sort_f:
@@ -106,26 +106,22 @@ def _gen_fl_info():
             json.dump(f_json[:5], top_f)
     
     if len(list(groupby(f_json[:5], lambda d: d[2]))) == 1:
-        body = _write_5_more_equal_fl_info(body, f_json[:5])
+        body = _write_5_more_equal_fl_info(f_json[:5])
     else:
-        body = f"{body}\n\n----"
-        body = _open_collapsed_section(body, "Click here for FL information")
-        body = _write_basic_fl_info(body, f_json[:5])
-        body = _close_collapsed_section(body)
+        body = f"{CONTOUR_LINE}"
+        body += _open_collapsed_section("Click here for FL information")
+        body += _write_basic_fl_info(f_json[:5])
+        body += _close_collapsed_section()
     return body
 
 
 def _gen_patch_info():
-    body = ""
-    with open(MSV_JSON) as f:
-        json_data = json.load(f)
-    with open(MSV_PLAUSIBLE_JSON, "w") as f:
-        json.dump(json_data, f)
-    plausible_data = [x for x in json_data if x["pass_result"]]
+    with open(MSV_PLAUSIBLE_JSON) as f:
+        plausible_data = json.load(f)
     plausible_count = len(plausible_data)
-    body = f"{body}\n\n----\n{plausible_count} patch(es) generaetd by vulcan\n"
+    body = f"{CONTOUR_LINE}{plausible_count} patch(es) generaetd by vulcan\n"
     
-    body = _open_collapsed_section(body, "plausible patch diff info")
+    body += _open_collapsed_section("plausible patch diff info")
     validation_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation.json")
     json_data = []
     if os.path.exists(validation_json_path):
@@ -137,8 +133,8 @@ def _gen_patch_info():
         p_full_path = os.path.join(VULCAN_OUTPUT_DIR, "patch", p)
         with open(p_full_path) as f:
             code = f.read()
-        body = f"{body}\n\n----\n{CODE_BLOCK} {CODE_BLOCK_FORMAT}\n{code}\n{CODE_BLOCK}\n"
-    body = _close_collapsed_section(body)
+        body += f"{CONTOUR_LINE}{CODE_BLOCK} {CODE_BLOCK_FORMAT}\n{code}\n{CODE_BLOCK}\n"
+    body += _close_collapsed_section()
     return body
 
 
