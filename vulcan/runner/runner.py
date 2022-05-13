@@ -98,7 +98,7 @@ def run_cxbuild():
     2. run client
     """
     os.chdir(f"{MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/src")
-    os.system("git clean -f -d")
+    os.system("git clean -fdx")
     
     cxbuild_cmd = f"python3 {CXBUILD_REPO}/cxbuild.py capture make LDFLAGS=\"-Wl,-rpath={MSV_REPO}/src/.libs -L{MSV_REPO}/src/.libs -ltest_runtime\""
     print(f"[DEBUG] {cxbuild_cmd}", flush=True)
