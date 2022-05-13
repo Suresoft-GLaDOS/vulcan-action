@@ -45,12 +45,18 @@ def set_environments(vulcan_output_path):
 
 
 def run_test():
+    """
+    1. run test & collect gcov
+    """
     testrun_py_path = os.path.join(GITHUB_ACTION_PATH, "vulcan", "util", "testrun.py")
     testrun_cmd = f"python3 {testrun_py_path}"
     os.system(testrun_cmd)
 
 
 def run_fl():
+    """
+    1. run sbfl
+    """
     os.chdir(SBFL_REPO)
     fl_cmd = f"python3 -m sbfl -f Ochiai2 {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov/* -s {MUTABLE_ENV['FL_JSON']} -i {MUTABLE_ENV['INFO_JSON']} -c {MUTABLE_ENV['FL_CLUSTER_JSON']}"
     print(f"[DEBUG] {fl_cmd}", flush=True)
@@ -58,6 +64,12 @@ def run_fl():
 
 
 def run_apr():
+    """
+    1. generate metaprogram
+    2. search plausible patch configuration
+    3. generate patch diff
+    4. write msv-pass-result.json
+    """
     os.chdir(MUTABLE_ENV['VULCAN_OUTPUT_DIR'])
     os.makedirs(MUTABLE_ENV['MSV_WORKSPACE'], exist_ok=True)
     
@@ -81,6 +93,10 @@ def run_apr():
 
 
 def run_cxbuild():
+    """
+    1. capture metaprogram
+    2. run client
+    """
     os.chdir(f"{MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/src")
     os.system("git clean -f -d")
     
