@@ -58,7 +58,7 @@ def run_fl():
     1. run sbfl
     """
     os.chdir(SBFL_REPO)
-    fl_cmd = f"python3 -m sbfl -f Ochiai2 {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov/* -s {MUTABLE_ENV['FL_JSON']} -i {MUTABLE_ENV['INFO_JSON']} -c {MUTABLE_ENV['FL_CLUSTER_JSON']}"
+    fl_cmd = f"python3 -m sbfl -f Jaccard {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov/* -s {MUTABLE_ENV['FL_JSON']} -i {MUTABLE_ENV['INFO_JSON']} -c {MUTABLE_ENV['FL_CLUSTER_JSON']}"
     print(f"[DEBUG] {fl_cmd}", flush=True)
     os.system(fl_cmd)
 
@@ -73,7 +73,7 @@ def run_apr():
     os.chdir(MUTABLE_ENV['VULCAN_OUTPUT_DIR'])
     os.makedirs(MUTABLE_ENV['MSV_WORKSPACE'], exist_ok=True)
     
-    msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
+    msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO} -s {MUTABLE_ENV['FL_JSON']}"
     print(f"[DEBUG] {msv_runner_cmd}", flush=True)
     os.system(msv_runner_cmd)
     
