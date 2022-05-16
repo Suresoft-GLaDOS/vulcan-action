@@ -129,7 +129,7 @@ def _gen_patch_info():
             json_data = json.load(json_file)
     for p, vp in islice(zip_longest(os.listdir(os.path.join(VULCAN_OUTPUT_DIR, "patch")), json_data), 10):
         if vp:
-            p = json_data[0]
+            p = vp[0]
         p_full_path = os.path.join(VULCAN_OUTPUT_DIR, "patch", p)
         with open(p_full_path) as f:
             code = f.read()
