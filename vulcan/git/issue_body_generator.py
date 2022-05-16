@@ -149,6 +149,7 @@ def generate_issue_body():
     title = "Vulcan"
     info = _gen_info()
     fl_info = _gen_fl_info()
+    patch_info = ""
     if os.listdir(os.getenv("MSV_PATCH_DIFF_PATH")):
         patch_info = _gen_patch_info()
     body = f"{info}{fl_info}{patch_info}"
