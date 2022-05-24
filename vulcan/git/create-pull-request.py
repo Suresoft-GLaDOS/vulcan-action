@@ -21,8 +21,6 @@ def create_pull_request(patch_branch):
 def run():
     print(f"[DEBUG] create pr", flush=True)
     validation_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation.json")
-    if not os.path.exists(validation_json_path) and len(os.listdir(MSV_PATCH_DIFF_PATH)) != 1:
-        return
     
     os.chdir(VULCAN_TARGET)
     if os.path.exists(validation_json_path):
