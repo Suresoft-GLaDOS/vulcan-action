@@ -146,6 +146,7 @@ def generate_issue_body():
     | ------------ |
     |  patch info  |
     '''
+    print(f"[DEBUG] create issue body", flush=True)
     title = "Vulcan"
     info = _gen_info()
     fl_info = _gen_fl_info()
