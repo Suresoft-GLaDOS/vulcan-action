@@ -21,12 +21,17 @@ def create_pull_request(patch_branch):
 def run():
     print(f"[DEBUG] create pr", flush=True)
     validation_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation.json")
+    validation_ai_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation_ai.json")
     
     os.chdir(VULCAN_TARGET)
     if os.path.exists(validation_json_path):
         with open(validation_json_path) as json_file:
             json_data = json.load(json_file)
         p = json_data[0][0]
+    elif os.path.exists(validation_ai_json_path):
+        with open(validation_ai_json_path) as json_file:
+            json_data = json.load(json_file)
+        p = json_data["results"][0]["id"]
     else:
         p = os.listdir(MSV_PATCH_DIFF_PATH)[0]
     
