@@ -123,10 +123,14 @@ def _gen_patch_info():
     
     body += _open_collapsed_section("plausible patch diff info")
     validation_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation.json")
+    validation_ai_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation_ai.json")
     json_data = []
     if os.path.exists(validation_json_path):
         with open(validation_json_path) as json_file:
             json_data = json.load(json_file)
+    elif os.path.exists(validation_ai_json_path):
+        with open(validation_ai_json_path) as json_file:
+            json_data = [ [d["id"]] for d in json.load(json_file)["results"] ]
     for p, vp in islice(zip_longest(os.listdir(os.path.join(VULCAN_OUTPUT_DIR, "patch")), json_data), 10):
         if vp:
             p = vp[0]
