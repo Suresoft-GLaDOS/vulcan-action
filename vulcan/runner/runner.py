@@ -147,7 +147,8 @@ def handle_cluster(cluster_data):
         if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
             run_cxbuild()
         run_create_issue()
-        run_create_pull_request()
+        if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
+            run_create_pull_request()
 
 
 def run_modules():
@@ -168,7 +169,8 @@ def run_modules():
     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
         run_cxbuild()
     run_create_issue()
-    run_create_pull_request()
+    if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
+        run_create_pull_request()
 
 
 run_modules()
