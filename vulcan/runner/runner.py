@@ -9,6 +9,7 @@ VULCAN_TARGET_NAME = os.getenv("VULCAN_TARGET_NAME")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET")
 VULCAN_YML_PATH = os.path.join(VULCAN_TARGET, "vulcan.yml")
 VULCAN_YML_TIME_OUT = os.getenv("VULCAN_YML_TIME_OUT")
+VULCAN_YML_TEST_TIME_OUT = os.getenv("VULCAN_YML_TEST_TIME_OUT")
 RUN_FL = os.getenv("RUN_FL")
 RUN_APR = os.getenv("RUN_APR")
 
@@ -77,7 +78,7 @@ def run_apr():
     print(f"[DEBUG] {msv_runner_cmd}", flush=True)
     os.system(msv_runner_cmd)
     
-    msv_search_cmd = f"python3 {MSV_SEARCH_REPO}/msv-search.py -o {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output -w {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']} -T {VULCAN_YML_TIME_OUT} -m prophet -p {MSV_REPO} --use-pass-test -- {MSV_REPO}/tools/msv-test.py {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/src {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/tests {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}"
+    msv_search_cmd = f"python3 {MSV_SEARCH_REPO}/msv-search.py -o {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output -w {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']} -T {VULCAN_YML_TIME_OUT} -t {VULCAN_YML_TEST_TIME_OUT} -m prophet -p {MSV_REPO} --use-pass-test -- {MSV_REPO}/tools/msv-test.py {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/src {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/tests {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}"
     print(f"[DEBUG] {msv_search_cmd}", flush=True)
     os.system(msv_search_cmd)
     

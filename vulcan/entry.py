@@ -37,6 +37,7 @@ def _parse_yaml():
     os.environ["VULCAN_YML_EXTRA_BUILD_ENV_SETTING_COMMAND"] = yml["extra-build-env-setting-commands"]
     os.environ["VULCAN_YML_TEST_CANDIDATES"] = yml["test-candidates"]
     os.environ["VULCAN_YML_TIME_OUT"] = yml["time-out"]
+    os.environ["VULCAN_YML_TEST_TIME_OUT"] = yml["test-time-out"] if "test-time-out" in yml else "3000"
     os.environ["VULCAN_YML_MAX_PATCH"] = yml["max-patch-number"]
     os.environ["VULCAN_YML_TEST_BUILD_COMMAND"] = yml["test-build-command"]
     os.environ["VULCAN_YML_COVERAGE_BUILD_COMMAND"] = yml["coverage-build-command"]
