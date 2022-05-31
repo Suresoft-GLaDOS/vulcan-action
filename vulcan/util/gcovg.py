@@ -51,6 +51,12 @@ def parse_args():
                               default: false',
                         action='store_true',
                         default=False)
+    parser.add_argument('-e',
+                        '--exclusion-list',
+                        nargs='+',
+                        help='files to exclude in regex patterns',
+                        required=False,
+                        default=[])
     return parser.parse_args()
 
 
@@ -68,12 +74,19 @@ def main():
         for gcov_file in root_dir.rglob('*.gcov'):
             pathlib.Path(gcov_file).unlink()
 
+    exclusion_list = []
+    for exclusion_pattern in args.exclusion_list:
+        for e in root_dir.rglob(exclusion_pattern):
+            exclusion_list.append(e)
+    print(f'exclusion_list = {exclusion_list}')
+
     # glob all file's list
     target_file_list = []
     for file in args.file:
         for p in root_dir.rglob(file):
-            target_file_list.append(pathlib.Path(p))
-
+            if p not in exclusion_list:
+                target_file_list.append(p)
+    print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
     for target_file in target_file_list:
         with cwd(str(pathlib.Path(target_file).parent)):
