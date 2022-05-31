@@ -75,17 +75,18 @@ def main():
             pathlib.Path(gcov_file).unlink()
 
     exclusion_list = []
-    for exclusion_pattern in exclusion_list:
+    for exclusion_pattern in args.exclusion_list:
         for e in root_dir.rglob(exclusion_pattern):
             exclusion_list.append(e)
+    print(f'exclusion_list = {exclusion_list}')
 
     # glob all file's list
     target_file_list = []
     for file in args.file:
         for p in root_dir.rglob(file):
-            if p is not in exclusion_list:
+            if p not in exclusion_list:
                 target_file_list.append(p)
-
+    print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
     for target_file in target_file_list:
         with cwd(str(pathlib.Path(target_file).parent)):

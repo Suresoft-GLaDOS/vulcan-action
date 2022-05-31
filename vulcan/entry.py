@@ -32,8 +32,8 @@ def _parse_yaml():
     pprint.pprint(yml)
     
     os.environ["VULCAN_YML_NAME"] = yml["name"]
-    os.environ["VULCAN_YML_URL"] = yml["url"]
-    os.environ["VULCAN_YML_DOCKER_IMAGE"] = yml["docker-image"]
+    os.environ["VULCAN_YML_URL"] = yml["url"] if "url" in yml else ""
+    os.environ["VULCAN_YML_DOCKER_IMAGE"] = yml["docker-image"] if "docker-image" in yml else ""
     os.environ["VULCAN_YML_EXTRA_BUILD_ENV_SETTING_COMMAND"] = yml["extra-build-env-setting-commands"]
     os.environ["VULCAN_YML_TEST_CANDIDATES"] = yml["test-candidates"]
     os.environ["VULCAN_YML_TIME_OUT"] = yml["time-out"]
