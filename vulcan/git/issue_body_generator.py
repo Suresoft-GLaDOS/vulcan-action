@@ -127,13 +127,13 @@ def _gen_patch_info():
     json_data = []
     if os.path.exists(validation_json_path):
         with open(validation_json_path) as json_file:
-            json_data = json.load(json_file)
+            json_data = json.load(json_file)["results"]
     elif os.path.exists(validation_ai_json_path):
         with open(validation_ai_json_path) as json_file:
-            json_data = [ [d["id"]] for d in json.load(json_file)["results"] ]
+            json_data = json.load(json_file)["results"]
     for p, vp in islice(zip_longest(os.listdir(os.path.join(VULCAN_OUTPUT_DIR, "patch")), json_data), 10):
         if vp:
-            p = vp[0]
+            p = vp["id"]
         p_full_path = os.path.join(VULCAN_OUTPUT_DIR, "patch", p)
         with open(p_full_path) as f:
             code = f.read()

@@ -27,7 +27,7 @@ def run():
     if os.path.exists(validation_json_path):
         with open(validation_json_path) as json_file:
             json_data = json.load(json_file)
-        p = json_data[0][0]
+        p = json_data["results"][0]["id"]
     elif os.path.exists(validation_ai_json_path):
         with open(validation_ai_json_path) as json_file:
             json_data = json.load(json_file)

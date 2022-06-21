@@ -8,6 +8,9 @@ inputs:
   path:
     description: 'Checkout directory name'
     default: 'target'
+  validator:
+    description: 'Patch validator to use. [No | CT | AI | All]'
+    default: 'All'
   
 runs:
   using: 'composite'
@@ -25,3 +28,4 @@ runs:
       env:
         TOKEN: ${{ inputs.token }}
         VULCAN_TARGET: ${{ inputs.path }}
+        VALIDATOR: ${{ inputs.validator }}
