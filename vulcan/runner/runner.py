@@ -20,9 +20,6 @@ SBFL_REPO = os.environ["SBFL_REPO"] = r"/home/workspace/sbfl"
 MSV_REPO = os.environ["MSV_REPO"] = r"/home/workspace/msv"
 MSV_SEARCH_REPO = os.environ["MSV_SEARCH_REPO"] = r"/home/workspace/msv-search"
 
-# for CXBuild
-CXBUILD_REPO = os.environ["CXBUILD_REPO"] = r"/home/workspace/cxbuild"
-
 # mutable environment variables
 MUTABLE_ENV = dict()
 
@@ -93,19 +90,11 @@ def run_apr():
         json.dump(plausible_data, f)
 
 
-def run_cxbuild():
+def run_validate():
     """
-    1. capture metaprogram
-    2. run client
+    1. run validator
     """
-    os.chdir(f"{MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/src")
-    os.system("git clean -fdx")
-    
-    cxbuild_cmd = f"python3 {CXBUILD_REPO}/cxbuild.py capture make LDFLAGS=\"-Wl,-rpath={MSV_REPO}/src/.libs -L{MSV_REPO}/src/.libs -ltest_runtime\""
-    print(f"[DEBUG] {cxbuild_cmd}", flush=True)
-    os.system(cxbuild_cmd)
-    
-    validation_cmd = f"python3 /home/workspace/client.py"
+    validation_cmd = f"python3 /home/workspace/validator_client/validator.py"
     print(f"[DEBUG] {validation_cmd}", flush=True)
     os.system(validation_cmd)
 
@@ -146,7 +135,7 @@ def handle_cluster(cluster_data):
         if not os.path.exists(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"]):
             os.makedirs(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"], exist_ok=True)
         if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
-            run_cxbuild()
+            run_validate()
         run_create_issue()
         if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
             run_create_pull_request()
@@ -168,7 +157,7 @@ def run_modules():
     if not os.path.exists(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"]):
         os.makedirs(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"], exist_ok=True)
     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
-        run_cxbuild()
+        run_validate()
     run_create_issue()
     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
         run_create_pull_request()
