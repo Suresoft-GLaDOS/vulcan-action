@@ -94,7 +94,7 @@ def run_validate():
     """
     1. run validator
     """
-    validation_cmd = f"python3 /home/workspace/validator_client/validator.py"
+    validation_cmd = f"python3 /home/workspace/client/client.py"
     print(f"[DEBUG] {validation_cmd}", flush=True)
     os.system(validation_cmd)
 
