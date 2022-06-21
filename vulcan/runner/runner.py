@@ -20,6 +20,9 @@ SBFL_REPO = os.environ["SBFL_REPO"] = r"/home/workspace/sbfl"
 MSV_REPO = os.environ["MSV_REPO"] = r"/home/workspace/msv"
 MSV_SEARCH_REPO = os.environ["MSV_SEARCH_REPO"] = r"/home/workspace/msv-search"
 
+# for Client
+CLIENT_REPO = os.environ["CLIENT"] = r"/home/workspace/client"
+
 # mutable environment variables
 MUTABLE_ENV = dict()
 
@@ -94,7 +97,7 @@ def run_validate():
     """
     1. run validator
     """
-    validation_cmd = f"python3 /home/workspace/client/client.py"
+    validation_cmd = f"python3 {os.path.join(CLIENT_REPO, 'client.py')}"
     print(f"[DEBUG] {validation_cmd}", flush=True)
     os.system(validation_cmd)
 
