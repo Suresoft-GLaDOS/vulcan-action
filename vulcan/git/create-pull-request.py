@@ -42,7 +42,7 @@ def run():
     patch_branch = f"{GITHUB_REF_NAME}-auto-patch-{now}"
     os.system(f"git checkout -b {patch_branch}")
     patch_full_path = os.path.join(MSV_PATCH_DIFF_PATH, p)
-    os.system(f"patch -p0 {patch_full_path}")
+    os.system(f"patch -p0 < {patch_full_path}")
     os.system(f"git add .")
     os.system("git commit -m \"Committed the automatically generated patch\"")
     os.system(f"git push origin {patch_branch}")
