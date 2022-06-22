@@ -74,7 +74,7 @@ def run_apr():
     os.chdir(MUTABLE_ENV['VULCAN_OUTPUT_DIR'])
     os.makedirs(MUTABLE_ENV['MSV_WORKSPACE'], exist_ok=True)
     
-    msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO} -s {MUTABLE_ENV['FL_JSON']}"
+    msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -s {MUTABLE_ENV['FL_JSON']} -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
     print(f"[DEBUG] {msv_runner_cmd}", flush=True)
     os.system(msv_runner_cmd)
     
