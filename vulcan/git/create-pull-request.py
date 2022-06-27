@@ -8,6 +8,7 @@ GITHUB_REF_NAME = os.getenv("GITHUB_REF_NAME", None)
 MSV_PATCH_DIFF_PATH = os.getenv("MSV_PATCH_DIFF_PATH", None)
 VULCAN_OUTPUT_DIR = os.getenv("VULCAN_OUTPUT_DIR")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET", None)
+VALIDATION_REPORT_DIR = os.path.join(VULCAN_OUTPUT_DIR, "validation")
 
 
 def create_pull_request(patch_branch):
@@ -20,16 +21,11 @@ def create_pull_request(patch_branch):
 
 def run():
     print(f"[DEBUG] create pr", flush=True)
-    validation_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation.json")
-    validation_ai_json_path = os.path.join(VULCAN_OUTPUT_DIR, "validation_ai.json")
+    validation_json_path = os.path.join(VALIDATION_REPORT_DIR, "validation.json")
     
     os.chdir(VULCAN_TARGET)
     if os.path.exists(validation_json_path):
         with open(validation_json_path) as json_file:
-            json_data = json.load(json_file)
-        p = json_data["results"][0]["id"]
-    elif os.path.exists(validation_ai_json_path):
-        with open(validation_ai_json_path) as json_file:
             json_data = json.load(json_file)
         p = json_data["results"][0]["id"]
     else:
