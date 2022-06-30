@@ -2,7 +2,7 @@
 #!/bin/bash
 
 _create_issue() {
-	echo ==========Creating Issue==========
+	echo [DEBUG] Creating Issue...
 	VULCAN_ISSUE_CREATE_RESULT=$(\
 		gh issue create \
 		-t "$(cat $VULCAN_OUTPUT_DIR/issue_title)" \
@@ -10,7 +10,6 @@ _create_issue() {
 		-b "$(cat $VULCAN_OUTPUT_DIR/issue_body)" \
 	)
 	printf "$VULCAN_ISSUE_CREATE_RESULT\n" > $VULCAN_OUTPUT_DIR/issue_link
-	echo ==================================
 }
 
 python3 $GITHUB_ACTION_PATH/vulcan/git/issue_title_generator.py

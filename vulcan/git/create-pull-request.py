@@ -19,22 +19,14 @@ def construct_pr_info():
     PR_INFO["issue_number"] = PR_INFO["issue_link"].split("/")[-1]
     
     print(f"[DEBUG] generate pr title", flush=True)
-    with open(os.path.join(VULCAN_OUTPUT_DIR, "failed.command")) as f:
-        failed_cmds = f.readlines()
-    len_failed_cmds = len(failed_cmds)
-    if len_failed_cmds > 1:
-        pr_title = f"Fixed test(s) {failed_cmds[0]} etc. (#{PR_INFO['issue_number']})"
-    elif len_failed_cmds == 1:
-        pr_title = f"Fixed test {failed_cmds[0]} (#{PR_INFO['issue_number']})"
-    else:
-        pr_title = f"[CRITICAL] No failed test"
+    pr_title = f"Fixed #{PR_INFO['issue_number']}"
     PR_INFO["title"] = pr_title
 
 
 def create_pull_request(patch_branch):
     pr_title = PR_INFO["title"]
     commit = os.getenv('GITHUB_SHA')
-    pr_body = f"This PR is auto-patch by Vulcan for commit: {commit} \n Fixed #{PR_INFO['issue_number']}"
+    pr_body = f"This PR is auto-patch by Vulcan for commit: {commit} Fixed #{PR_INFO['issue_number']}"
     pr_command = f"gh pr create -B {GITHUB_REF_NAME} -H {patch_branch} -t \"{pr_title}\" -b\"{pr_body}\""
     os.system(pr_command)
 
