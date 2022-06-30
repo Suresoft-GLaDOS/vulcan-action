@@ -127,7 +127,7 @@ def handle_cluster(cluster_data):
         shutil.copytree(f"{VULCAN_OUTPUT_DIR_BASE}/gcov", f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov", dirs_exist_ok=True, ignore=lambda *args: exclusion_list)
         test_list = yaml_data["test-list"].splitlines()
         for i, e in enumerate(exclusion_list):
-            del test_list[int(e)-i]
+            test_list[e] = ""
         test_list = "\n".join(test_list)
         yaml_data["test-list"] = test_list
         with open(VULCAN_YML_PATH, "w") as f:
