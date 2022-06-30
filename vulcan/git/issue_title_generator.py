@@ -10,6 +10,8 @@ def collect_failed_test_command():
         for g in os.listdir(gcov_dir):
             with open(os.path.join(gcov_dir, g, "result.test")) as result:
                 test_result = result.read()
+            with open(os.path.join(gcov_dir, g, "test.command")) as command:
+                test_command = command.read()
             if test_result == "failed":
                 failed.write(test_command + "\n")
 
