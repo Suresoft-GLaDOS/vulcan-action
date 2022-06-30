@@ -15,7 +15,7 @@ PR_INFO = dict()
 
 def construct_pr_info():
     with open(os.path.join(VULCAN_OUTPUT_DIR, "issue_link")) as f:
-        PR_INFO["issue_link"] = f.read.strip()
+        PR_INFO["issue_link"] = f.read().strip()
     PR_INFO["issue_number"] = PR_INFO["issue_link"].split("/")[-1]
     
     print(f"[DEBUG] generate pr title", flush=True)
