@@ -10,11 +10,31 @@ VULCAN_OUTPUT_DIR = os.getenv("VULCAN_OUTPUT_DIR")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET", None)
 VALIDATION_REPORT_DIR = os.path.join(VULCAN_OUTPUT_DIR, "validation")
 
+PR_INFO = dict()
+
+
+def construct_pr_info():
+    with open(os.path.join(VULCAN_OUTPUT_DIR, "issue_link")) as f:
+        PR_INFO["issue_link"] = f.read()
+    PR_INFO["issue_number"] = PR_INFO["issue_link"].split("/")[-1]
+    
+    print(f"[DEBUG] generate pr title", flush=True)
+    with open(os.path.join(VULCAN_OUTPUT_DIR, "failed.command")) as f:
+        failed_cmds = f.readlines()
+    len_failed_cmds = len(failed_cmds)
+    if len_failed_cmds > 1:
+        pr_title = f"Fixed test(s) {failed_cmds[0]} etc. (#{PR_INFO['issue_number']})"
+    elif len_failed_cmds == 1:
+        pr_title = f"Fixed test {failed_cmds[0]} (#{PR_INFO['issue_number']})"
+    else:
+        pr_title = f"[CRITICAL] No failed test"
+    PR_INFO["title"] = pr_title
+
 
 def create_pull_request(patch_branch):
-    pr_title = "Vulcan"
+    pr_title = PR_INFO["title"]
     commit = os.getenv('GITHUB_SHA')
-    pr_body = f"This PR is auto-patch by Vulcan for commit: {commit}"
+    pr_body = f"This PR is auto-patch by Vulcan for commit: {commit} \n Fixed #{PR_INFO['issue_number']}"
     pr_command = f"gh pr create -B {GITHUB_REF_NAME} -H {patch_branch} -t \"{pr_title}\" -b\"{pr_body}\""
     os.system(pr_command)
 
@@ -40,9 +60,11 @@ def run():
     patch_full_path = os.path.join(MSV_PATCH_DIFF_PATH, p)
     os.system(f"patch -p0 < {patch_full_path}")
     os.system(f"git add .")
-    os.system("git commit -m \"Committed the automatically generated patch\"")
+    os.system(f"git commit -m \"Fixed automatically #{PR_INFO['issue_number']} by Vulcan\"")
     os.system(f"git push origin {patch_branch}")
     create_pull_request(patch_branch)
     os.system(f"git checkout {GITHUB_REF_NAME}")
 
+
+construct_pr_info()
 run()

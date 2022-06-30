@@ -5,13 +5,14 @@ _create_issue() {
 	echo ==========Creating Issue==========
 	VULCAN_ISSUE_CREATE_RESULT=$(\
 		gh issue create \
-		-t "Vulcan" \
+		-t "$(cat $VULCAN_OUTPUT_DIR/issue_title)" \
 		-a "$GITHUB_ACTOR" \
 		-b "$(cat $VULCAN_OUTPUT_DIR/issue_body)" \
 	)
-	printf "$VULCAN_ISSUE_CREATE_RESULT\n"
+	printf "$VULCAN_ISSUE_CREATE_RESULT\n" > $VULCAN_OUTPUT_DIR/issue_link
 	echo ==================================
 }
 
+python3 $GITHUB_ACTION_PATH/vulcan/git/issue_title_generator.py
 python3 $GITHUB_ACTION_PATH/vulcan/git/issue_body_generator.py
 _create_issue
