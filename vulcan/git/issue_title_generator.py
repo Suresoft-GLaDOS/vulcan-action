@@ -13,7 +13,7 @@ def collect_failed_test_command():
             with open(os.path.join(gcov_dir, g, "test.command")) as command:
                 test_command = command.read()
             if test_result == "failed":
-                failed.write(test_command + "\n")
+                failed.write(test_command.strip() + "\n")
 
 
 def generate_issue_title():
