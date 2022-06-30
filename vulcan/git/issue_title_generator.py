@@ -6,12 +6,12 @@ VULCAN_OUTPUT_DIR = os.getenv("VULCAN_OUTPUT_DIR")
 def collect_failed_test_command():
     print(f"[DEBUG] collect failed test command", flush=True)
     gcov_dir = os.path.join(VULCAN_OUTPUT_DIR, "gcov")
-    for g in os.listdir(gcov_dir):
-        with open(os.path.join(gcov_dir, g)) as f:
-            test_result = f.read()
-        if test_result == "failed":
-            with open(os.path.join(VULCAN_OUTPUT_DIR, "failed.command"), "a") as f:
-                f.write(test_command + "\n")
+    with open(os.path.join(VULCAN_OUTPUT_DIR, "failed.command"), "a") as failed:
+        for g in os.listdir(gcov_dir):
+            with open(os.path.join(gcov_dir, g, "result.test")) as result:
+                test_result = result.read()
+            if test_result == "failed":
+                failed.write(test_command + "\n")
 
 
 def generate_issue_title():
