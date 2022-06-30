@@ -2,7 +2,7 @@
 #!/bin/bash
 
 _create_issue() {
-	echo [DEBUG] Creating Issue...
+	echo [DEBUG] create issue
 	VULCAN_ISSUE_CREATE_RESULT=$(\
 		gh issue create \
 		-t "$(cat $VULCAN_OUTPUT_DIR/issue_title)" \
