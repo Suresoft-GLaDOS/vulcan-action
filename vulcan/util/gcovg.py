@@ -84,7 +84,6 @@ def main():
     target_file_list = []
     for file in args.file:
         for p in root_dir.rglob(file):
-            p = p.replace("/.libs", "")
             print("Target: " + p)
             if p not in exclusion_list:
                 target_file_list.append(p)
