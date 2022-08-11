@@ -84,7 +84,7 @@ def main():
     target_file_list = []
     for file in args.file:
         for p in root_dir.rglob(file):
-            p = pathlib.Path(str(p).replace("/.libs", ""))
+#             p = pathlib.Path(str(p).replace("/.libs", ""))
             if p not in exclusion_list:
                 target_file_list.append(p)
     print(f'target_file_list = {target_file_list}')
