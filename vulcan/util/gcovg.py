@@ -87,12 +87,10 @@ def main():
         for e in root_dir.rglob(exclusion_pattern):
             exclusion_list.append(e)
     print(f'exclusion_list = {exclusion_list}')
-    print(args.exclusion_list)
 
     inclusion_list = []
     print("Include coverage: " + VULCAN_YML_GCOV_INCLUSION_LIST)
-    gcov_inclusion_list = VULCAN_YML_GCOV_INCLUSION_LIST.splitlines() if VULCAN_YML_GCOV_INCLUSION_LIST is not None else ""
-    for e in root_dir.rglob(gcov_inclusion_list[0]):  #TODO: It treat only one element for now, have to make it as a list.
+    for e in root_dir.rglob(VULCAN_YML_GCOV_INCLUSION_LIST):  #TODO: It treat only one element for now, have to make it as a list.
         inclusion_list.append(e)
     print(f'inclusion_list = {inclusion_list}')
 
