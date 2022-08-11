@@ -97,7 +97,7 @@ def main():
     # glob all file's list
     target_file_list = []
     if len(inclusion_list) != 0:
-        print(inclusion_list)
+        # print(inclusion_list)
         for file in args.file:
             for p in root_dir.rglob(file):
                 if p in inclusion_list:
@@ -111,6 +111,7 @@ def main():
     # run gcov and make metadata
     for target_file in target_file_list:
         with cwd(str(pathlib.Path(target_file).parent)):
+            print([args.gcov_path, str(target_file.name)])
             gcov_proc = subprocess.Popen([args.gcov_path, str(target_file.name)],
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE,
