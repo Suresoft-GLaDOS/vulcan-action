@@ -42,6 +42,7 @@ def _parse_yaml():
     os.environ["VULCAN_YML_TEST_BUILD_COMMAND"] = yml["test-build-command"]
     os.environ["VULCAN_YML_COVERAGE_BUILD_COMMAND"] = yml["coverage-build-command"]
     os.environ["VULCAN_YML_GCOV_EXCLUSION_LIST"] = yml["gcov-exclusion-list"] if "gcov-exclusion-list" in yml else ""
+    os.environ["VULCAN_YML_GCOV_INCLUSION_LIST"] = yml["gcov-inclusion-list"] if "gcov-inclusion-list" in yml else ""
     os.environ["VULCAN_YML_TEST_TYPE"] = yml["test-type"]
     os.environ["VULCAN_YML_TEST_LIST"] = yml["test-list"]
     os.environ["VULCAN_YML_TEST_CASE"] = yml["test-case"]
