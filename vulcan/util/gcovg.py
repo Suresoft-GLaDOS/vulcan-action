@@ -81,6 +81,8 @@ def main():
         for gcov_file in root_dir.rglob('*.gcov'):
             pathlib.Path(gcov_file).unlink()
 
+    source_dir_list = root_dir.rglob('*.c')
+
     exclusion_list = []
 
     for exclusion_pattern in args.exclusion_list:
@@ -89,10 +91,10 @@ def main():
     print(f'exclusion_list = {exclusion_list}')
 
     inclusion_list = []
-    print("Include coverage: " + VULCAN_YML_GCOV_INCLUSION_LIST)
+    # print("Include coverage: " + VULCAN_YML_GCOV_INCLUSION_LIST)
     for e in root_dir.rglob(VULCAN_YML_GCOV_INCLUSION_LIST):  #TODO: It treat only one element for now, have to make it as a list.
         inclusion_list.append(e)
-    print(f'inclusion_list = {inclusion_list}')
+    # print(f'inclusion_list = {inclusion_list}')
 
     # glob all file's list
     target_file_list = []
@@ -107,10 +109,12 @@ def main():
             for p in root_dir.rglob(file):
                 if p not in exclusion_list:
                     target_file_list.append(p)
-    print(f'target_file_list = {target_file_list}')
+    # print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
-    for target_file in target_file_list:
+    # for target_file in target_file_list:
+    for target_file in source_dir_list:
         with cwd(str(pathlib.Path(target_file).parent)):
+            print(str(pathlib.Path(target_file).parent))
             print([args.gcov_path, str(target_file)])
             gcov_proc = subprocess.Popen([args.gcov_path, str(target_file.name)],
                                          stdout=subprocess.PIPE,
