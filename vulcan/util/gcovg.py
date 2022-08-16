@@ -82,7 +82,11 @@ def main():
             pathlib.Path(gcov_file).unlink()
 
     source_dir_list = root_dir.rglob('*.c')
+    source_parent_set = set()
+    for path in source_dir_list:
+        source_parent_set.add(pathlib.Path(path).parent)
 
+    print(source_parent_set)
     exclusion_list = []
 
     for exclusion_pattern in args.exclusion_list:
@@ -112,8 +116,14 @@ def main():
     # print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
     # for target_file in target_file_list:
-    for target_file in source_dir_list:
-        with cwd(str(pathlib.Path(target_file).parent)):
+    for target_file in target_file_list:
+        target_src = ''
+        for target_source_file in source_dir_list:
+            print(f"Find target source with target file")
+            print(target_file.split("/")[-1].replace(".o", ".c"))
+            if target_file.split("/")[-1].replace(".o", ".c") in target_source_file:
+                target_src = target_source_file
+        with cwd(str(pathlib.Path(target_src).parent)):
             print(str(pathlib.Path(target_file).parent))
             print([args.gcov_path, str(target_file)])
             gcov_proc = subprocess.Popen([args.gcov_path, str(target_file.name)],
