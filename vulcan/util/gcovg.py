@@ -86,7 +86,7 @@ def main():
     for path in source_dir_list:
         source_parent_set.add(pathlib.Path(path).parent)
 
-    print(source_parent_set)
+    print(source_dir_list)
     exclusion_list = []
 
     for exclusion_pattern in args.exclusion_list:
@@ -119,7 +119,7 @@ def main():
     for target_file in target_file_list:
         target_src = ''
         for target_source_file in source_dir_list:
-            print(f"Find target source with target file")
+            print("Find target source with target file")
             print(target_file.split("/")[-1].replace(".o", ".c"))
             if target_file.split("/")[-1].replace(".o", ".c") in target_source_file:
                 target_src = target_source_file
