@@ -125,7 +125,7 @@ def main():
                 target_src = target_source_file
                 print(f'Target src: {str(target_file)}')
         with cwd(str(pathlib.Path(target_src).parent)):
-            print(str(pathlib.Path(target_file).parent))
+            print(str(pathlib.Path(target_src).parent))
             print([args.gcov_path, str(target_file)])
             gcov_proc = subprocess.Popen([args.gcov_path, str(target_file.name)],
                                          stdout=subprocess.PIPE,
