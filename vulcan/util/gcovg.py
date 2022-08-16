@@ -123,7 +123,8 @@ def main():
             out, err = gcov_proc.communicate()
 
     gcov_info_dict = dict()
-    for parent_dir in {f.parent for f in target_file_list}:
+    # for parent_dir in {f.parent for f in target_file_list}:
+    for parent_dir in {f.parent for f in source_dir_list}:
         for gcov_file_path in pathlib.Path(parent_dir).glob("*.gcov"):
             with open(gcov_file_path, encoding='utf-8') as gcov_file:
                 gcov_source_name = gcov_file.readline().rstrip().split(':', 3)[-1]
