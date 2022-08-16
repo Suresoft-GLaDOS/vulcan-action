@@ -83,10 +83,12 @@ def main():
 
     source_dir_list = root_dir.rglob('*.c')
     source_parent_set = set()
+    source_str_list = list()
     for path in source_dir_list:
         source_parent_set.add(pathlib.Path(path).parent)
+        source_str_list = str(path)
 
-    print(source_dir_list)
+    print(source_str_list)
     exclusion_list = []
 
     for exclusion_pattern in args.exclusion_list:
@@ -118,7 +120,7 @@ def main():
     # for target_file in target_file_list:
     for target_file in target_file_list:
         target_src = ''
-        for target_source_file in source_dir_list:
+        for target_source_file in source_str_list:
             print("Find target source with target file")
             print(target_file.split("/")[-1].replace(".o", ".c"))
             if target_file.split("/")[-1].replace(".o", ".c") in target_source_file:
