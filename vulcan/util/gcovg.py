@@ -122,8 +122,8 @@ def main():
         target_src = ''
         for target_source_file in source_str_list:
             print("Find target source with target file")
-            print(target_file.split("/")[-1].replace(".o", ".c"))
-            if target_file.split("/")[-1].replace(".o", ".c") in target_source_file:
+            print(str(target_file).split("/")[-1].replace(".o", ".c"))
+            if str(target_file).split("/")[-1].replace(".o", ".c") in target_source_file:
                 target_src = target_source_file
         with cwd(str(pathlib.Path(target_src).parent)):
             print(str(pathlib.Path(target_file).parent))
