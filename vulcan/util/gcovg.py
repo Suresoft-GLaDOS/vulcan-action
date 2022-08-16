@@ -136,7 +136,8 @@ def main():
 
     gcov_info_dict = dict()
     # for parent_dir in {f.parent for f in target_file_list}:
-    for parent_dir in {f.parent for f in source_dir_list}:
+    for file_dir in source_str_list:
+        parent_dir = pathlib.Path(file_dir).parent
         print(parent_dir)
         for gcov_file_path in pathlib.Path(parent_dir).rglob("*.gcov"):
             print("gcov: " + str(gcov_file_path))
