@@ -21,7 +21,7 @@ def _clean_after_collect_gcov():
     gcov_exclusion_list = VULCAN_YML_GCOV_EXCLUSION_LIST.splitlines() if VULCAN_YML_GCOV_EXCLUSION_LIST is not None else ""
     gcov_exclusion_list_command = ''.join([' -e ' + e for e in gcov_exclusion_list])
     os.system(f"python3 {GITHUB_ACTION_PATH}/vulcan/util/gcovg.py -r {VULCAN_TARGET} -f \"*.o\" -o {VULCAN_OUTPUT_DIR}/gcov_map.json {gcov_exclusion_list_command}")
-    # os.system(f"find {VULCAN_TARGET} -type f -name \"*.gcov\" -exec mv {'{}'} {GCOV_PATH}/{TEST_INDEX} \;")
+    os.system(f"find {VULCAN_TARGET} -type f -name \"*.gcov\" -exec mv {'{}'} {GCOV_PATH}/{TEST_INDEX} \;")
     os.system(f"find {VULCAN_TARGET} -type f -name \"*.gcda\" -delete")
 
 

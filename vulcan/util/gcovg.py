@@ -86,7 +86,7 @@ def main():
     source_str_list = list()
     for path in source_dir_list:
         source_parent_set.add(pathlib.Path(path).parent)
-        source_str_list = str(path)
+        source_str_list.append(str(path))
 
     print(source_str_list)
     exclusion_list = []
