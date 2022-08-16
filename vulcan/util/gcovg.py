@@ -88,7 +88,7 @@ def main():
         source_parent_set.add(pathlib.Path(path).parent)
         source_str_list.append(str(path))
 
-    print(source_str_list)
+    # print(source_str_list)
     exclusion_list = []
 
     for exclusion_pattern in args.exclusion_list:
@@ -123,10 +123,10 @@ def main():
         for target_source_file in source_str_list:
             if str(target_file).split("/")[-1].replace(".o", ".c") in target_source_file:
                 target_src = target_source_file
-                print(f'Target src: {str(target_file)}')
+                # print(f'Target src: {str(target_file)}')
         with cwd(str(pathlib.Path(target_src).parent)):
-            print(str(pathlib.Path(target_src).parent))
-            print([args.gcov_path, str(target_file)])
+            # print(str(pathlib.Path(target_src).parent))
+            # print([args.gcov_path, str(target_file)])
             os.chdir(str(pathlib.Path(target_src).parent))
             gcov_proc = subprocess.Popen([args.gcov_path, str(target_file)],
                                          stdout=subprocess.PIPE,
@@ -140,7 +140,7 @@ def main():
         parent_dir = pathlib.Path(file_dir).parent
         print(parent_dir)
         for gcov_file_path in pathlib.Path(parent_dir).rglob("*.gcov"):
-            print("gcov: " + str(gcov_file_path))
+            # print("gcov: " + str(gcov_file_path))
             with open(gcov_file_path, encoding='utf-8') as gcov_file:
                 gcov_source_name = gcov_file.readline().rstrip().split(':', 3)[-1]
                 if pathlib.Path(gcov_source_name).is_absolute():
