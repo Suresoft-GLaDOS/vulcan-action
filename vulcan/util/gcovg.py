@@ -124,9 +124,11 @@ def main():
             if str(target_file).split("/")[-1].replace(".o", ".c") in target_source_file:
                 target_src = target_source_file
                 # print(f'Target src: {str(target_file)}')
-        with cwd(str(pathlib.Path(target_src).parent)):
-            # print(str(pathlib.Path(target_src).parent))
-            # print([args.gcov_path, str(target_file)])
+
+        # with cwd(str(pathlib.Path(target_src).parent)):
+        with cwd(str(root_dir)):
+            print(str(root_dir))
+            print([args.gcov_path, str(target_file)])
             os.chdir(str(pathlib.Path(target_src).parent))
             gcov_proc = subprocess.Popen([args.gcov_path, str(target_file)],
                                          stdout=subprocess.PIPE,
