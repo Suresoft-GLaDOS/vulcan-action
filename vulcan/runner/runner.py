@@ -85,6 +85,10 @@ def run_apr():
     diff_gen_cmd = f"python3 {MSV_SEARCH_REPO}/diff_gen.py -g -i {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output -o {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/patch {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}"
     print(f"[DEBUG] {diff_gen_cmd}", flush=True)
     os.system(diff_gen_cmd)
+
+    post_pro_cmd = f"python3 {GITHUB_ACTION_PATH}/vulcan/util/post_processing.py"
+    print(f"[DEBUG] {post_pro_cmd}", flush=True)
+    os.system(post_pro_cmd)
     
     with open(MUTABLE_ENV["MSV_JSON"]) as f:
         json_data = json.load(f)
