@@ -12,6 +12,7 @@ VULCAN_YML_TIME_OUT = os.getenv("VULCAN_YML_TIME_OUT")
 VULCAN_YML_TEST_TIME_OUT = os.getenv("VULCAN_YML_TEST_TIME_OUT")
 RUN_FL = os.getenv("RUN_FL")
 RUN_APR = os.getenv("RUN_APR")
+VALIDATOR = os.getenv("VALIDATOR", None)
 
 # for SBFL
 SBFL_REPO = os.environ["SBFL_REPO"] = r"/home/workspace/sbfl"
@@ -97,6 +98,10 @@ def run_validate():
     """
     1. run validator
     """
+    if VALIDATOR != "CT" and VALIDATOR != "AI":
+        print(f"[DEBUG] Validator not working")
+        return
+    
     validation_cmd = f"python3 {os.path.join(CLIENT_REPO, 'client.py')}"
     print(f"[DEBUG] {validation_cmd}", flush=True)
     os.system(validation_cmd)

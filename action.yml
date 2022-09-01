@@ -1,5 +1,5 @@
 # action.yml
-name: 'Vulcan Auto Patch Generator'
+name: 'Vulcan'
 description: 'Auto fix on the branch which triggers a workflow'
 inputs:
   token:
@@ -8,24 +8,10 @@ inputs:
   path:
     description: 'Checkout directory name'
     default: 'target'
-  validator:
-    description: 'Patch validator to use. [No | CT | AI | All]'
-    default: 'All'
   
 runs:
-  using: 'composite'
-  steps:
-    - name: Set permissions as excutable
-      run: chmod +x -R $GITHUB_ACTION_PATH/vulcan
-      shell: bash
-    - name: Checkout vulcan target
-      uses: actions/checkout@v2
-      with:
-        token: ${{ inputs.token }}
-        path: ${{ inputs.path }}
-    - run: python3 $GITHUB_ACTION_PATH/vulcan/entry.py
-      shell: bash
-      env:
-        TOKEN: ${{ inputs.token }}
-        VULCAN_TARGET: ${{ inputs.path }}
-        VALIDATOR: ${{ inputs.validator }}
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - "-e TOKEN=${{ inputs.token }}"
+    - "-e VULCAN_TARGET=${{ inputs.path }}"
