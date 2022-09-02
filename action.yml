@@ -5,6 +5,9 @@ inputs:
   token:
     description: 'GITHUB_TOKEN'
     default: ${{ github.token }}
+  workspace:
+    description: 'GITHUB_WORKSPACE'
+    default: ${{ github.workspace }}
   path:
     description: 'Checkout directory name'
     default: 'target'
@@ -13,7 +16,7 @@ runs:
   using: "docker"
   image: "Dockerfile"
   args:
-    - ${{ github.workspace }}
+    - ${{ inputs.workspace }}
   env:
     TOKEN: ${{ inputs.token }}
     VULCAN_TARGET: ${{ inputs.path }}
