@@ -15,3 +15,4 @@ runs:
   env:
     TOKEN: ${{ inputs.token }}
     VULCAN_TARGET: ${{ inputs.path }}
+    GITHUB_ACTION_PATH: /
