@@ -1,4 +1,4 @@
-FROM 0cherry/vulcan:0.9
+FROM ubuntu:20.04
 
 COPY vulcan /vulcan
 RUN chmod +x -R /vulcan
