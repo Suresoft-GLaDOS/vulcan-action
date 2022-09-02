@@ -9,7 +9,7 @@ GITHUB_ACTOR = os.getenv("GITHUB_ACTOR")
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 GITHUB_WORKSPACE = os.getenv("GITHUB_WORKSPACE")
 VULCAN_TARGET_NAME = os.getenv("VULCAN_TARGET")
-VULCAN_TARGET = os.path.join(GITHUB_WORKSPACE, VULCAN_TARGET_NAME)
+VULCAN_TARGET = os.path.join(GITHUB_WORKSPACE, VULCAN_TARGET_NAME) if VULCAN_TARGET_NAME else GITHUB_WORKSPACE
 VULCAN_YML_PATH = os.path.join(VULCAN_TARGET, "vulcan.yml")
 VULCAN_SUFFIX = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')
 VULCAN_OUTPUT_DIR = os.path.realpath( os.path.join(GITHUB_WORKSPACE, "..", "..", "output", GITHUB_ACTOR, GITHUB_REPOSITORY, VULCAN_SUFFIX) )
@@ -67,7 +67,7 @@ def _parse_yaml():
 def checkout():
     token = os.getenv("TOKEN", None)
     ref_name = os.getenv("GITHUB_REF_NAME")
-    checkout_cmd = f"git clone -b {ref_name} http://{token}@github.com/{GITHUB_REPOSITORY} {GITHUB_WORKSPACE}"
+    checkout_cmd = f"git clone -b {ref_name} http://{token}@github.com/{GITHUB_REPOSITORY} /home/runner/work/{GITHUB_REPOSITORY}"
     print(f"[DEBUG] checkout command: {checkout_cmd}")
     os.system(checkout_cmd)
 
