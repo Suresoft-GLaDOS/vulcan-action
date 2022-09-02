@@ -13,5 +13,5 @@ runs:
   using: "docker"
   image: "Dockerfile"
   env:
-    TOKEN=${{ inputs.token }}
-    VULCAN_TARGET=${{ inputs.path }}
+    TOKEN: ${{ inputs.token }}
+    VULCAN_TARGET: ${{ inputs.path }}
