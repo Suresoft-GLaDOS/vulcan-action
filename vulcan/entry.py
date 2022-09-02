@@ -66,6 +66,7 @@ def _parse_yaml():
 
 def main():
     os.makedirs(VULCAN_OUTPUT_DIR, exist_ok=True)
+    os.system("export")
 
     if not os.path.exists(VULCAN_YML_PATH):
       print("Requires vulcan.yml in your repository", flush=True)
