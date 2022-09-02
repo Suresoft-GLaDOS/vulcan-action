@@ -12,3 +12,6 @@ inputs:
 runs:
   using: "docker"
   image: "Dockerfile"
+  args:
+    - -e TOKEN=${{ inputs.token }}
+    - -e VULCAN_TARGET=${{ inputs.path }}
