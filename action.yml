@@ -5,12 +5,9 @@ inputs:
   token:
     description: 'GITHUB_TOKEN'
     default: ${{ github.token }}
-  workspace:
-    description: 'GITHUB_WORKSPACE'
-    default: ${{ github.workspace }}
   path:
     description: 'Checkout directory name'
-    default: 'target'
+    default: ''
   
 runs:
   using: "docker"

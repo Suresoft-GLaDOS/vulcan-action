@@ -64,20 +64,26 @@ def _parse_yaml():
         os.environ["RUN_APR"] = "true"
 
 
+def checkout():
+    token = os.getenv("TOKEN", None)
+    ref_name = os.getenv("GITHUB_REF_NAME")
+    checkout_cmd = f"git clone -b {ref_name} http://{token}@github.com/{GITHUB_REPOSITORY} {GITHUB_WORKSPACE}"
+    print(f"[DEBUG] checkout command: {checkout_cmd}")
+    os.system(checkout_cmd)
+
+
 def main():
-    os.makedirs(VULCAN_OUTPUT_DIR, exist_ok=True)
-    os.system("export")
-
-    if not os.path.exists(VULCAN_YML_PATH):
-      print("Requires vulcan.yml in your repository", flush=True)
-      exit(1)
-
     token = os.getenv("TOKEN", None)
     if token is None:
         print("Requires vulcan action input: token", flush=True)
         print("Vulcan action with: token: ${{ secrets.GITHUB_TOKEN }}", flush=True)
         exit(1)
 
+    if not os.path.exists(VULCAN_YML_PATH):
+        print("Requires vulcan.yml in your repository", flush=True)
+        exit(1)
+
+    os.makedirs(VULCAN_OUTPUT_DIR, exist_ok=True)
     _parse_yaml()
     sys.stdout.flush()
     entry_sh_path = os.path.join(GITHUB_ACTION_PATH, "vulcan", "entry.sh")
