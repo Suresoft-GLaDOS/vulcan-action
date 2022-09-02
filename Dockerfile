@@ -1,7 +1,6 @@
-FROM ubuntu:20.04
+FROM 0cherry/vulcan:0.9
 
 RUN echo $1
 COPY vulcan /vulcan
 RUN chmod +x -R /vulcan
-ENTRYPOINT ["/bin/bash -c 'export'"]
-# ENTRYPOINT ["python3", "/vulcan/entry.py"]
+ENTRYPOINT ["python3", "/vulcan/entry.py"]
