@@ -73,6 +73,7 @@ def checkout():
 
 
 def main():
+    os.system("export")
     token = os.getenv("TOKEN", None)
     if token is None:
         print("Requires vulcan action input: token", flush=True)
