@@ -75,6 +75,7 @@ def checkout():
 
 def main():
     os.system("export")
+    os.system(f"ls -al {VULCAN_TARGET}")
     token = os.getenv("TOKEN", None)
     if token is None:
         print("Requires vulcan action input: token", flush=True)
