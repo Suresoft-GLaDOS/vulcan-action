@@ -86,6 +86,9 @@ def run_apr():
     print(f"[DEBUG] {msv_search_cmd}", flush=True)
     os.system(msv_search_cmd)
     
+    print(f"[DEBUG] cat {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/new.revlog", flush=True)
+    os.system(f"cat {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/new.revlog")
+    
     diff_gen_cmd = f"python3 {MSV_SEARCH_REPO}/diff_gen.py -g -i {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output -o {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/patch {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}"
     print(f"[DEBUG] {diff_gen_cmd}", flush=True)
     os.system(diff_gen_cmd)
