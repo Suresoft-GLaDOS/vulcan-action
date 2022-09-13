@@ -55,8 +55,6 @@ def _split_test():
 def run():
     print("Run VULCAN_YML_COVERAGE_BUILD_COMMAND", flush=True)
     os.chdir(VULCAN_TARGET)
-    if VULCAN_YML_LIBRARY_LIST is not None:
-        include_libraries()
 
     build_result = os.system("sh -c \"$VULCAN_YML_COVERAGE_BUILD_COMMAND\"")
 

@@ -19,7 +19,7 @@ def include_libraries(library_list):
         if 'autogen.sh' in command:
             autogen_lines = list()
             with open(VULCAN_TARGET + '/autogen.sh') as autogen_file:
-                
+
                 print(autogen_file.readline(), end="")
 
 
