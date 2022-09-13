@@ -87,7 +87,7 @@ def main():
 #             p = pathlib.Path(str(p).replace("/.libs", ""))
             if p not in exclusion_list:
                 target_file_list.append(p)
-    print(f'target_file_list = {target_file_list}')
+    # print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
     for target_file in target_file_list:
         with cwd(str(pathlib.Path(target_file).parent)):

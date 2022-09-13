@@ -17,6 +17,7 @@ def _create_directory(path):
     os.makedirs(path, exist_ok=True)
 
 
+
 def _clean_after_collect_gcov():
     gcov_exclusion_list = VULCAN_YML_GCOV_EXCLUSION_LIST.splitlines() if VULCAN_YML_GCOV_EXCLUSION_LIST is not None else ""
     gcov_exclusion_list_command = ''.join([' -e ' + e for e in gcov_exclusion_list])
@@ -50,6 +51,7 @@ def _split_test():
 def run():
     print("Run VULCAN_YML_COVERAGE_BUILD_COMMAND", flush=True)
     os.chdir(VULCAN_TARGET)
+
     build_result = os.system("sh -c \"$VULCAN_YML_COVERAGE_BUILD_COMMAND\"")
 
     if build_result != 0:
