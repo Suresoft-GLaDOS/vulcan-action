@@ -1,4 +1,4 @@
-FROM 0cherry/vulcan:0.9.7
+FROM 0cherry/vulcan:demo
 
 COPY vulcan /vulcan
 RUN chmod +x -R /vulcan
