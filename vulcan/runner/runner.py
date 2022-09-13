@@ -3,7 +3,7 @@ import os
 import shutil
 import yaml
 
-GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
+GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH", "/")
 VULCAN_OUTPUT_DIR_BASE = os.environ["VULCAN_OUTPUT_DIR_BASE"] = os.getenv("VULCAN_OUTPUT_DIR")
 VULCAN_TARGET_NAME = os.getenv("VULCAN_TARGET_NAME")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET")

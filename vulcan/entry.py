@@ -4,7 +4,7 @@ import pprint
 import sys
 import yaml
 
-GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
+GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH", "/")
 GITHUB_ACTOR = os.getenv("GITHUB_ACTOR")
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 GITHUB_WORKSPACE = os.getenv("GITHUB_WORKSPACE")
