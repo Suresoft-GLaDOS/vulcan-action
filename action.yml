@@ -7,7 +7,12 @@ inputs:
     default: ${{ github.token }}
   
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  env:
-    TOKEN: ${{ inputs.token }}
+  using: 'composite'
+  steps:
+    - name: Set permissions as excutable
+      run: chmod +x -R $GITHUB_ACTION_PATH/vulcan
+      shell: bash
+    - run: python3 $GITHUB_ACTION_PATH/vulcan/entry.py
+      shell: bash
+      env:
+        TOKEN: ${{ inputs.token }}
