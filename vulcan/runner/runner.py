@@ -113,7 +113,7 @@ def run_validate():
     """
     1. run validator
     """
-    if VALIDATOR != "CT" and VALIDATOR != "AI":
+    if VALIDATOR != "CT" and VALIDATOR != "AI" and VALIDATOR != "ALL":
         print(f"[DEBUG] Validator not working", flush=True)
         return
     
