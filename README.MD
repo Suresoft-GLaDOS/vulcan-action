@@ -125,6 +125,10 @@ The following is an example of issue and pull request from Vulcan.
 
 ![alt text](./issue.png)
 
+![alt text](./issue2.png)
+
+![alt text](./issue3.png)
+
   * Generated Pull request
 
 ![alt text](./pr.png)
