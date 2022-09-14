@@ -41,7 +41,7 @@ You can run Vulcan in two different ways. It can be run on your self-hosted-runn
 
 * Set docker container in your workspace
 
-Additionaly, you have to set the runner with provided docker image.
+Additionally, you have to set the runner with provided docker image.
 
 1. Pull image
 
@@ -52,7 +52,6 @@ Additionaly, you have to set the runner with provided docker image.
 2. Run container from above image and run self-hosted-runner in the container
    (In your repository, you can find an manual to run the self hosted runner in 'Action' tab.)
 
-We recommend following the instructions and using [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) to configure your credentials for a job. The IAM user or IAM role requires [AmazonCodeGuruReviewerFullAccess](https://docs.aws.amazon.com/codeguru/latest/reviewer-ug/auth-and-access-control-iam-identity-based-access-control.html#managed-full-access) policy and S3 permissions (s3:PutObject, s3:ListBucket, s3:GetObject) for the "codeguru-reviewer-*" S3 bucket.  The CodeGuru Reviewer action supports credentials from GitHub hosted runners and self-hosted runners.
 
 ## Set vulcan.yml
 
