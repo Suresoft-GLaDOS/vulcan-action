@@ -121,11 +121,11 @@ To make it work in your project, you have to set each items in the vulcan.yml pr
 
 The following is an example of issue and pull request from Vulcan.
 
-Generated GitHub Issue
+  * Generated GitHub Issue
 
 ![alt text](./issue.png)
 
-Generated Pull request
+  * Generated Pull request
 
 ![alt text](./pr.png)
 
