@@ -1,9 +1,10 @@
 import json
 import os
 import shutil
+import sys
 import yaml
 
-GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
+GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH", "/")
 VULCAN_OUTPUT_DIR_BASE = os.environ["VULCAN_OUTPUT_DIR_BASE"] = os.getenv("VULCAN_OUTPUT_DIR")
 VULCAN_TARGET_NAME = os.getenv("VULCAN_TARGET_NAME")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET")
@@ -12,6 +13,7 @@ VULCAN_YML_TIME_OUT = os.getenv("VULCAN_YML_TIME_OUT")
 VULCAN_YML_TEST_TIME_OUT = os.getenv("VULCAN_YML_TEST_TIME_OUT")
 RUN_FL = os.getenv("RUN_FL")
 RUN_APR = os.getenv("RUN_APR")
+VALIDATOR = os.getenv("VALIDATOR", None)
 
 # for SBFL
 SBFL_REPO = os.environ["SBFL_REPO"] = r"/home/workspace/sbfl"
@@ -25,6 +27,15 @@ CLIENT_REPO = os.environ["CLIENT"] = r"/home/workspace/client"
 
 # mutable environment variables
 MUTABLE_ENV = dict()
+
+
+def handle_error(return_value, error_message, additional_command=None):
+    if return_value != 0:
+        print(f"[ERROR] {error_message}", flush=True)
+        if additional_command:
+            print(f"[DEBUG] {additional_command}", flush=True)
+            os.system(additional_command)
+        sys.exit(return_value)
 
 
 def set_environments(vulcan_output_path):
@@ -51,7 +62,8 @@ def run_test():
     """
     testrun_py_path = os.path.join(GITHUB_ACTION_PATH, "vulcan", "util", "testrun.py")
     testrun_cmd = f"python3 {testrun_py_path}"
-    os.system(testrun_cmd)
+    ret = os.system(testrun_cmd)
+    handle_error(ret, "testrun return non-zero")
 
 
 def run_fl():
@@ -61,7 +73,8 @@ def run_fl():
     os.chdir(SBFL_REPO)
     fl_cmd = f"python3 -m sbfl -f Jaccard {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov/* -s {MUTABLE_ENV['FL_JSON']} -i {MUTABLE_ENV['INFO_JSON']} -c {MUTABLE_ENV['FL_CLUSTER_JSON']}"
     print(f"[DEBUG] {fl_cmd}", flush=True)
-    os.system(fl_cmd)
+    ret = os.system(fl_cmd)
+    handle_error(ret, "fl return non-zero")        
 
 
 def run_apr():
@@ -76,15 +89,18 @@ def run_apr():
     
     msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -s {MUTABLE_ENV['FL_JSON']} -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
     print(f"[DEBUG] {msv_runner_cmd}", flush=True)
-    os.system(msv_runner_cmd)
+    ret_meta = os.system(msv_runner_cmd)
+    handle_error(ret_meta, "apr-runner return non-zero", additional_command=f"cat {MUTABLE_ENV['MSV_WORKSPACE']}/output.log")
     
     msv_search_cmd = f"python3 {MSV_SEARCH_REPO}/msv-search.py -o {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output -w {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']} -T {VULCAN_YML_TIME_OUT} -t {VULCAN_YML_TEST_TIME_OUT} -m prophet -p {MSV_REPO} --use-pass-test -- {MSV_REPO}/tools/msv-test.py {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/src {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/tests {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}"
     print(f"[DEBUG] {msv_search_cmd}", flush=True)
-    os.system(msv_search_cmd)
+    ret_search = os.system(msv_search_cmd)
+    handle_error(ret_search, "apr-search return non-zero", additional_command=f"cat {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/new.revlog")
     
     diff_gen_cmd = f"python3 {MSV_SEARCH_REPO}/diff_gen.py -g -i {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output -o {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/patch {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}"
     print(f"[DEBUG] {diff_gen_cmd}", flush=True)
-    os.system(diff_gen_cmd)
+    ret_diff = os.system(diff_gen_cmd)
+    handle_error(ret_diff, "diff_gen return non-zero")
     
     with open(MUTABLE_ENV["MSV_JSON"]) as f:
         json_data = json.load(f)
@@ -97,9 +113,14 @@ def run_validate():
     """
     1. run validator
     """
+    if VALIDATOR != "CT" and VALIDATOR != "AI":
+        print(f"[DEBUG] Validator not working", flush=True)
+        return
+    
     validation_cmd = f"python3 {os.path.join(CLIENT_REPO, 'client.py')}"
     print(f"[DEBUG] {validation_cmd}", flush=True)
-    os.system(validation_cmd)
+    ret = os.system(validation_cmd)
+    handle_error(ret, "validation return non-zero")
 
     post_pro_cmd = f"python3 {GITHUB_ACTION_PATH}/vulcan/util/post_processing.py"
     print(f"[DEBUG] {post_pro_cmd}", flush=True)
@@ -110,13 +131,15 @@ def run_create_issue():
     os.chdir(VULCAN_TARGET)
     create_issue_sh_path = os.path.join(GITHUB_ACTION_PATH, "vulcan", "git", "create-issue.sh")
     create_issue_cmd = f"bash {create_issue_sh_path}"
-    os.system(create_issue_cmd)
+    ret = os.system(create_issue_cmd)
+    handle_error(ret, "[ERROR] issue return non-zero")
 
 
 def run_create_pull_request():
     create_pull_request_py_path = os.path.join(GITHUB_ACTION_PATH, "vulcan", "git", "create-pull-request.py")
     create_pr_cmd = f"python3 {create_pull_request_py_path}"
-    os.system(create_pr_cmd)
+    ret = os.system(create_pr_cmd)
+    handle_error(ret, "[ERROR] pull-request return non-zero")
 
 
 def handle_cluster(cluster_data):
