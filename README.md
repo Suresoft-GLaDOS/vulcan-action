@@ -61,11 +61,12 @@ In your repository, there should be vulcan.yml file. A simple example of vulcan.
 --- # Start
 name: example
 
-# 유저의 github 저장소 정보
+# Url of User's git repository
 url:
 docker-image: 
 
-# predefined docker-image를 사용하되, 추가적인 설정이 필요한 경우 이렇게 정의
+# Default: Use predefined docker-image,
+# If you need additional envirement setting, set here
 extra-build-env-setting-commands: 
 
 test-candidates: |
@@ -73,30 +74,29 @@ test-candidates: |
 time-out: 10
 max-patch-number : 500
 
-test-build-command: | # 테스트 빌드 커맨드 / defect4cpp 기준 meta.json의 내용이 필요
+test-build-command: | 
   make clean
   make
-coverage-build-command: | # 커버리지 빌드 커맨드 / defect4cpp 기준 meta.json의 내용이 필요(SBFL: gcov)
+coverage-build-command: | 
   make clean
   make CFLAGS="--coverage -g -O0" LDFLAGS="-lgcov"
-# 테스트 type이 문제: gtest의 경우 원하는 테스트를 실행할 수 있으니 문제가 없음
-# 그렇지 않으면 test-case에 실행할 테스트 번호를 range로 하도록함
-# 테스트 실행 역시 range안에 있는 테스트들만 실행하도록 묶어서 command를 부르거나 여러번 불러야함
+  
 test-type: automake
-test-list: | # 테스트 리스트 커맨드 / 테스트를 하나씩 실행하기 위해 테스트 리스트를 출력해주는 내용 필요
+test-list: | # Test commands list
   ./test 0
   ./test 1
   ./test 2
   ./test 3
   ./test 4
-test-case: 
 
-test-command: | # 테스트 실행
+
+# Get the command from test-list and run each of them
+test-command: | # Run tests
   bash -c "@testcase@"
-test-coverage-command: | # 커버리지 테스트 실행 / 테스트 대상을 입력받아서 하나씩 실행할 수 있어야 함
+test-coverage-command: | # Run coverage tests 
   bash -c "@testcase@"
   
-gcov-exclusion-list: | # 커버리지 제외 대상
+gcov-exclusion-list: | # Do not measure coverage from those files
   test.o
 
 ```
