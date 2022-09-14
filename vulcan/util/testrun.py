@@ -9,19 +9,12 @@ VULCAN_YML_TEST_COVERAGE_COMMAND = os.getenv("VULCAN_YML_TEST_COVERAGE_COMMAND")
 VULCAN_YML_TEST_LIST = os.getenv("VULCAN_YML_TEST_LIST")
 VULCAN_YML_TEST_CASE = os.getenv("VULCAN_YML_TEST_CASE")
 VULCAN_YML_GCOV_EXCLUSION_LIST = os.getenv("VULCAN_YML_GCOV_EXCLUSION_LIST")
-VULCAN_YML_LIBRARY_LIST = os.getenv("VULCAN_YML_LIBRARY_LIST")
-GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
+GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH", "/")
 GCOV_PATH = os.path.join(VULCAN_OUTPUT_DIR, "gcov")
 
 
 def _create_directory(path):
     os.makedirs(path, exist_ok=True)
-
-
-def include_libraries():
-    include_library_list = VULCAN_YML_LIBRARY_LIST.splitlines() if VULCAN_YML_LIBRARY_LIST is not None else ""
-    include_library_list_command = ''.join([' -e ' + e for e in include_library_list])
-    os.system(f"python3 {GITHUB_ACTION_PATH}/vulcan/util/include_library.py {include_library_list_command}")
 
 
 def _clean_after_collect_gcov():
@@ -55,7 +48,6 @@ def _split_test():
 def run():
     print("Run VULCAN_YML_COVERAGE_BUILD_COMMAND", flush=True)
     os.chdir(VULCAN_TARGET)
-
     build_result = os.system("sh -c \"$VULCAN_YML_COVERAGE_BUILD_COMMAND\"")
 
     if build_result != 0:
