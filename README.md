@@ -61,23 +61,8 @@ In your repository, there should be vulcan.yml file. A simple example of vulcan.
 --- # Start
 name: example # User's project name
 
-# Url of User's git repository
-url:
-# Optional: Set docker image if your project should be executed in docker container.
-docker-image: 
-
-# Default: Use predefined docker-image,
-# If you need additional envirement setting, set here
-extra-build-env-setting-commands: 
-
-
-test-candidates: | # Target source code of test suites
-  example.c
-
-# Timeout about program repair
+# Timeout about program repair(second)
 time-out: 10
-# Max number of patch for program repair
-max-patch-number : 500
 
 # Command to build user's project
 test-build-command: | 
@@ -89,8 +74,6 @@ coverage-build-command: |
   make clean
   make CFLAGS="--coverage -g -O0" LDFLAGS="-lgcov"
 
-# Framework of test suites. We support automake and gtest
-test-type: automake
 test-list: | # Test commands list
   ./test 0
   ./test 1
@@ -119,9 +102,7 @@ To make it work in your project, you have to set each items in the vulcan.yml pr
   - test-coverage-command
 
 * Optional
-  - test-candidates
   - time-out
-  - max-patch-number  
   - gcov-exclusion-list
 
 ## Result
