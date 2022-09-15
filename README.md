@@ -59,28 +59,37 @@ In your repository, there should be vulcan.yml file. A simple example of vulcan.
 
 ```
 --- # Start
-name: example
+name: example # User's project name
 
 # Url of User's git repository
 url:
+# Optional: Set docker image if your project should be executed in docker container.
 docker-image: 
 
 # Default: Use predefined docker-image,
 # If you need additional envirement setting, set here
 extra-build-env-setting-commands: 
 
-test-candidates: |
+
+test-candidates: | # Target source code of test suites
   example.c
+
+# Timeout about program repair
 time-out: 10
+# Max number of patch for program repair
 max-patch-number : 500
 
+# Command to build user's project
 test-build-command: | 
   make clean
   make
+  
+# Command to build user's project with coverage measurement 
 coverage-build-command: | 
   make clean
   make CFLAGS="--coverage -g -O0" LDFLAGS="-lgcov"
-  
+
+# Framework of test suites. We support automake and gtest
 test-type: automake
 test-list: | # Test commands list
   ./test 0
@@ -88,7 +97,6 @@ test-list: | # Test commands list
   ./test 2
   ./test 3
   ./test 4
-
 
 # Get the command from test-list and run each of them
 test-command: | # Run tests
@@ -104,17 +112,17 @@ gcov-exclusion-list: | # Do not measure coverage from those files
 To make it work in your project, you have to set each items in the vulcan.yml properly.
 
 * Required
-  - test-build-command:
-  - coverage-build-command:
-  - test-list:
-  - test-command:
-  - test-coverage-command:
+  - test-build-command
+  - coverage-build-command
+  - test-list
+  - test-command
+  - test-coverage-command
 
 * Optional
-  - test-candidates:
-  - time-out:
-  - max-patch-number:  
-  - gcov-exclusion-list:
+  - test-candidates
+  - time-out
+  - max-patch-number  
+  - gcov-exclusion-list
 
 ## Result
 
