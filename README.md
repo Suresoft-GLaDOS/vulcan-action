@@ -8,7 +8,7 @@ Vulcan action can be triggered by a regression tests, or you can run it seperate
 * Pull requests - If the patch was generated well, Vulcan sends pull request about it.
 
 **(You have to set the permission of GitHub action as this image)**
-![alt text](./permission.png)
+![alt text](./images/permission.png)
 
 To add Vulcan to your test workflow or just run it, follow the steps under the *Requirements* section.
 
@@ -140,12 +140,12 @@ The following is an example of issue and pull request from Vulcan.
 
   * Generated GitHub Issue
 
-![alt text](./issue.png)
+![alt text](./images/issue.png)
 
-![alt text](./issue2.png)
+![alt text](./images/issue2.png)
 
-![alt text](./issue3.png)
+![alt text](./images/issue3.png)
 
   * Generated Pull request
 
-![alt text](./pr.png)
+![alt text](./images/pr.png)
