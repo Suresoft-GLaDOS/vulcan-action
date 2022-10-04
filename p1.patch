@@ -1,0 +1,10 @@
+diff --git "a/C:\\Users\\sure\\GLaDOS\\vulcan-action\\action2.yml" "b/C:\\Users\\sure\\GLaDOS\\vulcan-action\\action.yml"
+index 75e3f96..8f29f08 100644
+--- "a/C:\\Users\\sure\\GLaDOS\\vulcan-action\\action2.yml"	
++++ "b/C:\\Users\\sure\\GLaDOS\\vulcan-action\\action.yml"
+@@ -12,7 +12,7 @@ inputs:
+ runs:
+   using: 'composite'
+   steps:
+-    - name: Set permissions as mytestme
++    - name: Set permissions as excutable

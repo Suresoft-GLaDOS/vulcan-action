@@ -114,8 +114,10 @@ def main():
         for file in args.file:
             for p in root_dir.rglob(file):
                 if p not in exclusion_list:
+                    print("Add this file")
+                    print(p)
                     target_file_list.append(p)
-    # print(f'target_file_list = {target_file_list}')
+    print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
     # for target_file in target_file_list:
     for target_file in target_file_list:
