@@ -12,7 +12,7 @@ import logging
 import json
 from contextlib import contextmanager
 
-VULCAN_YML_GCOV_INCLUSION_LIST = os.getenv("VULCAN_YML_GCOV_INCLUSION_LIST", None)
+VULCAN_YML_GCOV_INCLUSION_LIST = os.getenv("VULCAN_YML_GCOV_INCLUSION_LIST")
 
 logger = logging.getLogger(__name__)
 
