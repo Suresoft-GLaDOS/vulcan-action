@@ -24,7 +24,6 @@ def _parse_yaml():
     with open(VULCAN_YML_PATH) as f:
         yml = yaml.safe_load(f)
     for k, v in yml.items():
-        print(k)
         if v is None:
             yml[k] = ""
         if type(v) is not str:
