@@ -107,7 +107,7 @@ def main():
     # glob all file's list
     target_file_list = []
     print('Args file')
-    print(root_dir.rglob(args.file[0]))
+    print(root_dir.rglob('*.o'))
     if len(inclusion_list) != 0:
         # print(inclusion_list)
         for file in args.file:
