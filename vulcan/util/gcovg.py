@@ -103,7 +103,7 @@ def main():
     # print("Include coverage: " + VULCAN_YML_GCOV_INCLUSION_LIST)
     for e in root_dir.rglob(VULCAN_YML_GCOV_INCLUSION_LIST):  #TODO: It treat only one element for now, have to make it as a list.
         inclusion_list.append(e)
-    # print(f'inclusion_list = {inclusion_list}')
+    print(f'inclusion_list = {inclusion_list}')
 
     # glob all file's list
     target_file_list = []
@@ -116,18 +116,17 @@ def main():
             print(p)
             target_file_list.append(p)
 
-    # if len(inclusion_list) != 0:
-    #     # print(inclusion_list)
-    #     for file in args.file:
-    #         for p in root_dir.rglob(file):
-    #             if p in inclusion_list:
-    #                 target_file_list.append(p)
-    # else:
-    #     for file in args.file:
-    #         for p in root_dir.rglob(file):
-    #             if p not in exclusion_list:
-    #                 print(p)
-    #                 target_file_list.append(p)
+    if len(inclusion_list) != 0:
+        print(inclusion_list)
+        for p in root_dir.rglob('*.cpp.o'):
+            if p in inclusion_list:
+                target_file_list.append(p)
+    else:
+        for file in args.file:
+            for p in root_dir.rglob(file):
+                if p not in exclusion_list:
+                    print(p)
+                    target_file_list.append(p)
 
     print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
