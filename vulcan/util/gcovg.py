@@ -108,7 +108,8 @@ def main():
     # glob all file's list
     target_file_list = []
     print('Args file')
-    print(root_dir.rglob('*.cpp'))
+    for cpp in root_dir.rglob('*.cpp'):
+        print(cpp)
     if len(inclusion_list) != 0:
         # print(inclusion_list)
         for file in args.file:
@@ -127,7 +128,9 @@ def main():
     for target_file in target_file_list:
         target_src = ''
         for target_source_file in source_str_list:
-            if str(target_file).split("/")[-1].replace(".o", ".c") in target_source_file:
+            # if str(target_file).split("/")[-1].replace(".o", ".c") in target_source_file:
+            print("Target: " + target_source_file)
+            if str(target_file).split("/")[-1].replace(".o", "") in target_source_file:
                 target_src = target_source_file
                 # print(f'Target src: {str(target_file)}')
 
@@ -146,7 +149,7 @@ def main():
     # for parent_dir in {f.parent for f in target_file_list}:
     for file_dir in source_str_list:
         parent_dir = pathlib.Path(file_dir).parent
-        print(parent_dir)
+        # print(parent_dir)
         for gcov_file_path in pathlib.Path(parent_dir).rglob("*.gcov"):
             print("gcov: " + str(gcov_file_path))
             with open(gcov_file_path, encoding='utf-8') as gcov_file:
