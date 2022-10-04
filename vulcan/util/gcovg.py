@@ -100,7 +100,7 @@ def main():
     print(f'exclusion_list = {exclusion_list}')
 
     inclusion_list = []
-    print("Include coverage: " + VULCAN_YML_GCOV_INCLUSION_LIST)
+    print("Include coverage: " + args.inclusion_list[0])
     for inclusion_pattern in args.inclusion_list:
         for e in root_dir.rglob(inclusion_pattern):  #TODO: It treat only one element for now, have to make it as a list.
             inclusion_list.append(e)
