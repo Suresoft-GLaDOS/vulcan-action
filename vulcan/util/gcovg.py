@@ -79,14 +79,15 @@ def main():
     # clean all gcov files if keep_gcov_files flag is not set
     if not args.keep_gcov_files:
         for gcov_file in root_dir.rglob('*.gcov'):
+            print(gcov_file)
             pathlib.Path(gcov_file).unlink()
 
     source_dir_list = root_dir.rglob('*.cpp')
     source_parent_set = set()
     source_str_list = list()
     for path in source_dir_list:
-        print("Add this file")
-        print(path)
+        # print("Add this file")
+        # print(path)
         source_parent_set.add(pathlib.Path(path).parent)
         source_str_list.append(str(path))
 
@@ -107,7 +108,7 @@ def main():
     # glob all file's list
     target_file_list = []
     print('Args file')
-    print(root_dir.rglob('*.o'))
+    print(root_dir.rglob('*.cpp'))
     if len(inclusion_list) != 0:
         # print(inclusion_list)
         for file in args.file:
@@ -118,7 +119,6 @@ def main():
         for file in args.file:
             for p in root_dir.rglob(file):
                 if p not in exclusion_list:
-
                     print(p)
                     target_file_list.append(p)
     print(f'target_file_list = {target_file_list}')
