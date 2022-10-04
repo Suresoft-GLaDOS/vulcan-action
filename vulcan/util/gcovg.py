@@ -136,7 +136,7 @@ def main():
         target_src = ''
         for target_source_file in source_str_list:
             # if str(target_file).split("/")[-1].replace(".o", ".c") in target_source_file:
-            print("Target: " + target_source_file)
+            # print("Target: " + target_source_file)
             if str(target_file).split("/")[-1].replace(".o", "") in target_source_file:
                 target_src = target_source_file
                 # print(f'Target src: {str(target_file)}')
