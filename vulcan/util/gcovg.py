@@ -108,8 +108,8 @@ def main():
     # glob all file's list
     target_file_list = []
     print('Args file')
-    for cpp in root_dir.rglob('*.cpp.o'):
-        print(cpp)
+    # for cpp in root_dir.rglob('*.cpp.o'):
+    #     print(cpp)
     if len(inclusion_list) != 0:
         # print(inclusion_list)
         for file in args.file:
@@ -117,11 +117,16 @@ def main():
                 if p in inclusion_list:
                     target_file_list.append(p)
     else:
-        for file in args.file:
-            for p in root_dir.rglob(file):
-                if p not in exclusion_list:
-                    print(p)
-                    target_file_list.append(p)
+        for p in root_dir.rglob('*.cpp.o'):
+            if p not in exclusion_list:
+                print(p)
+                target_file_list.append(p)
+    # else:
+    #     for file in args.file:
+    #         for p in root_dir.rglob(file):
+    #             if p not in exclusion_list:
+    #                 print(p)
+    #                 target_file_list.append(p)
     print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
     # for target_file in target_file_list:
