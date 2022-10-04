@@ -81,10 +81,12 @@ def main():
         for gcov_file in root_dir.rglob('*.gcov'):
             pathlib.Path(gcov_file).unlink()
 
-    source_dir_list = root_dir.rglob('*.c')
+    source_dir_list = root_dir.rglob('*.cpp')
     source_parent_set = set()
     source_str_list = list()
     for path in source_dir_list:
+        print("Add this file")
+        print(path)
         source_parent_set.add(pathlib.Path(path).parent)
         source_str_list.append(str(path))
 
@@ -116,7 +118,7 @@ def main():
         for file in args.file:
             for p in root_dir.rglob(file):
                 if p not in exclusion_list:
-                    print("Add this file")
+
                     print(p)
                     target_file_list.append(p)
     print(f'target_file_list = {target_file_list}')
