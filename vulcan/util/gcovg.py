@@ -158,7 +158,7 @@ def main():
         parent_dir = pathlib.Path(file_dir).parent
         # print(parent_dir)
         for gcov_file_path in pathlib.Path(parent_dir).rglob("*.gcov"):
-            print("gcov: " + str(gcov_file_path))
+            # print("gcov: " + str(gcov_file_path))
             with open(gcov_file_path, encoding='utf-8') as gcov_file:
                 gcov_source_name = gcov_file.readline().rstrip().split(':', 3)[-1]
                 if pathlib.Path(gcov_source_name).is_absolute():
