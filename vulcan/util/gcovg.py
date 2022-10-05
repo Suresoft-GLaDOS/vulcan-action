@@ -84,7 +84,7 @@ def main():
     target_file_list = []
     for file in args.file:
         for p in root_dir.rglob(file):
-            print('Path to target ' + str(p))
+            print('Path to target ' + str(p).replace())
 #             p = pathlib.Path(str(p).replace("/.libs", ""))
             if p not in exclusion_list:
                 target_file_list.append(p)
@@ -92,12 +92,12 @@ def main():
     # run gcov and make metadata
     for target_file in target_file_list:
         with cwd(str(pathlib.Path(target_file).parent)):
-            print([args.gcov_path, str(p)])
+            print([args.gcov_path, target_file])
             # gcov_proc = subprocess.Popen([args.gcov_path, str(target_file.name)],
             #                              stdout=subprocess.PIPE,
             #                              stderr=subprocess.PIPE,
             #                              stdin=subprocess.PIPE)
-            gcov_proc = subprocess.Popen([args.gcov_path, str(p)],
+            gcov_proc = subprocess.Popen([args.gcov_path, target_file],
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE,
                                          stdin=subprocess.PIPE)
