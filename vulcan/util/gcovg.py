@@ -92,8 +92,12 @@ def main():
     # run gcov and make metadata
     for target_file in target_file_list:
         with cwd(str(pathlib.Path(target_file).parent)):
-            print([args.gcov_path, str(target_file.name)])
-            gcov_proc = subprocess.Popen([args.gcov_path, str(target_file.name)],
+            print([args.gcov_path, str(p)])
+            # gcov_proc = subprocess.Popen([args.gcov_path, str(target_file.name)],
+            #                              stdout=subprocess.PIPE,
+            #                              stderr=subprocess.PIPE,
+            #                              stdin=subprocess.PIPE)
+            gcov_proc = subprocess.Popen([args.gcov_path, str(p)],
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE,
                                          stdin=subprocess.PIPE)
