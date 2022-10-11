@@ -1,0 +1,32 @@
+--- __backup0	2022-10-06 05:32:48.011761290 +0000
++++ src/BranchChecker_avl.c	2022-10-06 05:34:54.817898557 +0000
+@@ -215,24 +215,22 @@
+         if (node->Left == NULL && node->Right == NULL) {
+             node = NULL;
+         }
+-        else if (node->Left != NULL) { //Original: node->Left != NULL && node->Right == NULL
++        else if (!(node->Right > 0) && (node->Left != ((void *)0))) {
+             node->Left->Parent = node->Parent;
+             node = node->Left;
+-        }
+-        else if (node->Left == NULL && node->Right != NULL) {
++} else if (node->Left == ((void *)0) && node->Right != ((void *)0)) {
+             node->Right->Parent = node->Parent;
+             node = node->Right;
+-        }
+-        else {
++} else {
+             Node* deleteNode = node;
+             Node* minNode = GetMinNode(node->Right, deleteNode);
+             minNode->Parent = node->Parent;
+             minNode->Left = deleteNode->Left;
+-            if (deleteNode->Left != NULL) {
++    if (deleteNode->Left != ((void *)0)) {
+                 deleteNode->Left->Parent = minNode;
+             }
+             minNode->Right = deleteNode->Right;
+-            if (deleteNode->Right != NULL) {
++    if (deleteNode->Right != ((void *)0)) {
+                 deleteNode->Right->Parent = minNode;
+             }
+             node = minNode;
