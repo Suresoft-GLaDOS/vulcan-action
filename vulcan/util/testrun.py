@@ -36,8 +36,9 @@ def _split_test():
             f.write(test_command)
 
         print(f"Measuring coverage for {test_command}", flush=True)
+        print([test_command.replace("\"", "")])
         # test_result = os.system(test_command.replace("\""))
-        test_result = subprocess.run([test_command.replace("\"")])
+        test_result = subprocess.run([test_command.replace("\"", "")])
 
         with open(os.path.join(GCOV_PATH, index, "result.test"), "w") as f:
             if test_result != 0:
