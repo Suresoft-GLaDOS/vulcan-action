@@ -30,9 +30,11 @@ def _split_test():
     for UNIT_TEST in VULCAN_YML_TEST_LIST.splitlines():
         index = str(TEST_INDEX)
         _create_directory(os.path.join(GCOV_PATH, index))
-        test_command = VULCAN_YML_TEST_COVERAGE_COMMAND.replace("@testcase@", UNIT_TEST)
+        # test_command = VULCAN_YML_TEST_COVERAGE_COMMAND.replace("@testcase@", UNIT_TEST)
+        os.environ["VULCAN_UNIT_TEST"] = UNIT_TEST
+        test_command = f'bash -c "$VULCAN_UNIT_TEST"'
         with open(os.path.join(GCOV_PATH, index, "test.command"), "w") as f:
-            f.write(test_command)
+            f.write(f'bash -c "{UNIT_TEST}"')
 
         print(f"Measuring coverage for {test_command}", flush=True)
         test_result = os.system(test_command)
