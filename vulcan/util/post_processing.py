@@ -11,9 +11,9 @@ VULCAN_OUTPUT_DIR = os.getenv("VULCAN_OUTPUT_DIR")
 
 
 def post_processing():
-    # patch_dir = os.path.join(VULCAN_OUTPUT_DIR, "patch")
-    # patch_list = glob.glob(patch_dir+"/*.patch")
-    patch_list = ['1.patch']
+    patch_dir = os.path.join(VULCAN_OUTPUT_DIR, "patch")
+    patch_list = glob.glob(patch_dir+"/*.patch")
+    # patch_list = ['1.patch']
 
     for patch in patch_list:
         print("Postprocessing this: " + patch)

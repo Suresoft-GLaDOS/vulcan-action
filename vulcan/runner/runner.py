@@ -122,6 +122,8 @@ def run_validate():
     ret = os.system(validation_cmd)
     handle_error(ret, "validation return non-zero")
 
+
+def run_post_processing():
     post_pro_cmd = f"python3 {GITHUB_ACTION_PATH}/vulcan/util/post_processing.py"
     print(f"[DEBUG] {post_pro_cmd}", flush=True)
     os.system(post_pro_cmd)
@@ -166,6 +168,7 @@ def handle_cluster(cluster_data):
             os.makedirs(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"], exist_ok=True)
         if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
             run_validate()
+            run_post_processing()
         run_create_issue()
         if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
             run_create_pull_request()
@@ -188,6 +191,7 @@ def run_modules():
         os.makedirs(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"], exist_ok=True)
     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
         run_validate()
+        run_post_processing()
     run_create_issue()
     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
         run_create_pull_request()
