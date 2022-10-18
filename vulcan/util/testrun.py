@@ -1,5 +1,4 @@
 import os
-import subprocess
 
 
 TEST_INDEX=0
@@ -38,10 +37,7 @@ def _split_test():
             f.write(f'bash -c "{UNIT_TEST}"')
 
         print(f"Measuring coverage for {test_command}", flush=True)
-        print([test_command.replace("\"", "")])
-        # test_result = os.system(test_command.replace("\""))
-        test_result = subprocess.run([test_command.replace("\"", "")])
-
+        test_result = os.system(test_command)
         with open(os.path.join(GCOV_PATH, index, "result.test"), "w") as f:
             if test_result != 0:
                 f.write("failed")
@@ -64,7 +60,7 @@ def run():
     os.chdir(VULCAN_TARGET)
     _create_directory(GCOV_PATH)
     _split_test()
-    # os.system("git clean -f > /dev/null")
+    os.system("git clean -f > /dev/null")
 
 
 run()
