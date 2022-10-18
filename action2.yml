@@ -1,0 +1,22 @@
+# action.yml
+name: 'Vulcan Auto Patch Generator'
+description: 'Auto fix on the branch which triggers a workflow'
+inputs:
+  token:
+    description: 'GITHUB_TOKEN'
+    default: ${{ github.token }}
+  validator:
+    description: 'Patch validator to use. [No | CT | AI | All]'
+    default: 'All'
+  
+runs:
+  using: 'composite'
+  steps:
+    - name: Set permissions as excutable
+      run: chmod +x -R $GITHUB_ACTION_PATH/vulcan
+      shell: bash
+    - run: python3 $GITHUB_ACTION_PATH/vulcan/entry.py
+      shell: bash
+      env:
+        TOKEN: ${{ inputs.token }}
+        VALIDATOR: ${{ inputs.validator }}

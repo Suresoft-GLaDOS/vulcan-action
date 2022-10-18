@@ -95,6 +95,10 @@ def post_processing():
         print(f"sed -i 's/((void \\*)0)/NULL/g' {patch}")
         os.system(f"sed -i 's/((void \\*)0)/NULL/g' {patch}")
 
+    patch_list = glob.glob(patch_dir)
+    for patch in patch_list:
+        print("Postprocessing this: " + patch)
+        os.system(f"sed -i 's/((void *)0)/NULL/g' {patch}")
+
 
 post_processing()
-

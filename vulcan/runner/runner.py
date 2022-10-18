@@ -101,6 +101,11 @@ def run_apr():
     print(f"[DEBUG] {diff_gen_cmd}", flush=True)
     ret_diff = os.system(diff_gen_cmd)
     handle_error(ret_diff, "diff_gen return non-zero")
+    os.system(diff_gen_cmd)
+
+    # post_pro_cmd = f"python3 {GITHUB_ACTION_PATH}/vulcan/util/post_processing.py"
+    # print(f"[DEBUG] {post_pro_cmd}", flush=True)
+    # os.system(post_pro_cmd)
     
     with open(MUTABLE_ENV["MSV_JSON"]) as f:
         json_data = json.load(f)
