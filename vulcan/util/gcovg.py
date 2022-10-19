@@ -157,7 +157,7 @@ def main():
                 if pathlib.Path(gcov_source_name).is_absolute():
                     gcov_info_dict[gcov_file_path.name] = str(gcov_source_name)
                 else:
-                    gcov_info_dict[gcov_file_path.name] = str((str(root_dir) / gcov_source_name))
+                    gcov_info_dict[gcov_file_path.name] = str((parent_dir / gcov_source_name))
                     print(gcov_info_dict[gcov_file_path.name])
     if len(gcov_info_dict) == 0:
         for gcov_file_path in root_dir.rglob("*.gcov"):
@@ -167,7 +167,7 @@ def main():
                 if pathlib.Path(gcov_source_name).is_absolute():
                     gcov_info_dict[gcov_file_path.name] = str(gcov_source_name)
                 else:
-                    gcov_info_dict[gcov_file_path.name] = str(parent_dir) + "/" + str(gcov_source_name)
+                    gcov_info_dict[gcov_file_path.name] = str(root_dir) + "/" + str(gcov_source_name)
                     print(gcov_info_dict[gcov_file_path.name])
     gcov_info_json = json.dumps(gcov_info_dict, indent=2)
 
