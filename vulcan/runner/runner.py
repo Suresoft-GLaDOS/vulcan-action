@@ -87,23 +87,23 @@ def run_apr():
     os.chdir(MUTABLE_ENV['VULCAN_OUTPUT_DIR'])
     os.makedirs(MUTABLE_ENV['MSV_WORKSPACE'], exist_ok=True)
 
-
-    
     msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -s {MUTABLE_ENV['FL_JSON']} -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
     print(f"[DEBUG] {msv_runner_cmd}", flush=True)
     ret_meta = os.system(msv_runner_cmd)
-    handle_error(ret_meta, "apr-runner return non-zero", additional_command=f"cat {MUTABLE_ENV['MSV_WORKSPACE']}/output.log")
-    
+    handle_error(ret_meta, "apr-runner return non-zero",
+                 additional_command=f"cat {MUTABLE_ENV['MSV_WORKSPACE']}/output.log")
+
     msv_search_cmd = f"python3 {MSV_SEARCH_REPO}/msv-search.py -o {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output -w {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']} -T {VULCAN_YML_TIME_OUT} -t {VULCAN_YML_TEST_TIME_OUT} --use-prophet-score --use-msv-ext -m prophet -p {MSV_REPO} --use-pass-test -- {MSV_REPO}/tools/msv-test.py {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/src {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}/tests {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}"
     print(f"[DEBUG] {msv_search_cmd}", flush=True)
     ret_search = os.system(msv_search_cmd)
-    handle_error(ret_search, "apr-search return non-zero", additional_command=f"cat {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/new.revlog")
-    
+    handle_error(ret_search, "apr-search return non-zero",
+                 additional_command=f"cat {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/new.revlog")
+
     diff_gen_cmd = f"python3 {MSV_SEARCH_REPO}/diff_gen.py -g -i {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output -o {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/patch {MUTABLE_ENV['VULCAN_TARGET_WORKDIR']}"
     print(f"[DEBUG] {diff_gen_cmd}", flush=True)
     ret_diff = os.system(diff_gen_cmd)
     handle_error(ret_diff, "diff_gen return non-zero")
-    
+
     with open(MUTABLE_ENV["MSV_JSON"]) as f:
         json_data = json.load(f)
     with open(MUTABLE_ENV["MSV_PASS_JSON"], "w") as f:
