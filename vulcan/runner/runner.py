@@ -12,6 +12,7 @@ VULCAN_YML_TIME_OUT = os.getenv("VULCAN_YML_TIME_OUT")
 VULCAN_YML_TEST_TIME_OUT = os.getenv("VULCAN_YML_TEST_TIME_OUT")
 RUN_FL = os.getenv("RUN_FL")
 RUN_APR = os.getenv("RUN_APR")
+VALIDATOR = os.getenv("VALIDATOR", None)
 
 # for SBFL
 SBFL_REPO = os.environ["SBFL_REPO"] = r"/home/workspace/sbfl"
@@ -25,6 +26,15 @@ CLIENT_REPO = os.environ["CLIENT"] = r"/home/workspace/client"
 
 # mutable environment variables
 MUTABLE_ENV = dict()
+
+
+def handle_error(return_value, error_message, additional_command=None):
+    if return_value != 0:
+        print(f"[ERROR] {error_message}", flush=True)
+        if additional_command:
+            print(f"[DEBUG] {additional_command}", flush=True)
+            os.system(additional_command)
+        sys.exit(return_value)
 
 
 def set_environments(vulcan_output_path):
@@ -51,7 +61,8 @@ def run_test():
     """
     testrun_py_path = os.path.join(GITHUB_ACTION_PATH, "vulcan", "util", "testrun.py")
     testrun_cmd = f"python3 {testrun_py_path}"
-    os.system(testrun_cmd)
+    ret = os.system(testrun_cmd)
+    handle_error(ret, "testrun return non-zero")
 
 
 def run_fl():
@@ -61,7 +72,8 @@ def run_fl():
     os.chdir(SBFL_REPO)
     fl_cmd = f"python3 -m sbfl -f Jaccard {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov/* -s {MUTABLE_ENV['FL_JSON']} -i {MUTABLE_ENV['INFO_JSON']} -c {MUTABLE_ENV['FL_CLUSTER_JSON']}"
     print(f"[DEBUG] {fl_cmd}", flush=True)
-    os.system(fl_cmd)
+    ret = os.system(fl_cmd)
+    handle_error(ret, "fl return non-zero")  
 
 
 def run_apr():
@@ -96,14 +108,18 @@ def run_apr():
         plausible_data = [x for x in json_data if x["pass_result"]]
         json.dump(plausible_data, f)
 
-
 def run_validate():
     """
     1. run validator
     """
+    if VALIDATOR != "CT" and VALIDATOR != "AI" and VALIDATOR != "ALL":
+        print(f"[DEBUG] Validator not working", flush=True)
+        return
+    
     validation_cmd = f"python3 {os.path.join(CLIENT_REPO, 'client.py')}"
     print(f"[DEBUG] {validation_cmd}", flush=True)
-    os.system(validation_cmd)
+    ret = os.system(validation_cmd)
+    handle_error(ret, "validation return non-zero")
 
 
 def run_create_issue():
@@ -144,8 +160,8 @@ def handle_cluster(cluster_data):
         if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
             run_validate()
         run_create_issue()
-        if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
-            run_create_pull_request()
+#         if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
+#             run_create_pull_request()
 
 
 def run_modules():
@@ -166,8 +182,8 @@ def run_modules():
     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
         run_validate()
     run_create_issue()
-    if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
-        run_create_pull_request()
+#     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
+#         run_create_pull_request()
 
 
 run_modules()
