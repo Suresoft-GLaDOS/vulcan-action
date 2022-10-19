@@ -12,6 +12,7 @@ import logging
 import json
 from contextlib import contextmanager
 
+VULCAN_YML_GCOV_INCLUSION_LIST = os.getenv("VULCAN_YML_GCOV_INCLUSION_LIST", None)
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +58,12 @@ def parse_args():
                         help='files to exclude in regex patterns',
                         required=False,
                         default=[])
+    parser.add_argument('-i',
+                        '--inclusion-list',
+                        nargs='+',
+                        help='files to include in regex patterns',
+                        required=False,
+                        default=[])
     return parser.parse_args()
 
 
@@ -72,40 +79,94 @@ def main():
     # clean all gcov files if keep_gcov_files flag is not set
     if not args.keep_gcov_files:
         for gcov_file in root_dir.rglob('*.gcov'):
+            print(gcov_file)
             pathlib.Path(gcov_file).unlink()
 
+    source_dir_list = root_dir.rglob('*.cpp')
+    source_parent_set = set()
+    source_str_list = list()
+    for path in source_dir_list:
+        # print("Add this file")
+        # print(path)
+        source_parent_set.add(pathlib.Path(path).parent)
+        source_str_list.append(str(path))
+
+    # print(source_str_list)
     exclusion_list = []
+
     for exclusion_pattern in args.exclusion_list:
         for e in root_dir.rglob(exclusion_pattern):
             exclusion_list.append(e)
-    # print(f'exclusion_list = {exclusion_list}')
+    print(f'exclusion_list = {exclusion_list}')
+
+    inclusion_list = []
+    # print("Include coverage: " + VULCAN_YML_GCOV_INCLUSION_LIST)
+    for e in root_dir.rglob(VULCAN_YML_GCOV_INCLUSION_LIST):  #TODO: It treat only one element for now, have to make it as a list.
+        inclusion_list.append(e)
+    # print(f'inclusion_list = {inclusion_list}')
 
     # glob all file's list
     target_file_list = []
-    for file in args.file:
-        for p in root_dir.rglob(file):
-#             p = pathlib.Path(str(p).replace("/.libs", ""))
-            if p not in exclusion_list:
-                target_file_list.append(p)
-    # print(f'target_file_list = {target_file_list}')
+    print('Args file')
+    for cpp in root_dir.rglob('*.cpp.o'):
+        print(cpp)
+    if len(inclusion_list) != 0:
+        # print(inclusion_list)
+        for file in args.file:
+            for p in root_dir.rglob(file):
+                if p in inclusion_list:
+                    target_file_list.append(p)
+    else:
+        for file in args.file:
+            for p in root_dir.rglob(file):
+                if p not in exclusion_list:
+                    print(p)
+                    target_file_list.append(p)
+    print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
+    # for target_file in target_file_list:
     for target_file in target_file_list:
-        with cwd(str(pathlib.Path(target_file).parent)):
-            gcov_proc = subprocess.Popen([args.gcov_path, str(target_file.name)],
+        target_src = ''
+        for target_source_file in source_str_list:
+            # if str(target_file).split("/")[-1].replace(".o", ".c") in target_source_file:
+            print("Target: " + target_source_file)
+            if str(target_file).split("/")[-1].replace(".o", "") in target_source_file:
+                target_src = target_source_file
+                # print(f'Target src: {str(target_file)}')
+
+        # with cwd(str(pathlib.Path(target_src).parent)):
+        with cwd(str(root_dir)):
+            print(str(root_dir))
+            print([args.gcov_path, str(target_file)])
+            os.chdir(str(pathlib.Path(target_src).parent))
+            gcov_proc = subprocess.Popen([args.gcov_path, str(target_file)],
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE,
                                          stdin=subprocess.PIPE)
             out, err = gcov_proc.communicate()
 
     gcov_info_dict = dict()
-    for parent_dir in {f.parent for f in target_file_list}:
-        for gcov_file_path in pathlib.Path(parent_dir).glob("*.gcov"):
+    # for parent_dir in {f.parent for f in target_file_list}:
+    for file_dir in source_str_list:
+        parent_dir = pathlib.Path(file_dir).parent
+        # print(parent_dir)
+        for gcov_file_path in pathlib.Path(parent_dir).rglob("*.gcov"):
+            print("gcov: " + str(gcov_file_path))
             with open(gcov_file_path, encoding='utf-8') as gcov_file:
                 gcov_source_name = gcov_file.readline().rstrip().split(':', 3)[-1]
                 if pathlib.Path(gcov_source_name).is_absolute():
                     gcov_info_dict[gcov_file_path.name] = str(gcov_source_name)
                 else:
                     gcov_info_dict[gcov_file_path.name] = str((parent_dir / gcov_source_name))
+    if len(gcov_info_dict) == 0:
+        for gcov_file_path in root_dir.rglob("*.gcov"):
+            print("root gcov: " + str(gcov_file_path))
+            with open(gcov_file_path, encoding='utf-8') as gcov_file:
+                gcov_source_name = gcov_file.readline().rstrip().split(':', 3)[-1]
+                if pathlib.Path(gcov_source_name).is_absolute():
+                    gcov_info_dict[gcov_file_path.name] = str(gcov_source_name)
+                else:
+                    gcov_info_dict[gcov_file_path.name] = str((str(root_dir) / gcov_source_name))
     gcov_info_json = json.dumps(gcov_info_dict, indent=2)
 
     if args.output:
