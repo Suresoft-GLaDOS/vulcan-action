@@ -82,7 +82,7 @@ def main():
             print(gcov_file)
             pathlib.Path(gcov_file).unlink()
 
-    source_dir_list = root_dir.rglob('*.cpp')
+    source_dir_list = root_dir.rglob('*.c')
     source_parent_set = set()
     source_str_list = list()
     for path in source_dir_list:
