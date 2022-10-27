@@ -54,7 +54,7 @@ def _split_test():
 def run():
     print("Run VULCAN_YML_COVERAGE_BUILD_COMMAND", flush=True)
     os.chdir(VULCAN_TARGET)
-    print("sh -c \"$VULCAN_YML_COVERAGE_BUILD_COMMAND\"")
+    print(f"sh -c {VULCAN_YML_COVERAGE_BUILD_COMMAND}")
     build_result = os.system("sh -c \"$VULCAN_YML_COVERAGE_BUILD_COMMAND\"")
 
     if build_result != 0:
