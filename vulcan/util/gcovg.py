@@ -122,7 +122,7 @@ def main():
                 if p not in exclusion_list:
                     # print(p)
                     target_file_list.append(p)
-    print(f'target_file_list = {target_file_list}')
+    # print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
     # for target_file in target_file_list:
     for target_file in target_file_list:
@@ -136,8 +136,8 @@ def main():
 
         # with cwd(str(pathlib.Path(target_src).parent)):
         with cwd(str(root_dir)):
-            print(str(root_dir))
-            print([args.gcov_path, str(target_file)])
+            # print(str(root_dir))
+            # print([args.gcov_path, str(target_file)])
             os.chdir(str(pathlib.Path(target_src).parent))
             gcov_proc = subprocess.Popen([args.gcov_path, str(target_file)],
                                          stdout=subprocess.PIPE,
