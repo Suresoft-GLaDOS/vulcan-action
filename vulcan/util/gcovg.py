@@ -137,7 +137,7 @@ def main():
         # with cwd(str(pathlib.Path(target_src).parent)):
         with cwd(str(root_dir)):
             # print(str(root_dir))
-            # print([args.gcov_path, str(target_file)])
+            print([args.gcov_path, str(target_file)])
             os.chdir(str(pathlib.Path(target_src).parent))
             gcov_proc = subprocess.Popen([args.gcov_path, str(target_file)],
                                          stdout=subprocess.PIPE,
