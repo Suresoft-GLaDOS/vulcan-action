@@ -57,8 +57,8 @@ def run():
     os.system(f"patch -p0 < {patch_full_path}")
     os.system(f"git add .")
     info_number = PR_INFO['issue_number']
-    print(f'[DEBUG] git commit -m \"Fixed automatically {str(info_number)} by Vulcan\"', flush=True)
-    os.system(f'git commit -m \"Fixed automatically {str(info_number)} by Vulcan\"')
+    print(f'[DEBUG] git commit -m "Fixed automatically {str(info_number)} by Vulcan"', flush=True)
+    os.system(f'git commit -m "Fixed automatically {str(info_number)} by Vulcan"')
     os.system(f"git push origin {patch_branch}")
     create_pull_request(patch_branch)
     os.system(f"git checkout {GITHUB_REF_NAME}")
