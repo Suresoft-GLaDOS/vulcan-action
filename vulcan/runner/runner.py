@@ -193,8 +193,8 @@ def run_modules():
     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
         run_validate()
     run_create_issue()
-    # if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
-    #     run_create_pull_request()
+    if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
+        run_create_pull_request()
 
 
 run_modules()
