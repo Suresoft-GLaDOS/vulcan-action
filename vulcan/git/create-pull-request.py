@@ -42,21 +42,22 @@ def run():
         p = json_data["results"][0]["id"]
     else:
         p = os.listdir(MSV_PATCH_DIFF_PATH)[0]
-    
+
+    print(f"[DEBUG] Git clean")
     os.system("git clean -xdf")
     os.system(f"git checkout {GITHUB_REF_NAME}")
     os.system("git checkout .")
-    print("Checkout Branch")
+    print(f"[DEBUG] Checkout Branch")
     now = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')
     patch_branch = f"{GITHUB_REF_NAME}-auto-patch-{now}"
-    print("Checkout Branch")
+    print(f"[DEBUG] Checkout Branch")
     os.system(f"git checkout -b {patch_branch}")
     patch_full_path = os.path.join(MSV_PATCH_DIFF_PATH, p)
-    print("Apply patch")
+    print(f"[DEBUG] Apply patch")
     os.system(f"patch -p0 < {patch_full_path}")
     os.system(f"git add .")
     info_number = PR_INFO['issue_number']
-    print(f'git commit -m \"Fixed automatically {str(info_number)} by Vulcan\"')
+    print(f'[DEBUG] git commit -m \"Fixed automatically {str(info_number)} by Vulcan\"')
     os.system(f'git commit -m \"Fixed automatically {str(info_number)} by Vulcan\"')
     os.system(f"git push origin {patch_branch}")
     create_pull_request(patch_branch)
