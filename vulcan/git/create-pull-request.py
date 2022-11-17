@@ -46,10 +46,13 @@ def run():
     os.system("git clean -xdf")
     os.system(f"git checkout {GITHUB_REF_NAME}")
     os.system("git checkout .")
+    print("Checkout Branch")
     now = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')
     patch_branch = f"{GITHUB_REF_NAME}-auto-patch-{now}"
+    print("Checkout Branch")
     os.system(f"git checkout -b {patch_branch}")
     patch_full_path = os.path.join(MSV_PATCH_DIFF_PATH, p)
+    print("Apply patch")
     os.system(f"patch -p0 < {patch_full_path}")
     os.system(f"git add .")
     info_number = PR_INFO['issue_number']
