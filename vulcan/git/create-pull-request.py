@@ -43,21 +43,21 @@ def run():
     else:
         p = os.listdir(MSV_PATCH_DIFF_PATH)[0]
 
-    print(f"[DEBUG] Git clean")
+    print(f"[DEBUG] Git clean", flush=True)
     os.system("git clean -xdf")
     os.system(f"git checkout {GITHUB_REF_NAME}")
     os.system("git checkout .")
-    print(f"[DEBUG] Checkout Branch")
+    print(f"[DEBUG] Checkout Branch", flush=True)
     now = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')
     patch_branch = f"{GITHUB_REF_NAME}-auto-patch-{now}"
-    print(f"[DEBUG] Checkout Branch")
+    print(f"[DEBUG] Checkout Branch", flush=True)
     os.system(f"git checkout -b {patch_branch}")
     patch_full_path = os.path.join(MSV_PATCH_DIFF_PATH, p)
-    print(f"[DEBUG] Apply patch")
+    print(f"[DEBUG] Apply patch", flush=True)
     os.system(f"patch -p0 < {patch_full_path}")
     os.system(f"git add .")
     info_number = PR_INFO['issue_number']
-    print(f'[DEBUG] git commit -m \"Fixed automatically {str(info_number)} by Vulcan\"')
+    print(f'[DEBUG] git commit -m \"Fixed automatically {str(info_number)} by Vulcan\"', flush=True)
     os.system(f'git commit -m \"Fixed automatically {str(info_number)} by Vulcan\"')
     os.system(f"git push origin {patch_branch}")
     create_pull_request(patch_branch)
