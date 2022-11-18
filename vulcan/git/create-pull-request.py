@@ -41,7 +41,7 @@ def run():
             json_data = json.load(json_file)
         p = json_data["results"][0]["id"]
     else:
-        p = os.listdir(MSV_PATCH_DIFF_PATH)[0]
+        p = sorted(os.listdir(MSV_PATCH_DIFF_PATH))[0]
 
     print(f"[DEBUG] Git clean", flush=True)
     os.system("git clean -xdf")
