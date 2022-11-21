@@ -1,5 +1,5 @@
 # action.yml
-name: 'Vulcan Auto Patch Generator'
+name: 'Vulcan'
 description: 'Auto fix on the branch which triggers a workflow'
 inputs:
   token:
