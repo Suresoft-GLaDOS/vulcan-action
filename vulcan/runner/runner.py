@@ -8,6 +8,7 @@ GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH", "/")
 VULCAN_OUTPUT_DIR_BASE = os.environ["VULCAN_OUTPUT_DIR_BASE"] = os.getenv("VULCAN_OUTPUT_DIR")
 VULCAN_TARGET_NAME = os.getenv("VULCAN_TARGET_NAME")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET")
+VULCAN_YML_SUBDIR = os.getenv("VULCAN_YML_SUBDIR")
 VULCAN_YML_PATH = os.path.join(VULCAN_TARGET, "vulcan.yml")
 VULCAN_YML_TIME_OUT = os.getenv("VULCAN_YML_TIME_OUT")
 VULCAN_YML_TEST_TIME_OUT = os.getenv("VULCAN_YML_TEST_TIME_OUT")
@@ -87,7 +88,7 @@ def run_apr():
     os.chdir(MUTABLE_ENV['VULCAN_OUTPUT_DIR'])
     os.makedirs(MUTABLE_ENV['MSV_WORKSPACE'], exist_ok=True)
     
-    msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -s {MUTABLE_ENV['FL_JSON']} -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
+    msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -s {MUTABLE_ENV['FL_JSON']} -d {VULCAN_YML_SUBDIR} -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
     print(f"[DEBUG] {msv_runner_cmd}", flush=True)
     ret_meta = os.system(msv_runner_cmd)
     handle_error(ret_meta, "apr-runner return non-zero", additional_command=f"cat {MUTABLE_ENV['MSV_WORKSPACE']}/output.log")
