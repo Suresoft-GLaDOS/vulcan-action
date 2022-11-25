@@ -118,6 +118,9 @@ test-coverage-command: | # Run coverage tests
   
 gcov-exclusion-list: | # Do not measure coverage from those files
   test.o
+  
+build-subdir: | # Path of build directory from project's root if it is not project's root dir
+  build
 
 ```
 
@@ -133,6 +136,7 @@ To make it work in your project, you have to set each items in the vulcan.yml pr
 * Optional
   - time-out
   - gcov-exclusion-list
+  - build-subdir
 
 ## Result
 
