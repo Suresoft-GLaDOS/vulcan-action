@@ -44,14 +44,14 @@ def _parse_yaml():
     os.environ["VULCAN_YML_COVERAGE_BUILD_COMMAND"] = yml["coverage-build-command"]
     os.environ["VULCAN_YML_GCOV_EXCLUSION_LIST"] = yml["gcov-exclusion-list"] if "gcov-exclusion-list" in yml else ""
     os.environ["VULCAN_YML_GCOV_INCLUSION_LIST"] = yml["gcov-inclusion-list"] if "gcov-inclusion-list" in yml else ""
-    os.environ["VULCAN_YML_SUBDIR_BUILD"] = yml["subdir-build"] if "subdir-build" in yml else ""
     os.environ["VULCAN_YML_LIBRARY_LIST"] = yml["library-list"] if "library-list" in yml else ""
     os.environ["VULCAN_YML_TEST_TYPE"] = yml["test-type"]
     os.environ["VULCAN_YML_TEST_LIST"] = yml["test-list"]
     os.environ["VULCAN_YML_TEST_CASE"] = yml["test-case"]
     os.environ["VULCAN_YML_TEST_COMMAND"] = yml["test-command"]
     os.environ["VULCAN_YML_TEST_COVERAGE_COMMAND"] = yml["test-coverage-command"]
-    
+    os.environ["VULCAN_YML_BUILD_SUBDIR"] = yml["build-subdir"] if "build-subdir" in yml else ""
+
     if not os.getenv("VULCAN_YML_COVERAGE_BUILD_COMMAND") or not os.getenv("VULCAN_YML_TEST_COVERAGE_COMMAND"):
         print("WARNING: Not work FL.", flush=True)
         print("  Set coverage-build-command and test-coverage-command in .vulcan.yml.", flush=True)
