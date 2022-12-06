@@ -114,15 +114,15 @@ def main():
         print(inclusion_list[0])
         for file in args.file:
             for p in root_dir.rglob(file):
-                print("Check inclusion: " + p)
+                print("Check inclusion: " + str(p))
                 if p in inclusion_list[0]:
                     target_file_list.append(p)
     elif 'chewing' in VULCAN_YML_GCOV_INCLUSION_LIST:
         for file in args.file:
             for p in root_dir.rglob(file):
-                print("Check inclusion: " + p)
+                print("Check inclusion: " + str(p))
                 if VULCAN_YML_GCOV_INCLUSION_LIST in p:
-                    print("Libchewing inclusion: " + p)
+                    print("Libchewing inclusion: " + str(p))
                     target_file_list.append(p)
 
     else:
