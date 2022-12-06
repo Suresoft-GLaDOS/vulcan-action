@@ -8,9 +8,11 @@ GITHUB_ACTION_PATH = os.getenv("GITHUB_ACTION_PATH", "/")
 VULCAN_OUTPUT_DIR_BASE = os.environ["VULCAN_OUTPUT_DIR_BASE"] = os.getenv("VULCAN_OUTPUT_DIR")
 VULCAN_TARGET_NAME = os.getenv("VULCAN_TARGET_NAME")
 VULCAN_TARGET = os.getenv("VULCAN_TARGET")
+VULCAN_YML_SUBDIR = os.getenv("VULCAN_YML_BUILD_SUBDIR")
 VULCAN_YML_PATH = os.path.join(VULCAN_TARGET, "vulcan.yml")
 VULCAN_YML_TIME_OUT = os.getenv("VULCAN_YML_TIME_OUT")
 VULCAN_YML_TEST_TIME_OUT = os.getenv("VULCAN_YML_TEST_TIME_OUT")
+VULCAN_YML_SELECT_TEMPLATE = os.getenv("VULCAN_YML_SELECT_TEMPLATE")
 RUN_FL = os.getenv("RUN_FL")
 RUN_APR = os.getenv("RUN_APR")
 VALIDATOR = os.getenv("VALIDATOR", None)
@@ -46,13 +48,17 @@ def set_environments(vulcan_output_path):
 
     MUTABLE_ENV["FL_JSON"] = os.environ["FL_JSON"] = os.path.join(MUTABLE_ENV["VULCAN_OUTPUT_DIR"], "fl.json")
     MUTABLE_ENV["INFO_JSON"] = os.environ["INFO_JSON"] = os.path.join(MUTABLE_ENV["VULCAN_OUTPUT_DIR"], "info.json")
-    MUTABLE_ENV["FL_CLUSTER_JSON"] = os.environ["FL_CLUSTER_JSON"] = os.path.join(MUTABLE_ENV["VULCAN_OUTPUT_DIR"], "fl_cluster.json")
+    MUTABLE_ENV["FL_CLUSTER_JSON"] = os.environ["FL_CLUSTER_JSON"] = os.path.join(MUTABLE_ENV["VULCAN_OUTPUT_DIR"],
+                                                                                  "fl_cluster.json")
 
     MUTABLE_ENV["MSV_WORKSPACE"] = os.environ["MSV_WORKSPACE"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-workspace"
-    MUTABLE_ENV["VULCAN_TARGET_WORKDIR"] = os.environ["VULCAN_TARGET_WORKDIR"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-workspace/{VULCAN_TARGET_NAME}-workdir"
+    MUTABLE_ENV["VULCAN_TARGET_WORKDIR"] = os.environ[
+        "VULCAN_TARGET_WORKDIR"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-workspace/{VULCAN_TARGET_NAME}-workdir"
     MUTABLE_ENV["MSV_JSON"] = os.environ["MSV_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-result.json"
-    MUTABLE_ENV["MSV_PASS_JSON"] = os.environ["MSV_PASS_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-result-pass.json"
+    MUTABLE_ENV["MSV_PASS_JSON"] = os.environ[
+        "MSV_PASS_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-result-pass.json"
     MUTABLE_ENV["MSV_PATCH_DIFF_PATH"] = os.environ["MSV_PATCH_DIFF_PATH"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/patch"
+
     # --------------------------------
 
 
@@ -74,7 +80,7 @@ def run_fl():
     fl_cmd = f"python3 -m sbfl -f Jaccard {MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov/* -s {MUTABLE_ENV['FL_JSON']} -i {MUTABLE_ENV['INFO_JSON']} -c {MUTABLE_ENV['FL_CLUSTER_JSON']}"
     print(f"[DEBUG] {fl_cmd}", flush=True)
     ret = os.system(fl_cmd)
-    handle_error(ret, "fl return non-zero")        
+    handle_error(ret, "fl return non-zero")
 
 
 def run_apr():
@@ -87,9 +93,22 @@ def run_apr():
     os.chdir(MUTABLE_ENV['VULCAN_OUTPUT_DIR'])
     os.makedirs(MUTABLE_ENV['MSV_WORKSPACE'], exist_ok=True)
 
-    msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -s {MUTABLE_ENV['FL_JSON']} -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
-    print(f"[DEBUG] {msv_runner_cmd}", flush=True)
-    ret_meta = os.system(msv_runner_cmd)
+    run_cmd = f"python3 {MSV_REPO}/msv-runner.py"
+    msv_options = f" -s {MUTABLE_ENV['FL_JSON']} -r"
+
+    msv_args = f"{VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO} "
+
+    if VULCAN_YML_SUBDIR != '':
+        msv_options = msv_options + f" -d {VULCAN_YML_SUBDIR.strip()}"
+    if VULCAN_YML_SELECT_TEMPLATE != '':
+        msv_options = msv_options + f" -c {VULCAN_YML_SELECT_TEMPLATE.strip()}"
+
+    print(f"[DEBUG] {msv_args}", flush=True)
+
+    msv_runner_cmd = run_cmd + msv_options
+    msv_runner_cmd_arg = msv_runner_cmd + f" {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
+    print(f"[DEBUG] {msv_runner_cmd_arg}", flush=True)
+    ret_meta = os.system(msv_runner_cmd_arg)
     handle_error(ret_meta, "apr-runner return non-zero",
                  additional_command=f"cat {MUTABLE_ENV['MSV_WORKSPACE']}/output.log")
 
@@ -107,7 +126,8 @@ def run_apr():
     with open(MUTABLE_ENV["MSV_JSON"]) as f:
         json_data = json.load(f)
     with open(MUTABLE_ENV["MSV_PASS_JSON"], "w") as f:
-        plausible_data = [x for x in json_data if x["pass_result"]]
+        plausible_data = [x for x
+                          in json_data if x["pass_result"]]
         json.dump(plausible_data, f)
 
 
@@ -118,7 +138,7 @@ def run_validate():
     if VALIDATOR != "CT" and VALIDATOR != "AI" and VALIDATOR != "ALL":
         print(f"[DEBUG] Validator not working", flush=True)
         return
-    
+
     validation_cmd = f"python3 {os.path.join(CLIENT_REPO, 'client.py')}"
     print(f"[DEBUG] {validation_cmd}", flush=True)
     ret = os.system(validation_cmd)
@@ -153,9 +173,10 @@ def handle_cluster(cluster_data):
         set_environments(os.path.join(VULCAN_OUTPUT_DIR_BASE, k))
         yaml_data = origin_yaml_data.copy()
         exclusion_list = []
-        for c in filter(lambda v: v != cluster_data[k], cluster_data.values() ):
+        for c in filter(lambda v: v != cluster_data[k], cluster_data.values()):
             exclusion_list.extend(list(map(lambda p: p.split("/")[-1], c)))
-        shutil.copytree(f"{VULCAN_OUTPUT_DIR_BASE}/gcov", f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov", dirs_exist_ok=True, ignore=lambda *args: exclusion_list)
+        shutil.copytree(f"{VULCAN_OUTPUT_DIR_BASE}/gcov", f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/gcov",
+                        dirs_exist_ok=True, ignore=lambda *args: exclusion_list)
         test_list = yaml_data["test-list"].splitlines()
         for i, e in enumerate(exclusion_list):
             test_list[int(e)] = ""
@@ -193,8 +214,10 @@ def run_modules():
     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
         run_validate()
     run_create_issue()
-    # if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
-    #     run_create_pull_request()
+    if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
+        run_create_pull_request()
 
 
 run_modules()
+
+
