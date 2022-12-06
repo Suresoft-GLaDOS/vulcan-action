@@ -96,9 +96,9 @@ def run_apr():
     msv_args = f"{VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO} "
 
     if VULCAN_YML_SUBDIR != '':
-        msv_options = msv_options + f" -d {VULCAN_YML_SUBDIR}"
+        msv_options = msv_options + f" -d {VULCAN_YML_SUBDIR.strip()}"
     if VULCAN_YML_SELECT_TEMPLATE != '':
-        msv_options = msv_options + f" -c {VULCAN_YML_SELECT_TEMPLATE}"
+        msv_options = msv_options + f" -c {VULCAN_YML_SELECT_TEMPLATE.strip()}"
 
     print(f"[DEBUG] {msv_args}", flush=True)
 

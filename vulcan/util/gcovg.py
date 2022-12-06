@@ -122,7 +122,7 @@ def main():
             for p in root_dir.rglob(file):
                 print("Check chewing inclusion: " + str(p))
                 print("Include coverage: " + VULCAN_YML_GCOV_INCLUSION_LIST)
-                if VULCAN_YML_GCOV_INCLUSION_LIST in str(p):
+                if VULCAN_YML_GCOV_INCLUSION_LIST.strip() in str(p):
                     print("Libchewing inclusion: " + str(p))
                     target_file_list.append(p)
     else:
