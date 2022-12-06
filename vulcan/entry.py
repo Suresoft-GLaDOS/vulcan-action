@@ -51,6 +51,8 @@ def _parse_yaml():
     os.environ["VULCAN_YML_TEST_COMMAND"] = yml["test-command"]
     os.environ["VULCAN_YML_TEST_COVERAGE_COMMAND"] = yml["test-coverage-command"]
     os.environ["VULCAN_YML_BUILD_SUBDIR"] = yml["build-subdir"] if "build-subdir" in yml else ""
+    os.environ["VULCAN_YML_MAX_MUTATION"] = yml["max-mutation-number"] if "max-mutation-number" in yml else ""
+    os.environ["VULCAN_YML_SELECT_TEMPLATE"] = yml["select-template"] if "select-template" in yml else ""
 
     if not os.getenv("VULCAN_YML_COVERAGE_BUILD_COMMAND") or not os.getenv("VULCAN_YML_TEST_COVERAGE_COMMAND"):
         print("WARNING: Not work FL.", flush=True)

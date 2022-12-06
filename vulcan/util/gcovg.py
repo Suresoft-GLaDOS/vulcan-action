@@ -111,10 +111,11 @@ def main():
     for cpp in root_dir.rglob('*.cpp.o'):
         print(cpp)
     if len(inclusion_list) != 0:
-        # print(inclusion_list)
+        print(inclusion_list[0])
         for file in args.file:
             for p in root_dir.rglob(file):
-                if p in inclusion_list:
+                print("Check inclusion: " + p)
+                if p in inclusion_list[0]:
                     target_file_list.append(p)
     else:
         for file in args.file:

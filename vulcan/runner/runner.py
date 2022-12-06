@@ -12,6 +12,7 @@ VULCAN_YML_SUBDIR = os.getenv("VULCAN_YML_BUILD_SUBDIR")
 VULCAN_YML_PATH = os.path.join(VULCAN_TARGET, "vulcan.yml")
 VULCAN_YML_TIME_OUT = os.getenv("VULCAN_YML_TIME_OUT")
 VULCAN_YML_TEST_TIME_OUT = os.getenv("VULCAN_YML_TEST_TIME_OUT")
+VULCAN_YML_SELECT_TEMPLATE = os.getenv("VULCAN_YML_SELECT_TEMPLATE")
 RUN_FL = os.getenv("RUN_FL")
 RUN_APR = os.getenv("RUN_APR")
 VALIDATOR = os.getenv("VALIDATOR", None)
@@ -54,6 +55,7 @@ def set_environments(vulcan_output_path):
     MUTABLE_ENV["MSV_JSON"] = os.environ["MSV_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-result.json"
     MUTABLE_ENV["MSV_PASS_JSON"] = os.environ["MSV_PASS_JSON"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/msv-output/msv-result-pass.json"
     MUTABLE_ENV["MSV_PATCH_DIFF_PATH"] = os.environ["MSV_PATCH_DIFF_PATH"] = f"{MUTABLE_ENV['VULCAN_OUTPUT_DIR']}/patch"
+
     # --------------------------------
 
 
@@ -88,10 +90,17 @@ def run_apr():
     os.chdir(MUTABLE_ENV['VULCAN_OUTPUT_DIR'])
     os.makedirs(MUTABLE_ENV['MSV_WORKSPACE'], exist_ok=True)
 
-    if VULCAN_YML_SUBDIR != "":
-        msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -s {MUTABLE_ENV['FL_JSON']} -d {VULCAN_YML_SUBDIR} -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
-    else:
-        msv_runner_cmd = f"python3 {MSV_REPO}/msv-runner.py -s {MUTABLE_ENV['FL_JSON']} -r {VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
+    run_cmd = f"python3 {MSV_REPO}/msv-runner.py"
+    msv_options = f" -s {MUTABLE_ENV['FL_JSON']} -r "
+
+    if VULCAN_YML_SUBDIR != '':
+        msv_options = msv_options + f"-d {VULCAN_YML_SUBDIR} "
+    if VULCAN_YML_SELECT_TEMPLATE != '':
+        msv_options = msv_options + f"-c {VULCAN_YML_SELECT_TEMPLATE} "
+
+    msv_args = f"{VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
+
+    msv_runner_cmd = run_cmd + msv_options + msv_args
     print(f"[DEBUG] {msv_runner_cmd}", flush=True)
     ret_meta = os.system(msv_runner_cmd)
     handle_error(ret_meta, "apr-runner return non-zero",
@@ -111,7 +120,8 @@ def run_apr():
     with open(MUTABLE_ENV["MSV_JSON"]) as f:
         json_data = json.load(f)
     with open(MUTABLE_ENV["MSV_PASS_JSON"], "w") as f:
-        plausible_data = [x for x in json_data if x["pass_result"]]
+        plausible_data = [x for x
+                          in json_data if x["pass_result"]]
         json.dump(plausible_data, f)
 
 
