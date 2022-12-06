@@ -93,16 +93,16 @@ def run_apr():
     run_cmd = f"python3 {MSV_REPO}/msv-runner.py"
     msv_options = f" -s {MUTABLE_ENV['FL_JSON']} -r "
 
+    msv_args = f"{VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
+
     if VULCAN_YML_SUBDIR != '':
         msv_options = msv_options + f"-d {VULCAN_YML_SUBDIR} "
     if VULCAN_YML_SELECT_TEMPLATE != '':
         msv_options = msv_options + f"-c {VULCAN_YML_SELECT_TEMPLATE} "
 
-    msv_args = f"{VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
-
     print(f"[DEBUG] {msv_args}", flush=True)
 
-    msv_runner_cmd = run_cmd + msv_options
+    msv_runner_cmd = run_cmd + msv_options + msv_args
     msv_runner_cmd = msv_runner_cmd + f"{VULCAN_TARGET} {MUTABLE_ENV['MSV_WORKSPACE']} {MSV_REPO}"
     print(f"[DEBUG] {msv_runner_cmd}", flush=True)
     ret_meta = os.system(msv_runner_cmd)
