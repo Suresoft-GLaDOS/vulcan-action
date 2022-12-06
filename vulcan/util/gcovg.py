@@ -109,7 +109,7 @@ def main():
     target_file_list = []
     print('Args file')
     for cpp in root_dir.rglob('*.cpp.o'):
-        print(cpp)
+        print("C++: " + str(cpp))
     if len(inclusion_list) != 0:
         print(inclusion_list[0])
         for file in args.file:
