@@ -102,7 +102,8 @@ def run_apr():
 
     print(f"[DEBUG] {msv_args}", flush=True)
 
-    msv_runner_cmd = run_cmd + msv_options + msv_args
+    msv_runner_cmd = run_cmd + msv_options
+    msv_runner_cmd = msv_runner_cmd + msv_args
     print(f"[DEBUG] {msv_runner_cmd}", flush=True)
     ret_meta = os.system(msv_runner_cmd)
     handle_error(ret_meta, "apr-runner return non-zero",
