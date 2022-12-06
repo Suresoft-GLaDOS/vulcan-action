@@ -121,7 +121,7 @@ def main():
         for file in args.file:
             for p in root_dir.rglob(file):
                 print("Check inclusion: " + str(p))
-                if VULCAN_YML_GCOV_INCLUSION_LIST in p:
+                if VULCAN_YML_GCOV_INCLUSION_LIST in str(p):
                     print("Libchewing inclusion: " + str(p))
                     target_file_list.append(p)
 
