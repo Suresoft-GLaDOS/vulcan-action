@@ -115,8 +115,8 @@ def main():
         for file in args.file:
             for p in root_dir.rglob(file):
                 print("Check inclusion: " + str(p))
-                if p in inclusion_list[0]:
-                    target_file_list.append(p)
+                # if p in inclusion_list[0]:
+                #     target_file_list.append(p)
     elif 'chewing' in VULCAN_YML_GCOV_INCLUSION_LIST:
         for file in args.file:
             for p in root_dir.rglob(file):
