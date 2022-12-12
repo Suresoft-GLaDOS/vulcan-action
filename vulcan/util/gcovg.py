@@ -153,7 +153,7 @@ def main():
         # with cwd(str(pathlib.Path(target_src).parent)):
         with cwd(str(root_dir)):
             # print(str(root_dir))
-            print([args.gcov_path, str(target_file)])
+            # print([args.gcov_path, str(target_file)])
             os.chdir(str(pathlib.Path(target_src).parent))
             gcov_proc = subprocess.Popen([args.gcov_path, str(target_file)],
                                          stdout=subprocess.PIPE,
@@ -174,7 +174,7 @@ def main():
                     gcov_info_dict[gcov_file_path.name] = str(gcov_source_name)
                 else:
                     gcov_info_dict[gcov_file_path.name] = str((parent_dir / gcov_source_name))
-                    print(gcov_info_dict[gcov_file_path.name])
+                    # print(gcov_info_dict[gcov_file_path.name])
     if len(gcov_info_dict) == 0:
         for gcov_file_path in root_dir.rglob("*.gcov"):
             # print("root gcov: " + str(gcov_file_path))
@@ -184,7 +184,7 @@ def main():
                     gcov_info_dict[gcov_file_path.name] = str(gcov_source_name)
                 else:
                     gcov_info_dict[gcov_file_path.name] = str(root_dir) + "/" + str(gcov_source_name)
-                    print(gcov_info_dict[gcov_file_path.name])
+                    # print(gcov_info_dict[gcov_file_path.name])
     gcov_info_json = json.dumps(gcov_info_dict, indent=2)
 
     if args.output:
