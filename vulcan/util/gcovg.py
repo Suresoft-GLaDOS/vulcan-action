@@ -117,6 +117,12 @@ def main():
                 if p not in exclusion_list:
                     # print(p)
                     target_file_list.append(p)
+    else:
+        for file in args.file:
+            for p in root_dir.rglob(file):
+                if p not in exclusion_list:
+                    # print(p)
+                    target_file_list.append(p)
     # if len(inclusion_list) != 0:
     #     print(inclusion_list[0])
     #     for file in args.file:
