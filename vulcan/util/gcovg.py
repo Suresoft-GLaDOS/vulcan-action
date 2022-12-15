@@ -111,32 +111,11 @@ def main():
     for cpp in root_dir.rglob('*.cpp.o'):
         print(cpp)
 
-    if len(exclusion_list) != 0:
-        for file in args.file:
-            for p in root_dir.rglob(file):
-                if p not in exclusion_list:
-                    # print(p)
-                    target_file_list.append(p)
-    else:
-        for file in args.file:
-            for p in root_dir.rglob(file):
-                if p not in exclusion_list:
-                    # print(p)
-                    target_file_list.append(p)
-    # if len(inclusion_list) != 0:
-    #     print(inclusion_list[0])
+    # if len(exclusion_list) != 0:
     #     for file in args.file:
     #         for p in root_dir.rglob(file):
-    #             print("Check inclusion: " + str(p))
-    #             # if p in inclusion_list[0]:
-    #             #     target_file_list.append(p)
-    # elif 'chewing' in VULCAN_YML_GCOV_INCLUSION_LIST:
-    #     for file in args.file:
-    #         for p in root_dir.rglob(file):
-    #             print("Check chewing inclusion: " + str(p))
-    #             print("Include coverage: " + VULCAN_YML_GCOV_INCLUSION_LIST)
-    #             if VULCAN_YML_GCOV_INCLUSION_LIST.strip() in str(p):
-    #                 print("Libchewing inclusion: " + str(p))
+    #             if p not in exclusion_list:
+    #                 # print(p)
     #                 target_file_list.append(p)
     # else:
     #     for file in args.file:
@@ -144,6 +123,27 @@ def main():
     #             if p not in exclusion_list:
     #                 # print(p)
     #                 target_file_list.append(p)
+    if len(inclusion_list) != 0:
+        print(inclusion_list[0])
+        for file in args.file:
+            for p in root_dir.rglob(file):
+                print("Check inclusion: " + str(p))
+                # if p in inclusion_list[0]:
+                #     target_file_list.append(p)
+    elif 'chewing' in VULCAN_YML_GCOV_INCLUSION_LIST:
+        for file in args.file:
+            for p in root_dir.rglob(file):
+                print("Check chewing inclusion: " + str(p))
+                print("Include coverage: " + VULCAN_YML_GCOV_INCLUSION_LIST)
+                if VULCAN_YML_GCOV_INCLUSION_LIST.strip() in str(p):
+                    print("Libchewing inclusion: " + str(p))
+                    target_file_list.append(p)
+    else:
+        for file in args.file:
+            for p in root_dir.rglob(file):
+                if p not in exclusion_list:
+                    # print(p)
+                    target_file_list.append(p)
     # print(f'target_file_list = {target_file_list}')
     # run gcov and make metadata
     # for target_file in target_file_list:
