@@ -185,9 +185,10 @@ def handle_cluster(cluster_data):
             run_apr()
         if not os.path.exists(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"]):
             os.makedirs(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"], exist_ok=True)
-        if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
-            run_validate()
-        run_create_issue()
+        # if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
+        #     run_validate()
+        # run_create_issue()
+
         # if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
         #     run_create_pull_request()
 
@@ -207,8 +208,10 @@ def run_modules():
         run_apr()
     if not os.path.exists(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"]):
         os.makedirs(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"], exist_ok=True)
-    if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
-        run_validate()
+
+    # if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 1:
+    #     run_validate()
+
     run_create_issue()
     if len(os.listdir(MUTABLE_ENV["MSV_PATCH_DIFF_PATH"])) > 0:
         run_create_pull_request()
