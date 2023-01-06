@@ -87,6 +87,7 @@ def post_processing():
                 print(new_line)
                 post_patch_lines[i] = new_line
 
+        print("Write in patch file")
         with open(f'{patch}.patch', 'w') as file_data:
             # print(file_data.readline(), end="")
             file_data.writelines(post_patch_lines)
