@@ -92,8 +92,8 @@ def post_processing():
             # print(file_data.readline(), end="")
             file_data.writelines(post_patch_lines)
 
-        # print(f"sed -i 's/((void \\*)0)/NULL/g' {patch}")
-        # os.system(f"sed -i 's/((void \\*)0)/NULL/g' {patch}")
+        print(f"sed -i 's/((void \\*)0)/NULL/g' {patch}")
+        os.system(f"sed -i 's/((void \\*)0)/NULL/g' {patch}")
 
 
 post_processing()
